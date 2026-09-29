@@ -1,0 +1,132 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+}
+.form,
+.panel {
+  padding: 22px 24px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.input,
+.textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  color: #0f172a;
+  outline: none;
+  resize: vertical;
+}
+.input:focus,
+.textarea:focus {
+  border-color: #0057d9;
+  box-shadow: 0 0 0 3px #eaf3ff;
+}
+.btn {
+  align-self: flex-start;
+  padding: 11px 22px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #0057d9, #0a8cff);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+}
+.btn:hover {
+  opacity: 0.92;
+}
+.error {
+  margin: 0;
+  font-size: 13px;
+  color: #ef4444;
+}
+.ok {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #16a34a;
+}
+.panelTitle {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+}
+.empty {
+  margin: 0;
+  font-size: 14px;
+  color: #94a3b8;
+}
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 4px;
+  border-bottom: 1px solid #f1f5f9;
+}
+.dot {
+  flex-shrink: 0;
+  width: 9px;
+  height: 9px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: #0a8cff;
+}
+.text {
+  flex: 1;
+  min-width: 0;
+}
+.itemTitle {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+}
+.itemDesc {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  color: #475569;
+}
+.time {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: #0057d9;
+}
+.del {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #ffffff;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: #ef4444;
+  cursor: pointer;
+}
+.del:hover {
+  background: #fef2f2;
+}
+.del:hover {
+  background: #fef2f2;
+}
