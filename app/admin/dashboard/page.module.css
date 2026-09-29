@@ -1,0 +1,266 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.banner {
+  padding: 28px 32px;
+  border-radius: 16px;
+  background: linear-gradient(90deg, #0057d9, #0a8cff);
+  color: #ffffff;
+}
+.bannerTitle {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-weight: 700;
+}
+.bannerText {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.95;
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 22px 16px 26px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+}
+.cardLabel {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #64748b;
+}
+.ring {
+  position: relative;
+  width: 84px;
+  height: 84px;
+}
+.ringValue {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+}
+.panel {
+  padding: 22px 24px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+}
+.panelHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.panelTitle {
+  margin: 0 0 16px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+}
+.seeAll {
+  margin-bottom: 16px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  color: #0057d9;
+}
+.seeAll:hover {
+  text-decoration: underline;
+}
+.empty {
+  margin: 0;
+  font-size: 14px;
+  color: #94a3b8;
+}
+.jurList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.jurRow {
+  display: grid;
+  grid-template-columns: 90px 1fr 90px;
+  align-items: center;
+  gap: 14px;
+}
+.jurName {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+}
+.bar {
+  height: 10px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  overflow: hidden;
+}
+.barFill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #0057d9, #0a8cff);
+  transition: width 0.4s ease;
+}
+.jurValue {
+  font-size: 13px;
+  text-align: right;
+  color: #64748b;
+}
+.actList {
+  display: flex;
+  flex-direction: column;
+}
+.actItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 10px;
+  border-bottom: 1px solid #f1f5f9;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #0f172a;
+  transition: background 0.15s ease;
+}
+.actItem:hover {
+  background: #eaf3ff;
+}
+.actDot {
+  flex-shrink: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #0a8cff;
+}
+.actText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+.actTitle {
+  font-size: 14px;
+  font-weight: 600;
+}
+.actDesc {
+  margin-top: 2px;
+  font-size: 12px;
+  color: #64748b;
+}
+.actTime {
+  flex-shrink: 0;
+  font-size: 12px;
+  color: #0057d9;
+}
+@media (max-width: 1000px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .jurRow {
+    grid-template-columns: 70px 1fr 70px;
+    gap: 8px;
+  }
+}
+/* dashboard-donut */
+.sumRow {
+  display: flex;
+  gap: 14px;
+  margin: 14px 0 20px;
+  flex-wrap: wrap;
+}
+.sumBox {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 150px;
+  padding: 12px 18px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+.sumLabel {
+  font-size: 13px;
+  color: #64748b;
+}
+.sumValue {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+}
+.statWrap {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.donut {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  flex-shrink: 0;
+}
+.donutCenter {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.donutNum {
+  font-size: 30px;
+  font-weight: 700;
+  color: #0f172a;
+}
+.donutLbl {
+  font-size: 13px;
+  color: #64748b;
+}
+.legend {
+  flex: 1;
+  min-width: 260px;
+}
+.legendHead,
+.legendRow {
+  display: grid;
+  grid-template-columns: 1fr 70px 70px;
+  align-items: center;
+  padding: 9px 4px;
+  font-size: 14px;
+}
+.legendHead {
+  font-weight: 600;
+  color: #64748b;
+  border-bottom: 1px solid #e2e8f0;
+}
+.legendRow {
+  border-bottom: 1px solid #f1f5f9;
+  color: #0f172a;
+}
+.legendName {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+}
+.legendDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
