@@ -42,6 +42,16 @@ export function getToken(): string | null {
   return localStorage.getItem("token") ?? sessionStorage.getItem("token");
 }
 
+export function getUser(): UserData | null {
+  const raw = localStorage.getItem("user") ?? sessionStorage.getItem("user");
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as UserData;
+  } catch {
+    return null;
+  }
+}
+
 export function clearSession() {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
