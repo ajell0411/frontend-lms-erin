@@ -762,3 +762,9 @@
   padding: 0;
   justify-content: center;
 }
+.navParentActive,
+.navParentActive:hover {
+  background: linear-gradient(90deg, var(--primary), var(--primary-2));
+  color: #ffffff;
+  font-weight: 600;
+}
