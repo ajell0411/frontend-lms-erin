@@ -12,6 +12,125 @@ export type LoginResult = {
   data?: UserData;
 };
 
+export type AdminRole = "admin" | "admin_kurikulum" | "kepala_sekolah";
+
+export type AdminAccount = {
+  id: number | string;
+  nama: string;
+  username?: string;
+  email: string;
+  role: AdminRole;
+  nip?: string;
+  telepon?: string;
+  status?: "aktif" | "nonaktif";
+  foto_url?: string;
+  created_at?: string;
+};
+
+export type CreateAdminInput = {
+  nama: string;
+  username: string;
+  email: string;
+  password: string;
+  nip: string;
+  telepon: string;
+  status: "aktif" | "nonaktif";
+  foto_url: string;
+};
+
+export type UpdateAdminInput = {
+  nama: string;
+  username: string;
+  email: string;
+  password?: string;
+  role: AdminRole;
+  nip: string;
+  telepon: string;
+  status: "aktif" | "nonaktif";
+  foto_url: string;
+};
+
+export type JenisKelamin = "L" | "P";
+export type AccountStatus = "aktif" | "nonaktif";
+
+export type GuruAccount = {
+  id: number;
+  nama: string;
+  username: string;
+  email: string;
+  role: "guru";
+  nip: string;
+  jenis_kelamin: JenisKelamin | "";
+  telepon: string;
+  alamat: string;
+  status: AccountStatus;
+  foto_url: string;
+  pelajaran_id: number | null;
+  nama_pelajaran: string;
+  created_at: string;
+};
+
+export type SiswaAccount = {
+  id: number;
+  nama: string;
+  username: string;
+  email: string;
+  role: "siswa";
+  nisn: string;
+  jenis_kelamin: JenisKelamin | "";
+  tempat_lahir: string;
+  tanggal_lahir: string;
+  alamat: string;
+  telepon: string;
+  nama_wali: string;
+  telepon_wali: string;
+  tahun_masuk: number | null;
+  status: AccountStatus;
+  foto_url: string;
+  kelas_id: number | null;
+  nama_kelas: string;
+  jurusan_id: number | null;
+  nama_jurusan: string;
+  created_at: string;
+};
+
+export type GuruInput = {
+  nama: string;
+  username: string;
+  email: string;
+  password?: string;
+  nip: string;
+  jenis_kelamin: JenisKelamin | "";
+  telepon: string;
+  alamat: string;
+  status: AccountStatus;
+  foto_url: string;
+  pelajaran_id?: number | null;
+};
+
+export type SiswaInput = {
+  nama: string;
+  username: string;
+  email: string;
+  password?: string;
+  nisn: string;
+  jenis_kelamin: JenisKelamin | "";
+  tempat_lahir: string;
+  tanggal_lahir: string;
+  alamat: string;
+  telepon: string;
+  nama_wali: string;
+  telepon_wali: string;
+  tahun_masuk: number | null;
+  status: AccountStatus;
+  foto_url: string;
+  kelas_id: number | null;
+};
+
+export type JurusanRecord = { id: number; nama: string; kode: string };
+export type KelasRecord = { id: number; nama: string; tingkat: string; jurusan_id: number; jurusan?: JurusanRecord };
+export type PelajaranRecord = { id: number; nama: string; kode: string; guru?: unknown[] };
+
 // Login ke backend Go (lewat proxy Next.js: /api -> localhost:8080)
 export async function loginRequest(email: string, password: string): Promise<LoginResult> {
   const res = await fetch("/api/auth/login", {
@@ -78,24 +197,190 @@ export function dashboardPath(role: string): string {
 // Untuk request lain (halaman admin, dll) yang butuh token
 export async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
   const token = getToken();
+  const headers = new Headers(options.headers);
+  if (token) headers.set("Authorization", `Bearer ${token}`);
+  if (!(typeof FormData !== "undefined" && options.body instanceof FormData) && !headers.has("Content-Type")) {
+    headers.set("Content-Type", "application/json");
+  }
   const res = await fetch(`/api${path}`, {
     ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...options.headers,
-    },
+    headers,
   });
 
-  const data = await res.json().catch(() => ({}));
+  const data: unknown = await res.json().catch(() => ({}));
 
   // Token kedaluwarsa atau tidak valid: bersihkan sesi dan kembali ke login
   if (res.status === 401) {
     clearSession();
     if (typeof window !== "undefined") window.location.href = "/login";
-    throw new Error(data.error ?? data.message ?? "Sesi berakhir, silakan login lagi");
+    throw new Error(responseMessage(data, "Sesi berakhir, silakan login lagi"));
   }
 
-  if (!res.ok) throw new Error(data.error ?? data.message ?? "Terjadi kesalahan");
+  if (!res.ok) throw new Error(responseMessage(data, "Terjadi kesalahan"));
   return data as T;
+}
+
+function responseMessage(data: unknown, fallback: string): string {
+  if (typeof data !== "object" || data === null) return fallback;
+  const payload = data as { message?: unknown; error?: unknown };
+  if (typeof payload.message === "string" && payload.message.trim()) return payload.message;
+  if (typeof payload.error === "string" && payload.error.trim()) return payload.error;
+  return fallback;
+}
+
+function adminRequest<T>(path: string, options: Omit<RequestInit, "headers"> = {}): Promise<T> {
+  return apiFetch<T>(path, {
+    ...options,
+    headers: { Authorization: `Bearer ${getToken() ?? ""}` },
+  });
+}
+
+const ADMIN_ENDPOINT: Record<AdminRole, string> = {
+  admin: "/admin",
+  admin_kurikulum: "/admin-kurikulum",
+  kepala_sekolah: "/kepala-sekolah",
+};
+
+function isAdminRole(value: unknown): value is AdminRole {
+  return value === "admin" || value === "admin_kurikulum" || value === "kepala_sekolah";
+}
+
+function isAdminAccount(value: unknown): value is AdminAccount {
+  if (typeof value !== "object" || value === null) return false;
+  const account = value as Record<string, unknown>;
+  const optionalString = (key: string) => account[key] === undefined || typeof account[key] === "string";
+  return (
+    (typeof account.id === "string" ||
+      (typeof account.id === "number" && Number.isFinite(account.id))) &&
+    typeof account.nama === "string" &&
+    typeof account.email === "string" &&
+    isAdminRole(account.role) &&
+    optionalString("username") &&
+    optionalString("nip") &&
+    optionalString("telepon") &&
+    (account.status === undefined || account.status === "aktif" || account.status === "nonaktif") &&
+    optionalString("foto_url") &&
+    optionalString("created_at")
+  );
+}
+
+export async function listAdmin(): Promise<AdminAccount[]> {
+  const responses = await Promise.all(
+    (Object.keys(ADMIN_ENDPOINT) as AdminRole[]).map((role) =>
+      adminRequest<unknown>(ADMIN_ENDPOINT[role]).then((response) => ({ role, response })),
+    ),
+  );
+  const accounts: AdminAccount[] = [];
+
+  for (const { role, response } of responses) {
+    const rows = Array.isArray(response)
+      ? response
+      : typeof response === "object" && response !== null && "data" in response &&
+          Array.isArray(response.data)
+        ? response.data
+        : null;
+    if (!rows || !rows.every(isAdminAccount)) {
+      throw new Error("Format data admin dari server tidak sesuai.");
+    }
+    accounts.push(...rows.map((account) => ({ ...account, role })));
+  }
+  return accounts;
+}
+
+export async function createAdmin(role: AdminRole, input: CreateAdminInput): Promise<void> {
+  await adminRequest<unknown>(ADMIN_ENDPOINT[role], {
+    method: "POST",
+    body: JSON.stringify(input),
+  });
+}
+
+export async function updateAdmin(
+  role: AdminRole,
+  id: number | string,
+  input: UpdateAdminInput,
+): Promise<void> {
+  await adminRequest<unknown>(`${ADMIN_ENDPOINT[role]}/${encodeURIComponent(String(id))}`, {
+    method: "PUT",
+    body: JSON.stringify(input),
+  });
+}
+
+export async function deleteAdmin(role: AdminRole, id: number | string): Promise<void> {
+  await adminRequest<unknown>(`${ADMIN_ENDPOINT[role]}/${encodeURIComponent(String(id))}`, {
+    method: "DELETE",
+  });
+}
+
+export async function uploadAdminPhoto(file: File): Promise<string> {
+  const formData = new FormData();
+  formData.append("foto", file);
+  const result = await adminRequest<{ success: boolean; url?: string; message?: string }>(
+    "/upload/foto",
+    { method: "POST", body: formData },
+  );
+  if (!result.success || !result.url) {
+    throw new Error(result.message ?? "Foto gagal diunggah.");
+  }
+  return result.url;
+}
+
+function queryString(values: Record<string, string | number | undefined>): string {
+  const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(values)) {
+    if (value !== undefined && String(value) !== "") params.set(key, String(value));
+  }
+  const query = params.toString();
+  return query ? `?${query}` : "";
+}
+
+export function listGuru(filters: { search?: string; status?: string; pelajaran_id?: number } = {}): Promise<GuruAccount[]> {
+  return apiFetch<GuruAccount[]>(`/guru${queryString(filters)}`);
+}
+
+export function getGuru(id: number): Promise<GuruAccount> {
+  return apiFetch<GuruAccount>(`/guru/${id}`);
+}
+
+export function createGuru(input: GuruInput): Promise<GuruAccount> {
+  return apiFetch<GuruAccount>("/guru", { method: "POST", body: JSON.stringify(input) });
+}
+
+export function updateGuru(id: number, input: Partial<GuruInput>): Promise<GuruAccount> {
+  return apiFetch<GuruAccount>(`/guru/${id}`, { method: "PUT", body: JSON.stringify(input) });
+}
+
+export function deleteGuru(id: number): Promise<{ message: string }> {
+  return apiFetch<{ message: string }>(`/guru/${id}`, { method: "DELETE" });
+}
+
+export function listSiswa(filters: { search?: string; status?: string; jurusan_id?: number; kelas_id?: number } = {}): Promise<SiswaAccount[]> {
+  return apiFetch<SiswaAccount[]>(`/siswa${queryString(filters)}`);
+}
+
+export function getSiswa(id: number): Promise<SiswaAccount> {
+  return apiFetch<SiswaAccount>(`/siswa/${id}`);
+}
+
+export function createSiswa(input: SiswaInput): Promise<SiswaAccount> {
+  return apiFetch<SiswaAccount>("/siswa", { method: "POST", body: JSON.stringify(input) });
+}
+
+export function updateSiswa(id: number, input: Partial<SiswaInput>): Promise<SiswaAccount> {
+  return apiFetch<SiswaAccount>(`/siswa/${id}`, { method: "PUT", body: JSON.stringify(input) });
+}
+
+export function deleteSiswa(id: number): Promise<{ message: string }> {
+  return apiFetch<{ message: string }>(`/siswa/${id}`, { method: "DELETE" });
+}
+
+export function listJurusan(): Promise<JurusanRecord[]> {
+  return apiFetch<JurusanRecord[]>("/jurusan");
+}
+
+export function listKelas(jurusanId?: number): Promise<KelasRecord[]> {
+  return apiFetch<KelasRecord[]>(`/kelas${queryString({ jurusan_id: jurusanId })}`);
+}
+
+export function listPelajaran(): Promise<PelajaranRecord[]> {
+  return apiFetch<PelajaranRecord[]>("/pelajaran");
 }
