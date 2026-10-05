@@ -113,7 +113,9 @@
   font-size: 13px;
   font-weight: 700;
   color: #ffffff;
+  overflow: hidden;
 }
+.topAvatar img,.avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover}
 .body {
   display: flex;
   flex: 1;
