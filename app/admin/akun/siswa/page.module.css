@@ -8,4 +8,4 @@
 .submitButton:hover{border-color:#3339c2;background:#3339c2}
 .dialogActions{gap:10px}
 @media(max-width:640px){.confirmDialog{align-self:center}}
-.avatar{overflow:hidden}
+.avatar{box-sizing:border-box;overflow:hidden;border-radius:50%}
