@@ -189,7 +189,7 @@ export default function DashboardPage() {
       <section className={styles.banner}>
         <h1 className={styles.bannerTitle}>Selamat datang {nama}</h1>
         <p className={styles.bannerText}>
-          {error ? `Gagal memuat data: ${error}` : "Ringkasan data sekolah hari ini."}
+          "Kelola akun, jurusan, kelas, dan pelajaran E-CLASS dari sini."
         </p>
       </section>
 
