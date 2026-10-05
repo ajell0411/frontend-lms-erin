@@ -5,6 +5,7 @@ import Image from "next/image";
 import { createPortal } from "react-dom";
 import { createGuru, deleteGuru, listGuru, listPelajaran, updateGuru, uploadAdminPhoto } from "@/lib/api";
 import type { GuruAccount, GuruInput, JenisKelamin, PelajaranRecord } from "@/lib/api";
+import { useRole } from "@/lib/role";
 import styles from "./page.module.css";
 
 type FormData = Omit<GuruInput, "password"> & { password: string; pelajaran_id: number | null };
@@ -17,6 +18,7 @@ function message(error: unknown) { return error instanceof Error ? error.message
 function dateLabel(value: string) { const date = new Date(value); return Number.isNaN(date.getTime()) ? "-" : new Intl.DateTimeFormat("id-ID", { dateStyle: "long", timeStyle: "short" }).format(date); }
 
 export default function GuruPage() {
+  const { canWrite } = useRole();
   const [items, setItems] = useState<GuruAccount[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
@@ -80,8 +82,9 @@ export default function GuruPage() {
 
   const rows = useMemo(() => items, [items]);
 
-  function openCreate() { setEditing(null); setForm(EMPTY); setErrors({}); setFile(null); setPreview(""); setShowPassword(false); setFormOpen(true); setSuccess(""); }
+  function openCreate() { if (!canWrite) return; setEditing(null); setForm(EMPTY); setErrors({}); setFile(null); setPreview(""); setShowPassword(false); setFormOpen(true); setSuccess(""); }
   function openEdit(item: GuruAccount) {
+    if (!canWrite) return;
     setEditing(item);
     setForm({ nama: item.nama, username: item.username, email: item.email, password: "", nip: item.nip ?? "", jenis_kelamin: item.jenis_kelamin ?? "", telepon: item.telepon ?? "", alamat: item.alamat ?? "", status: item.status, foto_url: item.foto_url ?? "", pelajaran_id: item.pelajaran_id ?? null });
     setErrors({}); setFile(null); setPreview(item.foto_url ?? ""); setShowPassword(false); setFormOpen(true); setSuccess("");
@@ -94,6 +97,7 @@ export default function GuruPage() {
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!canWrite) return;
     const next: Errors = {};
     if (!form.nama.trim()) next.nama = "Nama wajib diisi.";
     if (!form.username.trim()) next.username = "Username wajib diisi.";
@@ -115,7 +119,7 @@ export default function GuruPage() {
   }
 
   async function remove() {
-    if (!deleting) return;
+    if (!canWrite || !deleting) return;
     setSaving(true); setErrors({});
     try { await deleteGuru(deleting.id); setDeleting(null); setSuccess("Guru berhasil dihapus."); await reload(); }
     catch (error) { setErrors({ server: message(error) }); }
@@ -155,10 +159,10 @@ export default function GuruPage() {
         <div className={styles.titleBlock}><p className={styles.eyebrow}>Manajemen Akun</p><h1 className={styles.title}>Guru</h1><p className={styles.subtitle}>Kelola akun dan informasi guru.</p></div>
         <div className={styles.headerActions}>
           <button type="button" className={styles.printButton} onClick={printList} disabled={loading || rows.length === 0}>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z"/><path d="M17 11h.01"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z"/><path d="M17 11h.01"/></svg>
             Cetak
           </button>
-          <button type="button" className={styles.addButton} onClick={openCreate}><span aria-hidden="true">+</span>Tambah Guru</button>
+          {canWrite && <button type="button" className={styles.addButton} onClick={openCreate}><span aria-hidden="true">+</span>Tambah Guru</button>}
         </div>
       </header>
       {success && <p className={styles.successMessage} role="status">{success}</p>}
@@ -187,11 +191,13 @@ export default function GuruPage() {
 
       {menu && createPortal(<div ref={menuRef} className={styles.actionMenu} role="menu" style={{ top: menu.top, left: menu.left }}>
         <button type="button" role="menuitem" onClick={() => { openDetail(menu.item); setMenu(null); }}><svg viewBox="0 0 24 24"><path d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7Z"/><circle cx="12" cy="12" r="2.5"/></svg>Lihat Detail</button>
-        <button type="button" role="menuitem" onClick={() => { openEdit(menu.item); setMenu(null); }}><svg viewBox="0 0 24 24"><path d="m15 5 4 4M4 20l4.2-.8L19 8.4a2.1 2.1 0 0 0-3-3L5.2 16.2 4 20Z"/></svg>Edit</button>
-        <button type="button" role="menuitem" className={styles.menuDelete} onClick={() => { setDeleting(menu.item); setMenu(null); setErrors({}); }}><svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6m4-6v6M5.5 7l1 14h11l1-14M9 7V4h6v3"/></svg>Hapus</button>
+        {canWrite && <>
+          <button type="button" role="menuitem" onClick={() => { openEdit(menu.item); setMenu(null); }}><svg viewBox="0 0 24 24"><path d="m15 5 4 4M4 20l4.2-.8L19 8.4a2.1 2.1 0 0 0-3-3L5.2 16.2 4 20Z"/></svg>Edit</button>
+          <button type="button" role="menuitem" className={styles.menuDelete} onClick={() => { setDeleting(menu.item); setMenu(null); setErrors({}); }}><svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6m4-6v6M5.5 7l1 14h11l1-14M9 7V4h6v3"/></svg>Hapus</button>
+        </>}
       </div>, document.body)}
 
-      {(formOpen || detail) && <div className={styles.overlay} onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) { setFormOpen(false); setDetail(null); } }}>
+      {(formOpen && canWrite || detail) && <div className={styles.overlay} onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) { setFormOpen(false); setDetail(null); } }}>
         <section className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby="guru-form-title">
           <header className={styles.dialogHeader}><div className={styles.dialogHeading}><span className={styles.headerIcon}><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg></span><div><h2 id="guru-form-title">{detail ? "Detail Guru" : editing ? "Edit Akun Guru" : "Tambah Guru Baru"}</h2><p>{detail ? "Informasi lengkap akun ini." : editing ? "Perbarui informasi akun guru." : "Buat akun guru baru."}</p></div></div><button type="button" className={styles.closeButton} onClick={() => { setFormOpen(false); setDetail(null); }}>×</button></header>
           <form className={styles.form} noValidate onSubmit={submit}>
@@ -218,7 +224,7 @@ export default function GuruPage() {
         </section>
       </div>}
 
-      {deleting && <div className={styles.overlay} onMouseDown={(event) => { if (event.target === event.currentTarget) setDeleting(null); }}><section className={`${styles.dialog} ${styles.confirmDialog}`} role="alertdialog"><div className={styles.confirmIcon}>!</div><h2>Hapus Guru?</h2><p>Akun <strong>{deleting.nama}</strong> akan dihapus. Tindakan ini tidak dapat dibatalkan.</p>{errors.server && <p className={styles.formError}>{errors.server}</p>}<footer className={styles.dialogActions}><button className={styles.cancelButton} type="button" onClick={() => setDeleting(null)}>Batal</button><button className={styles.dangerButton} type="button" disabled={saving} onClick={() => void remove()}>{saving ? "Menghapus..." : "Ya, Hapus"}</button></footer></section></div>}
+      {canWrite && deleting && <div className={styles.overlay} onMouseDown={(event) => { if (event.target === event.currentTarget) setDeleting(null); }}><section className={`${styles.dialog} ${styles.confirmDialog}`} role="alertdialog"><div className={styles.confirmIcon}>!</div><h2>Hapus Akun?</h2><p>Akun guru <strong>{deleting.nama}</strong> akan dihapus. Tindakan ini tidak dapat dibatalkan.</p>{errors.server && <p className={styles.formError}>{errors.server}</p>}<footer className={styles.dialogActions}><button className={styles.cancelButton} type="button" onClick={() => setDeleting(null)}>Batal</button><button className={styles.dangerButton} type="button" disabled={saving} onClick={() => void remove()}>{saving ? "Menghapus..." : "Ya, Hapus"}</button></footer></section></div>}
     </div>
   );
 

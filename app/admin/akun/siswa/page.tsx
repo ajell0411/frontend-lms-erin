@@ -5,6 +5,7 @@ import Image from "next/image";
 import { createPortal } from "react-dom";
 import { createSiswa, deleteSiswa, listJurusan, listKelas, listSiswa, updateSiswa, uploadAdminPhoto } from "@/lib/api";
 import type { JenisKelamin, JurusanRecord, KelasRecord, SiswaAccount, SiswaInput } from "@/lib/api";
+import { useRole } from "@/lib/role";
 import styles from "./page.module.css";
 
 type FormData = Omit<SiswaInput, "password"> & { password: string; jurusan_id: number | null };
@@ -17,6 +18,7 @@ function message(error: unknown) { return error instanceof Error ? error.message
 function dateLabel(value: string) { const date = new Date(value); return Number.isNaN(date.getTime()) ? "-" : new Intl.DateTimeFormat("id-ID", { dateStyle: "long", timeStyle: "short" }).format(date); }
 
 export default function SiswaPage() {
+  const { canWrite } = useRole();
   const [items, setItems] = useState<SiswaAccount[]>([]);
   const [jurusan, setJurusan] = useState<JurusanRecord[]>([]);
   const [filterKelas, setFilterKelas] = useState<KelasRecord[]>([]);
@@ -50,13 +52,20 @@ export default function SiswaPage() {
   }
 
   useEffect(() => {
-    void listSiswa().then(setItems).catch((error: unknown) => setLoadError(message(error))).finally(() => setLoading(false));
     void listJurusan().then((rows) => { setJurusan(rows); if (rows.length === 0) setMasterError("Belum ada data jurusan."); }).catch((error: unknown) => setMasterError(`Data jurusan gagal dimuat: ${message(error)}`));
   }, []);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => { void listSiswa({ search: search || undefined, status: statusFilter || undefined, jurusan_id: jurusanFilter ? Number(jurusanFilter) : undefined, kelas_id: kelasFilter ? Number(kelasFilter) : undefined }).then(setItems).catch((error: unknown) => setLoadError(message(error))); }, 160);
-    return () => window.clearTimeout(timer);
+    let active = true;
+    const timer = window.setTimeout(() => {
+      setLoading(true);
+      setLoadError("");
+      void listSiswa({ search: search || undefined, status: statusFilter || undefined, jurusan_id: jurusanFilter ? Number(jurusanFilter) : undefined, kelas_id: kelasFilter ? Number(kelasFilter) : undefined })
+        .then((rows) => { if (active) setItems(rows); })
+        .catch((error: unknown) => { if (active) setLoadError(message(error)); })
+        .finally(() => { if (active) setLoading(false); });
+    }, 160);
+    return () => { active = false; window.clearTimeout(timer); };
   }, [search, statusFilter, jurusanFilter, kelasFilter]);
 
   useEffect(() => {
@@ -92,8 +101,9 @@ export default function SiswaPage() {
 
   const rows = useMemo(() => items, [items]);
 
-  function openCreate() { setEditing(null); setForm(EMPTY); setErrors({}); setFile(null); setPreview(""); setShowPassword(false); setFormKelas([]); setFormOpen(true); setSuccess(""); }
+  function openCreate() { if (!canWrite) return; setEditing(null); setForm(EMPTY); setErrors({}); setFile(null); setPreview(""); setShowPassword(false); setFormKelas([]); setFormOpen(true); setSuccess(""); }
   function openEdit(item: SiswaAccount) {
+    if (!canWrite) return;
     setEditing(item);
     const selectedMajor = item.jurusan_id ?? null;
     setForm({ nama: item.nama, username: item.username, email: item.email, password: "", nisn: item.nisn ?? "", jenis_kelamin: item.jenis_kelamin ?? "", tempat_lahir: item.tempat_lahir ?? "", tanggal_lahir: item.tanggal_lahir ?? "", alamat: item.alamat ?? "", telepon: item.telepon ?? "", nama_wali: item.nama_wali ?? "", telepon_wali: item.telepon_wali ?? "", tahun_masuk: item.tahun_masuk, status: item.status, foto_url: item.foto_url ?? "", kelas_id: item.kelas_id, jurusan_id: selectedMajor });
@@ -110,6 +120,7 @@ export default function SiswaPage() {
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!canWrite) return;
     const next: Errors = {};
     if (!form.nama.trim()) next.nama = "Nama wajib diisi.";
     if (!form.username.trim()) next.username = "Username wajib diisi.";
@@ -118,6 +129,8 @@ export default function SiswaPage() {
     if (!editing && form.password.length < 8) next.password = "Password minimal 8 karakter.";
     if (editing && form.password && form.password.length < 8) next.password = "Password minimal 8 karakter.";
     if (!form.status) next.status = "Status wajib dipilih.";
+    if (!form.jurusan_id) next.jurusan_id = "Jurusan wajib dipilih.";
+    if (!form.kelas_id) next.kelas_id = "Kelas wajib dipilih.";
     if (Object.keys(next).length) { setErrors(next); return; }
     setSaving(true); setErrors({});
     try {
@@ -131,7 +144,7 @@ export default function SiswaPage() {
   }
 
   async function remove() {
-    if (!deleting) return;
+    if (!canWrite || !deleting) return;
     setSaving(true); setErrors({});
     try { await deleteSiswa(deleting.id); setDeleting(null); setSuccess("Siswa berhasil dihapus."); await reload(); }
     catch (error) { setErrors({ server: message(error) }); }
@@ -166,7 +179,7 @@ export default function SiswaPage() {
 
   return (
     <div className={styles.page}>
-      <header className={styles.pageHeader}><div className={styles.titleBlock}><p className={styles.eyebrow}>Manajemen Akun</p><h1 className={styles.title}>Siswa</h1><p className={styles.subtitle}>Kelola akun dan informasi siswa.</p></div><div className={styles.headerActions}><button type="button" className={styles.printButton} onClick={printList} disabled={loading || rows.length === 0}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z"/><path d="M17 11h.01"/></svg>Cetak</button><button type="button" className={styles.addButton} onClick={openCreate}><span aria-hidden="true">+</span>Tambah Siswa</button></div></header>
+      <header className={styles.pageHeader}><div className={styles.titleBlock}><p className={styles.eyebrow}>Manajemen Akun</p><h1 className={styles.title}>Siswa</h1><p className={styles.subtitle}>Kelola akun dan informasi siswa.</p></div><div className={styles.headerActions}><button type="button" className={styles.printButton} onClick={printList} disabled={loading || rows.length === 0}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z"/><path d="M17 11h.01"/></svg>Cetak</button>{canWrite && <button type="button" className={styles.addButton} onClick={openCreate}><span aria-hidden="true">+</span>Tambah Siswa</button>}</div></header>
       {success && <p className={styles.successMessage} role="status">{success}</p>}
       {loadError && <div className={styles.errorMessage} role="alert"><span>{loadError}</span><button className={styles.retryButton} onClick={() => void reload()}>Coba lagi</button></div>}
       <section className={styles.panel} aria-label="Daftar siswa">
@@ -179,7 +192,7 @@ export default function SiswaPage() {
         </div>
         {masterError && <p className={styles.masterError} role="alert">{masterError}</p>}
         <div className={styles.printTableWrapper}><div className={styles.tableScroll}><table className={styles.table}><thead><tr><th>Profil</th><th>Nama</th><th>NISN</th><th>Kelas</th><th>Jurusan</th><th>Status</th><th className={styles.actionsHeading}>Aksi</th></tr></thead><tbody>
-          {loading ? <tr><td colSpan={7} className={styles.stateCell}><span className={styles.spinner}/>Memuat daftar siswa...</td></tr> : loadError ? <tr><td colSpan={7} className={styles.stateCell}>Daftar siswa belum dapat dimuat.</td></tr> : rows.length === 0 ? <tr><td colSpan={7} className={styles.emptyCell}><span className={styles.emptyMark}>S</span><strong>Belum ada data siswa</strong><span>Tambahkan akun siswa untuk mulai mengelola data.</span></td></tr> : rows.map((item) => <tr key={item.id}><td>{photo(item.foto_url, item.nama, 32)}</td><td><span className={styles.adminName}>{item.nama}</span></td><td>{item.nisn || "-"}</td><td>{item.nama_kelas || "-"}</td><td>{item.nama_jurusan || "-"}</td><td><span className={item.status === "nonaktif" ? styles.inactiveBadge : styles.activeBadge}>{item.status || "-"}</span></td><td><div className={styles.rowActions}><button type="button" className={styles.actionTrigger} aria-label={`Aksi ${item.nama}`} onClick={(event) => toggleMenu(item, event.currentTarget)}><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></button></div></td></tr>)}
+          {loading ? <tr><td colSpan={7} className={styles.stateCell}><span className={styles.spinner}/>Memuat daftar siswa...</td></tr> : loadError ? <tr><td colSpan={7} className={styles.stateCell}>Daftar siswa belum dapat dimuat.</td></tr> : rows.length === 0 ? <tr><td colSpan={7} className={styles.emptyCell}><span className={styles.emptyMark}>S</span><strong>Belum ada data siswa</strong><span>Tambahkan akun siswa untuk mulai mengelola data.</span></td></tr> : rows.map((item) => <tr key={item.id}><td>{photo(item.foto_url, item.nama, 32)}</td><td><span className={styles.adminName}>{item.nama}</span></td><td>{item.nisn || "-"}</td><td>{item.nama_kelas || "-"}</td><td title={item.nama_jurusan || "-"}>{item.nama_jurusan || "-"}</td><td><span className={item.status === "nonaktif" ? styles.inactiveBadge : styles.activeBadge}>{item.status || "-"}</span></td><td><div className={styles.rowActions}><button type="button" className={styles.actionTrigger} aria-label={`Aksi ${item.nama}`} onClick={(event) => toggleMenu(item, event.currentTarget)}><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></button></div></td></tr>)}
         </tbody></table></div><footer className={styles.tableFooter}>Menampilkan {loading ? "-" : rows.length} siswa</footer></div>
       </section>
 
@@ -188,13 +201,13 @@ export default function SiswaPage() {
         <p>{activeFilters.length ? activeFilters.join(" | ") : "Filter: Semua Data"}</p>
         <p>Dicetak: {printedAt} · Jumlah data: {rows.length}</p>
         <table><thead><tr><th>No</th><th>Nama</th><th>NISN</th><th>Kelas</th><th>Jurusan</th><th>Jenis Kelamin</th><th>Telepon</th><th>Status</th></tr></thead><tbody>
-          {rows.map((item, index) => <tr key={item.id}><td>{index + 1}</td><td>{item.nama || "-"}</td><td>{item.nisn || "-"}</td><td>{item.nama_kelas || "-"}</td><td>{item.nama_jurusan || "-"}</td><td>{item.jenis_kelamin === "L" ? "Laki-laki" : item.jenis_kelamin === "P" ? "Perempuan" : "-"}</td><td>{item.telepon || "-"}</td><td>{item.status || "-"}</td></tr>)}
+          {rows.map((item, index) => <tr key={item.id}><td>{index + 1}</td><td>{item.nama || "-"}</td><td>{item.nisn || "-"}</td><td>{item.nama_kelas || "-"}</td><td title={item.nama_jurusan || "-"}>{item.nama_jurusan || "-"}</td><td>{item.jenis_kelamin === "L" ? "Laki-laki" : item.jenis_kelamin === "P" ? "Perempuan" : "-"}</td><td>{item.telepon || "-"}</td><td>{item.status || "-"}</td></tr>)}
         </tbody></table>
       </section>
 
-      {menu && createPortal(<div ref={menuRef} className={styles.actionMenu} role="menu" style={{ top: menu.top, left: menu.left }}><button type="button" role="menuitem" onClick={() => { openDetail(menu.item); setMenu(null); }}><svg viewBox="0 0 24 24"><path d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7Z"/><circle cx="12" cy="12" r="2.5"/></svg>Lihat Detail</button><button type="button" role="menuitem" onClick={() => { openEdit(menu.item); setMenu(null); }}><svg viewBox="0 0 24 24"><path d="m15 5 4 4M4 20l4.2-.8L19 8.4a2.1 2.1 0 0 0-3-3L5.2 16.2 4 20Z"/></svg>Edit</button><button type="button" role="menuitem" className={styles.menuDelete} onClick={() => { setDeleting(menu.item); setMenu(null); setErrors({}); }}><svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6m4-6v6M5.5 7l1 14h11l1-14M9 7V4h6v3"/></svg>Hapus</button></div>, document.body)}
+      {menu && createPortal(<div ref={menuRef} className={styles.actionMenu} role="menu" style={{ top: menu.top, left: menu.left }}><button type="button" role="menuitem" onClick={() => { openDetail(menu.item); setMenu(null); }}><svg viewBox="0 0 24 24"><path d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7Z"/><circle cx="12" cy="12" r="2.5"/></svg>Lihat Detail</button>{canWrite && <><button type="button" role="menuitem" onClick={() => { openEdit(menu.item); setMenu(null); }}><svg viewBox="0 0 24 24"><path d="m15 5 4 4M4 20l4.2-.8L19 8.4a2.1 2.1 0 0 0-3-3L5.2 16.2 4 20Z"/></svg>Edit</button><button type="button" role="menuitem" className={styles.menuDelete} onClick={() => { setDeleting(menu.item); setMenu(null); setErrors({}); }}><svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6m4-6v6M5.5 7l1 14h11l1-14M9 7V4h6v3"/></svg>Hapus</button></>}</div>, document.body)}
 
-      {(formOpen || detail) && <div className={styles.overlay} onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) { setFormOpen(false); setDetail(null); } }}><section className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby="siswa-form-title">
+      {(formOpen && canWrite || detail) && <div className={styles.overlay} onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) { setFormOpen(false); setDetail(null); } }}><section className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby="siswa-form-title">
         <header className={styles.dialogHeader}><div className={styles.dialogHeading}><span className={styles.headerIcon}><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg></span><div><h2 id="siswa-form-title">{detail ? "Detail Siswa" : editing ? "Edit Akun Siswa" : "Tambah Siswa Baru"}</h2><p>{detail ? "Informasi lengkap akun ini." : editing ? "Perbarui informasi akun siswa." : "Buat akun siswa baru."}</p></div></div><button className={styles.closeButton} type="button" onClick={() => { setFormOpen(false); setDetail(null); }}>×</button></header>
         <form className={styles.form} noValidate onSubmit={submit}>
           <section className={styles.formSection}><h3 className={styles.sectionTitle}>Informasi Akun</h3><div className={styles.accountGrid}>
@@ -223,7 +236,7 @@ export default function SiswaPage() {
           <footer className={styles.dialogActions}>{detail ? <button type="button" className={styles.cancelButton} onClick={() => setDetail(null)}>Tutup</button> : <><button type="button" className={styles.cancelButton} onClick={() => setFormOpen(false)}>Batal</button><button className={styles.submitButton} disabled={saving}>{saving ? "Menyimpan..." : editing ? "Simpan Perubahan" : "Simpan Siswa"}</button></>}</footer>
         </form>
       </section></div>}
-      {deleting && <div className={styles.overlay} onMouseDown={(event) => { if (event.target === event.currentTarget) setDeleting(null); }}><section className={`${styles.dialog} ${styles.confirmDialog}`} role="alertdialog"><div className={styles.confirmIcon}>!</div><h2>Hapus Siswa?</h2><p>Akun <strong>{deleting.nama}</strong> akan dihapus. Tindakan ini tidak dapat dibatalkan.</p>{errors.server && <p className={styles.formError}>{errors.server}</p>}<footer className={styles.dialogActions}><button className={styles.cancelButton} type="button" onClick={() => setDeleting(null)}>Batal</button><button className={styles.dangerButton} type="button" disabled={saving} onClick={() => void remove()}>{saving ? "Menghapus..." : "Ya, Hapus"}</button></footer></section></div>}
+      {canWrite && deleting && <div className={styles.overlay} onMouseDown={(event) => { if (event.target === event.currentTarget) setDeleting(null); }}><section className={`${styles.dialog} ${styles.confirmDialog}`} role="alertdialog"><div className={styles.confirmIcon}>!</div><h2>Hapus Akun?</h2><p>Akun siswa <strong>{deleting.nama}</strong> akan dihapus. Tindakan ini tidak dapat dibatalkan.</p>{errors.server && <p className={styles.formError}>{errors.server}</p>}<footer className={styles.dialogActions}><button className={styles.cancelButton} type="button" onClick={() => setDeleting(null)}>Batal</button><button className={styles.dangerButton} type="button" disabled={saving} onClick={() => void remove()}>{saving ? "Menghapus..." : "Ya, Hapus"}</button></footer></section></div>}
     </div>
   );
 

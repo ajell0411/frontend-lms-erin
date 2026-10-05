@@ -5,8 +5,8 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { clearSession, getToken, type UserData } from "@/lib/api";
-import { timeAgo, useAktivitas } from "@/lib/aktivitas";
+import { clearSession, dashboardPath, getToken, getUser, listAktivitas, type AktivitasRecord, type UserRole } from "@/lib/api";
+import { roleLabel, useRole } from "@/lib/role";
 import styles from "./layout.module.css";
 
 type IconName = "grid" | "users" | "database" | "megaphone" | "user" | "logout" | "bell";
@@ -35,20 +35,14 @@ const MENU: MenuItem[] = [
     icon: "database",
     children: [
       { label: "Pelajaran", href: "/admin/data/pelajaran" },
-      { label: "Jurusan & Kelas", href: "/admin/data/jurusan-kelas" },
+      { label: "Jurusan & Kelas", href: "/admin/data/jurusan" },
     ],
   },
   { label: "Pengumuman", icon: "megaphone", href: "/admin/pengumuman" },
   { label: "Profile", icon: "user", href: "/admin/profile" },
 ];
 
-const ROLE_LABEL: Record<string, string> = {
-  admin: "Administrator",
-  admin_kurikulum: "Admin Kurikulum",
-  kepala_sekolah: "Kepala Sekolah",
-  guru: "Guru",
-  siswa: "Siswa",
-};
+const ADMIN_ROLES: UserRole[] = ["admin", "admin_kurikulum", "kepala_sekolah"];
 
 function Icon({ name }: { name: IconName }) {
   const p = {
@@ -121,53 +115,86 @@ function Icon({ name }: { name: IconName }) {
   }
 }
 
-function readUser(): UserData | null {
-  const raw = localStorage.getItem("user") ?? sessionStorage.getItem("user");
-  if (!raw) return null;
-  try {
-    return JSON.parse(raw) as UserData;
-  } catch {
-    return null;
-  }
-}
-
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const aktivitas = useAktivitas();
-  const bellRef = useRef<HTMLDivElement>(null);
-  const [user, setUser] = useState<UserData | null>(null);
+  const [aktivitas, setAktivitas] = useState<AktivitasRecord[]>([]);
+  const { user, role } = useRole();
   const [ready, setReady] = useState(false);
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
-  const [bellOpen, setBellOpen] = useState(false);
-  const [seen, setSeen] = useState(false);
+  const [aktivitasSeenAt, setAktivitasSeenAt] = useState(0);
   const [sideOpen, setSideOpen] = useState(true);
   const [confirmOut, setConfirmOut] = useState(false);
+  const [bellOpen, setBellOpen] = useState(false);
+  const bellRef = useRef<HTMLDivElement>(null);
 
   // Guard token: harus di useEffect karena localStorage hanya ada di browser
   useEffect(() => {
-    if (!getToken()) {
-      router.replace("/login");
-      return;
-    }
-    setUser(readUser());
-    setReady(true);
+    void Promise.resolve().then(() => {
+      if (!getToken()) {
+        router.replace("/login");
+        return;
+      }
+      const sessionUser = getUser();
+      if (!sessionUser) {
+        clearSession();
+        router.replace("/login");
+        return;
+      }
+      if (!ADMIN_ROLES.includes(sessionUser.role)) {
+        router.replace(dashboardPath(sessionUser.role));
+        return;
+      }
+      setReady(true);
+    });
   }, [router]);
 
-  // Tutup pop up saat pindah halaman
   useEffect(() => {
-    setBellOpen(false);
-  }, [pathname]);
+    void Promise.resolve().then(() => {
+      try {
+        setAktivitasSeenAt(Number(localStorage.getItem("eclass_aktivitas_seen_at")) || 0);
+      } catch {
+        setAktivitasSeenAt(0);
+      }
+    });
+    let mounted = true;
+    const loadActivities = () => {
+      void listAktivitas(100).then((rows) => {
+        if (mounted) setAktivitas(rows);
+      }).catch(() => undefined);
+    };
+    loadActivities();
+    const timer = window.setInterval(loadActivities, 30000);
+    return () => {
+      mounted = false;
+      window.clearInterval(timer);
+    };
+  }, []);
 
-  // Tutup pop up saat klik di luar
   useEffect(() => {
-    function onDown(e: MouseEvent) {
-      if (bellRef.current && !bellRef.current.contains(e.target as Node)) {
-        setBellOpen(false);
+    if (!bellOpen) return;
+    function onPointerDown(event: PointerEvent) {
+      if (event.target instanceof Node && !bellRef.current?.contains(event.target)) setBellOpen(false);
+    }
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setBellOpen(false);
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [bellOpen]);
+
+  useEffect(() => {
+    function onActivitiesRead(event: Event) {
+      if (event instanceof CustomEvent && typeof event.detail === "number") {
+        setAktivitasSeenAt(event.detail);
       }
     }
-    document.addEventListener("mousedown", onDown);
-    return () => document.removeEventListener("mousedown", onDown);
+    window.addEventListener("eclass-aktivitas-seen", onActivitiesRead);
+    return () => window.removeEventListener("eclass-aktivitas-seen", onActivitiesRead);
   }, []);
 
   function handleLogout() {
@@ -175,13 +202,21 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     router.replace("/");
   }
 
-  function toggleBell() {
-    setBellOpen((v) => !v);
-    setSeen(true);
+  function markActivitiesRead() {
+    const now = Date.now();
+    setAktivitasSeenAt(now);
+    try {
+      localStorage.setItem("eclass_aktivitas_seen_at", String(now));
+    } catch {
+      // Penyimpanan browser bisa tidak tersedia.
+    }
   }
 
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(href + "/");
+  const isChildActive = (href: string) =>
+    isActive(href) ||
+    (href === "/admin/data/jurusan" && pathname.startsWith("/admin/data/kelas/"));
 
   if (!ready) return null;
 
@@ -191,6 +226,11 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     .map((s) => s[0])
     .join("")
     .toUpperCase();
+  const latestActivityAt = aktivitas.reduce((latest, item) => {
+    const timestamp = new Date(item.created_at).getTime();
+    return Number.isFinite(timestamp) ? Math.max(latest, timestamp) : latest;
+  }, 0);
+  const hasUnreadActivity = latestActivityAt > aktivitasSeenAt;
 
   return (
     <div className={styles.wrapper}>
@@ -200,50 +240,45 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             <button
               type="button"
               className={styles.bellBtn}
-              aria-label="Aktivitas terbaru"
+              aria-label="Buka pengumuman aktivitas"
               aria-expanded={bellOpen}
-              onClick={toggleBell}
+              aria-haspopup="dialog"
+              onClick={() => {
+                const latest = latestActivityAt || Date.now();
+                setBellOpen((open) => !open);
+                markActivitiesRead();
+                setAktivitasSeenAt(latest);
+                try { localStorage.setItem("eclass_aktivitas_seen_at", String(latest)); } catch { /* Penyimpanan browser bisa tidak tersedia. */ }
+              }}
             >
               <Icon name="bell" />
-              {!seen && aktivitas.length > 0 && <span className={styles.bellDot} />}
+              {hasUnreadActivity && <span className={styles.bellDot} />}
             </button>
-
-            {bellOpen && (
-              <div className={styles.popup}>
-                <div className={styles.popupHead}>Aktivitas Terbaru</div>
-                <div className={styles.popupList}>
-                  {aktivitas.length === 0 && (
-                    <p className={styles.popupEmpty}>Belum ada aktivitas.</p>
-                  )}
-                  {aktivitas.slice(0, 5).map((a) => (
-                    <Link
-                      key={a.id}
-                      href="/admin/pengumuman"
-                      className={styles.popupItem}
-                    >
-                      <span className={styles.popupDot} />
-                      <span className={styles.popupText}>
-                        <span className={styles.popupTitle}>{a.judul}</span>
-                        <span className={styles.popupDesc}>{a.deskripsi}</span>
-                        <span className={styles.popupTime}>{timeAgo(a.waktu)}</span>
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-                <Link href="/admin/pengumuman" className={styles.popupFooter}>
-                  Lihat semua
-                </Link>
-              </div>
-            )}
+            {bellOpen && <section className={styles.notificationPopover} aria-label="Pengumuman terbaru">
+              <span className={styles.notificationArrow} aria-hidden="true" />
+              <h2>Pengumuman terbaru</h2>
+              {aktivitas.slice(0, 6).length === 0 ? <p className={styles.notificationEmpty}>Belum ada pengumuman</p> : <div className={styles.notificationList}>
+                {aktivitas.slice(0, 6).map((item) => <Link key={item.id} href="/admin/pengumuman" className={styles.notificationItem} onClick={() => setBellOpen(false)}>
+                  <strong>{item.objek_nama ? `${item.objek_jenis}: ${item.objek_nama}` : item.objek_jenis}</strong>
+                  <span>{item.aktor_nama} telah {item.aksi} {item.objek_jenis.toLowerCase()}.</span>
+                  <small>{relativeTime(item.created_at)}</small>
+                </Link>)}
+              </div>}
+              <Link href="/admin/pengumuman" className={styles.notificationAll} onClick={() => setBellOpen(false)}>Lihat semua pengumuman</Link>
+            </section>}
           </div>
 
           <Link
             href="/admin/profile"
-            className={styles.topAvatar}
+            className={styles.topProfile}
             title="Buka profile"
             aria-label="Buka profile"
           >
-            {initials}
+            <span className={styles.topProfileText}>
+              <strong>{user?.nama ?? "Pengguna"}</strong>
+              <small>{roleLabel(role)}</small>
+            </span>
+            <span className={styles.topAvatar}>{initials}</span>
           </Link>
         </div>
       </header>
@@ -282,7 +317,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             <div className={styles.profileInfo}>
               <p className={styles.profileName}>{user?.nama ?? "Pengguna"}</p>
               <p className={styles.profileRole}>
-                {ROLE_LABEL[user?.role ?? ""] ?? user?.role ?? ""}
+                {roleLabel(role)}
               </p>
             </div>
           </div>
@@ -305,7 +340,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                 );
               }
 
-              const hasActiveChild = item.children.some((c) => isActive(c.href));
+              const hasActiveChild = item.children.some((c) => isChildActive(c.href));
               const open = openGroups[item.label] ?? hasActiveChild;
 
               return (
@@ -343,7 +378,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                         <Link
                           key={child.href}
                           href={child.href}
-                          className={`${styles.subItem} ${isActive(child.href) ? styles.subActive : ""}`}
+                          className={`${styles.subItem} ${isChildActive(child.href) ? styles.subActive : ""}`}
                         >
                           {child.label}
                         </Link>
@@ -406,4 +441,12 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         )}</div>
     </div>
   );
+}
+
+function relativeTime(value: string): string {
+  const timestamp = new Date(value).getTime();
+  if (!Number.isFinite(timestamp)) return "";
+  const seconds = Math.round((timestamp - Date.now()) / 1000);
+  const [amount, unit]: [number, Intl.RelativeTimeFormatUnit] = Math.abs(seconds) < 60 ? [seconds, "second"] : Math.abs(seconds) < 3600 ? [Math.round(seconds / 60), "minute"] : Math.abs(seconds) < 86400 ? [Math.round(seconds / 3600), "hour"] : [Math.round(seconds / 86400), "day"];
+  return new Intl.RelativeTimeFormat("id-ID", { numeric: "auto" }).format(amount, unit);
 }

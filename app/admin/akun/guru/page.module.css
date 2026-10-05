@@ -13,4 +13,12 @@
   .printSheet th,.printSheet td{padding:6px 7px;border:1px solid #555;text-align:left;vertical-align:top;color:#000}
   .printSheet th{background:#eee!important;font-weight:700;print-color-adjust:exact}
   @page{size:auto;margin:15mm}
-}
+}.confirmDialog{text-align:center}.confirmIcon{margin:0 auto 14px}.confirmDialog .dialogActions{justify-content:center}@media(max-width:640px){.overlay{align-items:center}.confirmDialog{max-height:90vh}}
+.printButton{width:auto;padding:0 15px;font-size:12px;border-color:#16a34a;background:#fff;color:#15803d}
+.printButton svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.printButton:hover{border-color:#15803d;background:#f0fdf4;color:#15803d}
+.dangerButton:hover{border-color:#b91c1c;background:#b91c1c;box-shadow:0 2px 7px rgb(185 28 28 / 20%)}
+.cancelButton:hover{border-color:#cbd5e1;background:#f8fafc}
+.submitButton:hover{border-color:#3339c2;background:#3339c2}
+.dialogActions{gap:10px}
+@media(max-width:640px){.confirmDialog{align-self:center}}

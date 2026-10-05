@@ -13,6 +13,7 @@ import {
   uploadAdminPhoto,
 } from "@/lib/api";
 import type { AdminAccount, AdminRole, UserData } from "@/lib/api";
+import { useRole } from "@/lib/role";
 import styles from "./page.module.css";
 
 type FormValues = {
@@ -73,6 +74,7 @@ function inisial(nama: string): string {
 }
 
 export default function AdminAccountsPage() {
+  const { canWrite } = useRole();
   const [admins, setAdmins] = useState<AdminAccount[]>([]);
   const [currentUser, setCurrentUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -154,6 +156,7 @@ export default function AdminAccountsPage() {
   }, [admins, roleFilter, search]);
 
   function openCreateForm() {
+    if (!canWrite) return;
     setEditingAdmin(null);
     setForm(FORM_KOSONG);
     setFormErrors({});
@@ -165,6 +168,7 @@ export default function AdminAccountsPage() {
   }
 
   function openEditForm(admin: AdminAccount) {
+    if (!canWrite) return;
     setEditingAdmin(admin);
     setForm({
       ...FORM_KOSONG,
@@ -208,6 +212,7 @@ export default function AdminAccountsPage() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!canWrite) return;
     const errors: FormErrors = {};
     if (!form.role) errors.role = "Pilih role akun.";
     if (!editingAdmin && form.password.length < 8) errors.password = "Kata sandi minimal 8 karakter.";
@@ -267,7 +272,7 @@ export default function AdminAccountsPage() {
   }
 
   async function handleDelete() {
-    if (!confirmAdmin) return;
+    if (!canWrite || !confirmAdmin) return;
     setSaving(true);
     setFormErrors({});
     try {
@@ -342,17 +347,17 @@ export default function AdminAccountsPage() {
         <div className={styles.titleBlock}>
           <p className={styles.eyebrow}>Manajemen Akun</p>
           <h1 className={styles.title}>Admin</h1>
-          <p className={styles.subtitle}>Kelola akun administrator sekolah.</p>
+          <p className={styles.subtitle}>Kelola akun admin sekolah.</p>
         </div>
         <div className={styles.headerActions}>
           <button type="button" className={styles.printButton} onClick={cetakDaftar}>
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z" /><path d="M17 11h.01" /></svg>
             Cetak
           </button>
-          <button type="button" className={styles.addButton} onClick={openCreateForm}>
+          {canWrite && <button type="button" className={styles.addButton} onClick={openCreateForm}>
             <span aria-hidden="true">+</span>
             Tambah Admin
-          </button>
+          </button>}
         </div>
       </header>
 
@@ -496,19 +501,21 @@ export default function AdminAccountsPage() {
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7Z" /><circle cx="12" cy="12" r="2.5" /></svg>
             Lihat Detail
           </button>
-          <button type="button" role="menuitem" onClick={() => { openEditForm(actionMenu.admin); setActionMenu(null); }}>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5 4 4M4 20l4.2-.8L19 8.4a2.1 2.1 0 0 0-3-3L5.2 16.2 4 20Z" /></svg>
-            Edit
-          </button>
-          <button type="button" role="menuitem" className={styles.menuDelete} onClick={() => { setFormErrors({}); setConfirmAdmin(actionMenu.admin); setActionMenu(null); }}>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6m4-6v6M5.5 7l1 14h11l1-14M9 7V4h6v3" /></svg>
-            Hapus
-          </button>
+          {canWrite && <>
+            <button type="button" role="menuitem" onClick={() => { openEditForm(actionMenu.admin); setActionMenu(null); }}>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5 4 4M4 20l4.2-.8L19 8.4a2.1 2.1 0 0 0-3-3L5.2 16.2 4 20Z" /></svg>
+              Edit
+            </button>
+            <button type="button" role="menuitem" className={styles.menuDelete} onClick={() => { setFormErrors({}); setConfirmAdmin(actionMenu.admin); setActionMenu(null); }}>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6m4-6v6M5.5 7l1 14h11l1-14M9 7V4h6v3" /></svg>
+              Hapus
+            </button>
+          </>}
         </div>,
         document.body,
       )}
 
-      {(formOpen || detailMode) && (
+      {(formOpen && canWrite || detailMode) && (
         <div className={styles.overlay} onMouseDown={(event) => {
           if (event.target === event.currentTarget && !saving) {
             if (detailMode) setDetailAdmin(null);
@@ -523,7 +530,7 @@ export default function AdminAccountsPage() {
                 </span>
                 <div>
                   <h2 id="admin-form-title">{detailMode ? "Detail Akun" : editingAdmin ? "Edit Akun" : "Tambah Admin Baru"}</h2>
-                  <p>{detailMode ? "Informasi lengkap akun ini." : editingAdmin ? "Perbarui informasi akun administrator." : "Buat akun administratif baru."}</p>
+                  <p>{detailMode ? "Informasi lengkap akun ini." : editingAdmin ? "Perbarui informasi akun admin." : "Buat akun admin baru."}</p>
                 </div>
               </div>
               <button
@@ -715,7 +722,7 @@ export default function AdminAccountsPage() {
         </div>
       )}
 
-      {confirmAdmin && (
+      {canWrite && confirmAdmin && (
         <div className={styles.overlay} onMouseDown={(event) => {
           if (event.target === event.currentTarget && !saving) setConfirmAdmin(null);
         }}>

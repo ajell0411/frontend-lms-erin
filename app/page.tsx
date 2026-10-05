@@ -3,6 +3,7 @@
 import { useState, type KeyboardEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Reveal from "./components/Reveal";
 import styles from "./page.module.css";
 
 const fitur = [
@@ -47,15 +48,15 @@ export default function LandingPage() {
       {/* Navbar */}
       <header className={styles.header}>
         <div className={styles.headerInner}>
-          <div className={styles.logoGroup}>
+          <Reveal direction="left" className={styles.logoReveal}><div className={styles.logoGroup}>
             <Image src="/lo.png" alt="Logo E-CLASS" width={48} height={48} className={styles.logoBox} />
             <div>
               <p className={styles.logoName}>E-CLASS</p>
               <p className={styles.logoSub}>Learning Management System</p>
             </div>
-          </div>
+          </div></Reveal>
 
-          <div className={styles.rightGroup}>
+          <Reveal direction="left" delay={150} className={styles.navReveal}><div className={styles.rightGroup}>
             <nav className={styles.nav}>
               <a href="#tentang">Tentang</a>
               <a href="#fitur">Fitur</a>
@@ -66,7 +67,7 @@ export default function LandingPage() {
             <Link href="/login" className={styles.btnPrimary}>
               Login
             </Link>
-          </div>
+          </div></Reveal>
         </div>
       </header>
 
@@ -74,29 +75,29 @@ export default function LandingPage() {
       <section id="tentang" className={styles.hero}>
         <div className={styles.heroInner}>
           <div className={styles.heroText}>
-            <span className={styles.badge}>Sistem Pembelajaran Digital Terkini</span>
+            <Reveal direction="left" className={styles.heroBadgeReveal}><span className={`${styles.badge} ${styles.heroBadge}`}>Sistem Pembelajaran Digital Terkini</span></Reveal>
 
-            <h1 className={styles.heroTitle}>
-              E-CLASS
+            <Reveal direction="none" className={styles.heroTitleReveal}><h1 className={styles.heroTitle}>
+              <span className={`${styles.heroLine} ${styles.heroLineOne}`}>E-CLASS</span>
               <br />
-              <span>Platform Pembelajaran</span>
+              <span className={`${styles.heroLine} ${styles.heroLineTwo}`}><span>Platform Pembelajaran</span></span>
               <br />
-              Digital Terpadu
-            </h1>
+              <span className={`${styles.heroLine} ${styles.heroLineThree}`}>Digital Terpadu</span>
+            </h1></Reveal>
 
-            <p className={styles.heroDesc}>
+            <Reveal direction="left" delay={600} className={styles.heroDescReveal}><p className={styles.heroDesc}>
               Solusi cerdas untuk mengelola materi kursus, tugas harian, ujian
               online terintegrasi, dan evaluasi hasil belajar secara
               transparan serta real-time dalam satu ekosistem terpadu.
-            </p>
+            </p></Reveal>
 
-            <div className={styles.heroActions}>
+            <Reveal direction="none" delay={750} className={styles.heroActionsReveal}><div className={styles.heroActions}>
               <a href="#alur" className={styles.btnPrimary}>Mulai Sekarang</a>
               <a href="#fitur" className={styles.btnOutline}>Pelajari Lebih Lanjut</a>
-            </div>
+            </div></Reveal>
           </div>
 
-          <div
+          <Reveal direction="right" className={styles.heroImageReveal}><div
             {...clickable("hero", styles.heroImageWrap, styles.popHero)}
             aria-label="Foto ilustrasi E-CLASS, klik untuk animasi"
           >
@@ -111,53 +112,64 @@ export default function LandingPage() {
             <span className={`${styles.chip} ${styles.chip2}`}>📝 Tugas</span>
             <span className={`${styles.chip} ${styles.chip3}`}>📊 Nilai</span>
             <span className={`${styles.chip} ${styles.chip4}`}>✏️ Ulangan Harian</span>
-          </div>
+          </div></Reveal>
         </div>
       </section>
 
       {/* Fitur Utama */}
       <section id="fitur" className={styles.section}>
-        <p className={styles.eyebrow}>Solusi Belajar Digital</p>
-        <h2 className={styles.sectionTitle}>Fitur Utama E-CLASS</h2>
-        <p className={styles.sectionDesc}>
-          Dirancang khusus untuk mempermudah kegiatan belajar, mengajar, serta
-          pengawasan hasil akademik secara menyeluruh.
-        </p>
+        <Reveal direction="left" className={styles.sectionReveal}><p className={styles.eyebrow}>Solusi Belajar Digital</p></Reveal>
+        <Reveal direction="left" delay={100} className={styles.sectionReveal}><h2 className={styles.sectionTitle}>Fitur Utama E-CLASS</h2></Reveal>
+        <Reveal direction="left" delay={200} className={styles.sectionReveal}>
+          <p className={styles.sectionDesc}>
+            Dirancang khusus untuk mempermudah kegiatan belajar, mengajar, serta
+            pengawasan hasil akademik secara menyeluruh.
+          </p>
+        </Reveal>
 
         <div className={styles.cardGrid}>
-          {fitur.map((f) => (
-            <div key={f.title} {...clickable(`fitur-${f.title}`, styles.card, styles.cardActive)}>
-              <div className={styles.cardIcon}>●</div>
-              <h3 className={styles.cardTitle}>{f.title}</h3>
-              <p className={styles.cardDesc}>{f.desc}</p>
-            </div>
+          {fitur.map((f, index) => (
+            <Reveal key={f.title} direction="up" delay={index * 120} duration={700} className={styles.cardReveal}>
+              <div {...clickable(`fitur-${f.title}`, styles.card, styles.cardActive)}>
+                <div className={styles.cardIcon}>●</div>
+                <h3 className={styles.cardTitle}>{f.title}</h3>
+                <p className={styles.cardDesc}>{f.desc}</p>
+              </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
       {/* Alur Penggunaan */}
       <section id="alur" className={`${styles.section} ${styles.sectionGray}`}>
-        <p className={styles.eyebrow}>Panduan Pengguna</p>
-        <h2 className={styles.sectionTitle}>Alur Penggunaan E-CLASS</h2>
-        <p className={styles.sectionDesc}>
-          5 tahapan mudah untuk memulai dan memaksimalkan proses kegiatan
-          belajar mengajar.
-        </p>
+        <Reveal direction="left" delay={50} className={styles.sectionReveal}><p className={styles.eyebrow}>Panduan Pengguna</p></Reveal>
+        <Reveal direction="left" delay={160} className={styles.sectionReveal}><h2 className={styles.sectionTitle}>Alur Penggunaan E-CLASS</h2></Reveal>
+        <Reveal direction="left" delay={200} className={styles.sectionReveal}>
+          <p className={styles.sectionDesc}>
+            5 tahapan mudah untuk memulai dan memaksimalkan proses kegiatan
+            belajar mengajar.
+          </p>
+        </Reveal>
 
-        <div className={`${styles.cardGrid} ${styles.cardGridAlur}`}>
-          {alur.map((s) => (
-            <div key={s.step} {...clickable(`alur-${s.step}`, styles.card, styles.cardActive)}>
-              <div className={styles.stepNumber}>{s.step}</div>
-              <h3 className={styles.cardTitle}>{s.title}</h3>
-              <p className={styles.cardDesc}>{s.desc}</p>
-            </div>
-          ))}
-        </div>
+        <Reveal direction="none" className={styles.flowReveal}>
+          <div className={`${styles.cardGrid} ${styles.cardGridAlur}`}>
+            {alur.map((s, index) => (
+              <Reveal key={s.step} direction="up" delay={index * 120} duration={700} className={styles.cardReveal}>
+                <div {...clickable(`alur-${s.step}`, styles.card, styles.cardActive)}>
+                  <div className={styles.stepNumber}>{s.step}</div>
+                  <h3 className={styles.cardTitle}>{s.title}</h3>
+                  <p className={styles.cardDesc}>{s.desc}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </Reveal>
       </section>
 
       {/* CTA Banner */}
       <section className={styles.ctaBanner}>
         <div className={styles.ctaCard}>
+          <Reveal direction="left" className={styles.ctaTextReveal}>
           <div>
             <span className={styles.badge}>Terobosan Edukasi Digital</span>
             <h3 className={styles.ctaTitle}>
@@ -172,7 +184,9 @@ export default function LandingPage() {
               Masuk ke Kelas
             </Link>
           </div>
+          </Reveal>
 
+          <Reveal direction="right" className={styles.ctaImageReveal}>
           <div
             {...clickable("cta", styles.ctaImageWrap, styles.tiltCta)}
             aria-label="Foto siswa dan guru, klik untuk animasi"
@@ -184,12 +198,14 @@ export default function LandingPage() {
               style={{ objectFit: "cover" }}
             />
           </div>
+          </Reveal>
         </div>
       </section>
 
       {/* Footer */}
       <footer id="kontak" className={styles.footer}>
         <div className={styles.footerInner}>
+          <Reveal direction="left" className={styles.footerReveal}>
           <div className={styles.footerGrid}>
             <div>
               <div className={styles.footerBrand}>
@@ -234,12 +250,13 @@ export default function LandingPage() {
               </ul>
             </div>
           </div>
+          </Reveal>
         </div>
 
         {/* Strip copyright selebar layar */}
-        <div className={styles.footerBottom}>
+        <Reveal direction="left" className={styles.footerBottom}>
           © 2026 E-CLASS LMS. Hak Cipta Dilindungi Undang-Undang.
-        </div>
+        </Reveal>
       </footer>
     </div>
   );

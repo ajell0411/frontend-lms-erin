@@ -91,12 +91,13 @@
   text-decoration: none;
   border: 1px solid var(--primary);
   cursor: pointer;
-  transition: background 0.2s ease, box-shadow 0.2s ease;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.3s ease;
 }
 
 .btnPrimary:hover {
   background: var(--primary-dark);
   box-shadow: 0 6px 18px rgba(var(--primary-rgb), 0.3);
+  transform: translateY(-2px);
 }
 
 .btnOutline {
@@ -110,12 +111,14 @@
   text-decoration: none;
   border: 1px solid #93b4f8;
   cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .btnOutline:hover {
   background: #eff6ff;
   border-color: var(--primary);
+  box-shadow: 0 6px 18px rgba(var(--primary-rgb), 0.16);
+  transform: translateY(-2px);
 }
 
 /* ===== Hero ===== */
@@ -153,6 +156,21 @@
   font-weight: 600;
 }
 
+.heroBadge {
+  animation: textFromLeft 700ms ease-out both;
+}
+
+.heroBadge::before {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  content: "";
+  animation: badgePulse 1.8s ease-in-out 800ms infinite;
+}
+
 .heroTitle {
   margin: 18px 0 0;
   font-size: 44px;
@@ -161,9 +179,18 @@
   color: #0f172a;
 }
 
-.heroTitle span {
+.heroLineTwo > span {
   color: var(--primary);
 }
+
+.heroLine {
+  display: inline-block;
+  animation: textFromLeft 700ms ease-out both;
+}
+
+.heroLineOne { animation-delay: 150ms; }
+.heroLineTwo { animation-delay: 300ms; }
+.heroLineThree { animation-delay: 450ms; }
 
 .heroDesc {
   margin: 18px 0 0;
@@ -171,6 +198,7 @@
   font-size: 16px;
   line-height: 1.7;
   color: #475569;
+  animation: textFromLeft 700ms ease-out 600ms both;
 }
 
 .heroActions {
@@ -180,6 +208,14 @@
   gap: 12px;
 }
 
+.heroActions > :first-child {
+  animation: textFromLeft 700ms ease-out 750ms both;
+}
+
+.heroActions > :last-child {
+  animation: textFromLeft 700ms ease-out 900ms both;
+}
+
 /* foto hero: tinggi otomatis mengikuti kolom teks */
 .heroImageWrap {
   position: relative;
@@ -187,6 +223,7 @@
   height: 100%;
   min-height: 380px;
   transform-origin: center;
+  animation: photoFromRight 700ms ease-out both;
 }
 
 /* ===== Section umum ===== */
@@ -207,6 +244,16 @@
   max-width: 1104px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.sectionGray > .eyebrow,
+.sectionGray > .sectionTitle,
+.sectionGray > .sectionDesc {
+  text-align: center;
+}
+
+.section {
+  overflow-x: hidden;
 }
 
 .eyebrow {
@@ -242,6 +289,42 @@
   text-align: left;
 }
 
+.cardReveal {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  height: 100%;
+}
+
+.cardReveal > .card {
+  height: 100%;
+}
+
+.flowReveal {
+  position: relative;
+}
+
+.cardGridAlur {
+  position: relative;
+}
+
+.cardGridAlur::before {
+  position: absolute;
+  top: 45px;
+  left: 10%;
+  z-index: 0;
+  width: 80%;
+  height: 2px;
+  background: rgba(var(--primary-rgb), 0.2);
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.flowReveal[data-reveal-visible="true"] .cardGridAlur::before {
+  animation: connectorGrow 900ms ease-out 250ms both;
+}
+
 .card {
   position: relative;
   overflow: hidden;
@@ -249,12 +332,13 @@
   border-radius: 16px;
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .card:hover {
   border-color: var(--primary-border);
-  box-shadow: 0 6px 20px rgba(var(--primary-rgb), 0.12);
+  box-shadow: 0 12px 28px rgba(var(--primary-rgb), 0.18);
+  transform: translateY(-8px);
 }
 
 .cardIcon,
@@ -269,6 +353,12 @@
   justify-content: center;
   font-size: 18px;
   font-weight: 800;
+  transition: transform 0.3s ease;
+}
+
+.card:hover .cardIcon,
+.card:hover .stepNumber {
+  transform: scale(1.1);
 }
 
 .cardTitle {
@@ -559,6 +649,74 @@
   100%    { left: 130%; }
 }
 
+/* Reveal teks dan foto; kartu putih dikecualikan. */
+.logoName,
+.logoSub,
+.nav a,
+.rightGroup > .btnPrimary {
+  animation: textFromLeft 700ms ease-out both;
+}
+
+.logoSub { animation-delay: 150ms; }
+.nav a:nth-child(1) { animation-delay: 150ms; }
+.nav a:nth-child(2) { animation-delay: 300ms; }
+.nav a:nth-child(3) { animation-delay: 450ms; }
+.nav a:nth-child(4) { animation-delay: 600ms; }
+.rightGroup > .btnPrimary { animation-delay: 750ms; }
+
+:global(.reveal[data-reveal-visible="true"]).ctaTextReveal .badge,
+:global(.reveal[data-reveal-visible="true"]).ctaTextReveal .ctaTitle,
+:global(.reveal[data-reveal-visible="true"]).ctaTextReveal .ctaText,
+:global(.reveal[data-reveal-visible="true"]).ctaTextReveal .btnPrimary {
+  animation: textFromLeft 700ms ease-out both;
+}
+
+:global(.reveal[data-reveal-visible="true"]).ctaTextReveal .ctaTitle { animation-delay: 150ms; }
+:global(.reveal[data-reveal-visible="true"]).ctaTextReveal .ctaText { animation-delay: 300ms; }
+:global(.reveal[data-reveal-visible="true"]).ctaTextReveal .btnPrimary { animation-delay: 450ms; }
+
+:global(.reveal[data-reveal-ready="true"]):not(.cardReveal):not(.flowReveal) {
+  opacity: 0;
+  transform: translateX(var(--text-offset, -50px));
+  transition: opacity 700ms ease-out var(--reveal-delay, 0ms), transform 700ms ease-out var(--reveal-delay, 0ms);
+}
+
+:global(.reveal[data-direction="right"][data-reveal-ready="true"]):not(.cardReveal):not(.flowReveal) {
+  transform: translateX(var(--photo-offset, 80px));
+}
+
+:global(.reveal[data-reveal-visible="true"]):not(.cardReveal):not(.flowReveal) {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.footerBottom {
+  animation: textFromLeft 700ms ease-out 150ms both;
+}
+
+:global(.reveal[data-reveal-visible="true"]).footerReveal .footerGrid > div {
+  animation: textFromLeft 700ms ease-out both;
+}
+
+:global(.reveal[data-reveal-visible="true"]).footerReveal .footerGrid > div:nth-child(2) { animation-delay: 150ms; }
+:global(.reveal[data-reveal-visible="true"]).footerReveal .footerGrid > div:nth-child(3) { animation-delay: 300ms; }
+:global(.reveal[data-reveal-visible="true"]).footerReveal .footerGrid > div:nth-child(4) { animation-delay: 450ms; }
+
+@keyframes textFromLeft {
+  from { opacity: 0; transform: translateX(var(--text-offset, -50px)); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes photoFromRight {
+  from { opacity: 0; transform: translateX(var(--photo-offset, 80px)); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes badgePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
 /* ===== Responsif ===== */
 @media (min-width: 1024px) {
   /* Alur punya 5 langkah: 5 kolom supaya tidak ada sisa 1 box */
@@ -578,6 +736,18 @@
 }
 
 @media (max-width: 768px) {
+  .page {
+    --text-offset: -30px;
+    --photo-offset: 30px;
+  }
+
+  .hero,
+  .section,
+  .ctaBanner,
+  .footer {
+    overflow-x: hidden;
+  }
+
   .nav {
     display: none;
   }
@@ -625,20 +795,78 @@
 
 /* Hormati pengaturan "kurangi gerakan" */
 @media (prefers-reduced-motion: reduce) {
+  .heroBadge,
+  .heroLine,
+  .heroDesc,
+  .heroActions > *,
+  .logoName,
+  .logoSub,
+  .nav a,
+  .rightGroup > .btnPrimary,
+  .heroImageWrap,
+  .footerBottom {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  :global(.reveal) {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .heroImageWrap img,
+  .heroImageWrap::before,
+  .chip,
+  .ctaImageWrap::after,
   .popHero,
   .tiltCta,
   .cardActive,
   .cardActive::after,
   .cardActive .cardIcon,
-  .cardActive .stepNumber,
-  .heroImageWrap img,
-  .heroImageWrap::before,
-  .chip,
-  .ctaImageWrap::after {
-    animation: none;
+  .cardActive .stepNumber {
+    animation: none !important;
   }
 
-  .ctaImageWrap:hover img {
-    transform: none;
+  .footerGrid > div {
+    animation: none !important;
   }
 }
+
+/* Entry animations replay whenever a reveal target enters the viewport. */
+.logoName,.logoSub,.nav a,.rightGroup>.btnPrimary,.heroBadge,.heroLine,.heroDesc,.heroActions>*,
+.heroImageWrap,.footerBottom { animation: none; }
+.heroTitleReveal[data-reveal-ready="true"] { opacity: 1!important; transform: none!important; transition: none!important; }
+.heroTitleReveal[data-reveal-ready="true"] .heroLine { opacity: 0; transform: translateX(var(--text-offset,-50px)); }
+.heroTitleReveal[data-reveal-visible="true"] .heroLine { animation: textFromLeft 700ms ease-out both; }
+.heroTitleReveal[data-reveal-visible="true"] .heroLineOne { animation-delay: 0ms; }
+.heroTitleReveal[data-reveal-visible="true"] .heroLineTwo { animation-delay: 150ms; }
+.heroTitleReveal[data-reveal-visible="true"] .heroLineThree { animation-delay: 300ms; }
+.heroActionsReveal[data-reveal-ready="true"] { opacity: 1!important; transform: none!important; transition: none!important; }
+.heroActionsReveal[data-reveal-visible="true"] .heroActions>* { animation: textFromLeft 700ms ease-out both; animation-delay: var(--reveal-delay,750ms); }
+.heroActionsReveal[data-reveal-visible="true"] .heroActions>:last-child { animation-delay: calc(var(--reveal-delay,750ms) + 150ms); }
+.heroImageWrap { animation: none; }
+.logoReveal[data-reveal-visible="true"] .logoName,.logoReveal[data-reveal-visible="true"] .logoSub,
+.navReveal[data-reveal-visible="true"] .nav a,.navReveal[data-reveal-visible="true"] .rightGroup>.btnPrimary { animation: textFromLeft 700ms ease-out both; }
+.logoReveal[data-reveal-visible="true"] .logoSub { animation-delay: 150ms; }
+.navReveal[data-reveal-visible="true"] .nav a:nth-child(1) { animation-delay: 0ms; }
+.navReveal[data-reveal-visible="true"] .nav a:nth-child(2) { animation-delay: 150ms; }
+.navReveal[data-reveal-visible="true"] .nav a:nth-child(3) { animation-delay: 300ms; }
+.navReveal[data-reveal-visible="true"] .nav a:nth-child(4) { animation-delay: 450ms; }
+.navReveal[data-reveal-visible="true"] .rightGroup>.btnPrimary { animation-delay: 600ms; }
+.heroImageReveal[data-reveal-visible="true"] .chip { animation: textFromLeft 700ms ease-out both; }
+.heroImageReveal[data-reveal-visible="true"] .chip2 { animation-delay: 150ms; }
+.heroImageReveal[data-reveal-visible="true"] .chip3 { animation-delay: 300ms; }
+.heroImageReveal[data-reveal-visible="true"] .chip4 { animation-delay: 450ms; }
+.footerBottom { opacity: 1; transform: none; }
+.footerBottom[data-reveal-ready="true"] { opacity: 0; transform: translateX(var(--text-offset,-50px)); transition: opacity 700ms ease-out,transform 700ms ease-out; }
+.footerBottom[data-reveal-visible="true"] { opacity: 1; transform: translateX(0); }
+@media (prefers-reduced-motion: reduce) {
+  .heroTitleReveal[data-reveal-ready="true"] .heroLine,
+  .heroActionsReveal[data-reveal-visible="true"] .heroActions>*,
+  .logoReveal[data-reveal-visible="true"] .logoName,.logoReveal[data-reveal-visible="true"] .logoSub,
+  .navReveal[data-reveal-visible="true"] .nav a,.navReveal[data-reveal-visible="true"] .rightGroup>.btnPrimary,
+  .heroImageReveal[data-reveal-visible="true"] .chip { animation:none!important; opacity:1!important; transform:none!important; }
+}
+

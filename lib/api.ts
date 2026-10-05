@@ -1,8 +1,18 @@
+export type UserRole = "admin" | "admin_kurikulum" | "kepala_sekolah" | "guru" | "siswa";
+
 export type UserData = {
   id: number;
   nama: string;
   email: string;
-  role: string;
+  role: UserRole;
+};
+
+export type ProfileRecord = UserData & {
+  username: string;
+  telepon: string;
+  alamat: string;
+  foto_url: string;
+  nip: string;
 };
 
 export type LoginResult = {
@@ -127,9 +137,43 @@ export type SiswaInput = {
   kelas_id: number | null;
 };
 
-export type JurusanRecord = { id: number; nama: string; kode: string };
-export type KelasRecord = { id: number; nama: string; tingkat: string; jurusan_id: number; jurusan?: JurusanRecord };
-export type PelajaranRecord = { id: number; nama: string; kode: string; guru?: unknown[] };
+export type JurusanRecord = {
+  id: number;
+  nama: string;
+  kode: string;
+  kepala_jurusan: string;
+  jumlah_kelas: number;
+  jumlah_siswa: number;
+};
+export type JurusanInput = Pick<JurusanRecord, "nama" | "kode" | "kepala_jurusan">;
+export type KelasRecord = {
+  id: number;
+  nama: string;
+  tingkat: "X" | "XI" | "XII";
+  jurusan_id: number;
+  jurusan?: JurusanRecord;
+  wali_kelas_id: number | null;
+  wali_kelas_nama: string;
+  jumlah_siswa: number;
+};
+export type KelasInput = {
+  nama: string;
+  tingkat: "X" | "XI" | "XII";
+  jurusan_id: number;
+  wali_kelas_id: number | null;
+};
+export type PelajaranGuru = Pick<GuruAccount, "id" | "nama" | "email" | "nip" | "status" | "foto_url">;
+export type PelajaranRecord = { id: number; nama: string; kode: string; guru_ids: number[]; guru: PelajaranGuru[] };
+export type PelajaranInput = { nama: string; kode: string; guru_ids: number[] };
+export type AktivitasRecord = {
+  id: number;
+  aktor_nama: string;
+  aksi: "menambahkan" | "mengubah" | "menghapus";
+  objek_jenis: string;
+  objek_nama: string;
+  created_at: string;
+};
+type AktivitasResponse = { success: boolean; data: AktivitasRecord[] };
 
 // Login ke backend Go (lewat proxy Next.js: /api -> localhost:8080)
 export async function loginRequest(email: string, password: string): Promise<LoginResult> {
@@ -162,10 +206,16 @@ export function getToken(): string | null {
 }
 
 export function getUser(): UserData | null {
-  const raw = localStorage.getItem("user") ?? sessionStorage.getItem("user");
+  const storedLocally = localStorage.getItem("user") !== null;
+  const raw = storedLocally ? localStorage.getItem("user") : sessionStorage.getItem("user");
   if (!raw) return null;
   try {
-    return JSON.parse(raw) as UserData;
+    const user = JSON.parse(raw) as UserData;
+    if (user.nama === "Super Admin") {
+      user.nama = "Admin";
+      (storedLocally ? localStorage : sessionStorage).setItem("user", JSON.stringify(user));
+    }
+    return user;
   } catch {
     return null;
   }
@@ -181,14 +231,14 @@ export function clearSession() {
 // Role di backend: admin | admin_kurikulum | kepala_sekolah | guru | siswa
 export function dashboardPath(role: string): string {
   switch (role) {
+    case "admin":
+    case "admin_kurikulum":
+    case "kepala_sekolah":
+      return "/admin/dashboard";
     case "guru":
       return "/guru/dashboard";
     case "siswa":
       return "/siswa/dashboard";
-    case "admin_kurikulum":
-      return "/kurikulum/dashboard";
-    case "kepala_sekolah":
-      return "/kepala-sekolah/dashboard";
     default:
       return "/admin/dashboard";
   }
@@ -212,7 +262,7 @@ export async function apiFetch<T>(path: string, options: RequestInit = {}): Prom
   // Token kedaluwarsa atau tidak valid: bersihkan sesi dan kembali ke login
   if (res.status === 401) {
     clearSession();
-    if (typeof window !== "undefined") window.location.href = "/login";
+    if (typeof window !== "undefined") window.location.assign(new URL("/login", window.location.origin));
     throw new Error(responseMessage(data, "Sesi berakhir, silakan login lagi"));
   }
 
@@ -377,10 +427,79 @@ export function listJurusan(): Promise<JurusanRecord[]> {
   return apiFetch<JurusanRecord[]>("/jurusan");
 }
 
+export function getJurusan(id: number): Promise<JurusanRecord> {
+  return apiFetch<JurusanRecord>(`/jurusan/${id}`);
+}
+
+export function createJurusan(input: JurusanInput): Promise<JurusanRecord> {
+  return apiFetch<JurusanRecord>("/jurusan", { method: "POST", body: JSON.stringify(input) });
+}
+
+export function updateJurusan(id: number, input: Partial<JurusanInput>): Promise<JurusanRecord> {
+  return apiFetch<JurusanRecord>(`/jurusan/${id}`, { method: "PUT", body: JSON.stringify(input) });
+}
+
+export function deleteJurusan(id: number): Promise<{ message: string }> {
+  return apiFetch<{ message: string }>(`/jurusan/${id}`, { method: "DELETE" });
+}
+
 export function listKelas(jurusanId?: number): Promise<KelasRecord[]> {
   return apiFetch<KelasRecord[]>(`/kelas${queryString({ jurusan_id: jurusanId })}`);
 }
 
+export function getKelas(id: number): Promise<KelasRecord> {
+  return apiFetch<KelasRecord>(`/kelas/${id}`);
+}
+
+export function createKelas(input: KelasInput): Promise<KelasRecord> {
+  return apiFetch<KelasRecord>("/kelas", { method: "POST", body: JSON.stringify(input) });
+}
+
+export function updateKelas(id: number, input: Partial<KelasInput>): Promise<KelasRecord> {
+  return apiFetch<KelasRecord>(`/kelas/${id}`, { method: "PUT", body: JSON.stringify(input) });
+}
+
+export function deleteKelas(id: number): Promise<{ message: string }> {
+  return apiFetch<{ message: string }>(`/kelas/${id}`, { method: "DELETE" });
+}
+
 export function listPelajaran(): Promise<PelajaranRecord[]> {
   return apiFetch<PelajaranRecord[]>("/pelajaran");
+}
+
+export function getPelajaran(id: number): Promise<PelajaranRecord> {
+  return apiFetch<PelajaranRecord>(`/pelajaran/${id}`);
+}
+
+export function createPelajaran(input: PelajaranInput): Promise<PelajaranRecord> {
+  return apiFetch<PelajaranRecord>("/pelajaran", { method: "POST", body: JSON.stringify(input) });
+}
+
+export function updatePelajaran(id: number, input: Partial<PelajaranInput>): Promise<PelajaranRecord> {
+  return apiFetch<PelajaranRecord>(`/pelajaran/${id}`, { method: "PUT", body: JSON.stringify(input) });
+}
+
+export function deletePelajaran(id: number): Promise<{ message: string }> {
+  return apiFetch<{ message: string }>(`/pelajaran/${id}`, { method: "DELETE" });
+}
+
+export function listGuruPelajaran(id: number): Promise<PelajaranGuru[]> {
+  return apiFetch<PelajaranGuru[]>(`/pelajaran/${id}/guru`);
+}
+
+export async function listAktivitas(limit = 20): Promise<AktivitasRecord[]> {
+  const result = await apiFetch<AktivitasResponse>(`/aktivitas${queryString({ limit })}`);
+  return result.data;
+}
+
+export function getProfile(): Promise<ProfileRecord> {
+  return apiFetch<ProfileRecord>("/profile");
+}
+
+export function updateProfile(input: Pick<ProfileRecord, "nama" | "email" | "username" | "telepon" | "alamat" | "foto_url">): Promise<ProfileRecord> {
+  return apiFetch<ProfileRecord>("/profile", { method: "PUT", body: JSON.stringify(input) });
+}
+
+export function updateProfilePassword(password_lama: string, password_baru: string): Promise<{ message: string }> {
+  return apiFetch<{ message: string }>("/profile/password", { method: "PUT", body: JSON.stringify({ password_lama, password_baru }) });
 }

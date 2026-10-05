@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getToken } from "@/lib/api";
+import { getToken, getUser } from "@/lib/api";
+import { useRole } from "@/lib/role";
 import { timeAgo, useAktivitas } from "@/lib/aktivitas";
 import styles from "./page.module.css";
 
@@ -143,6 +144,7 @@ function Ring({ value, max }: { value: number; max: number }) {
 }
 
 export default function DashboardPage() {
+  useRole();
   const aktivitas = useAktivitas();
   const [stats, setStats] = useState<Stats>(KOSONG);
   const [kelasJur, setKelasJur] = useState<Record<string, number>>({});
@@ -150,15 +152,9 @@ export default function DashboardPage() {
   const [nama, setNama] = useState("admin");
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem("user") ?? sessionStorage.getItem("user");
-      if (raw) {
-        const u = JSON.parse(raw) as { nama?: string };
-        if (u.nama) setNama(u.nama);
-      }
-    } catch {
-      // abaikan
-    }
+    const sessionUser = getUser();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- initialize the display name from browser storage after mount
+    if (sessionUser?.nama) setNama(sessionUser.nama);
 
     fetch(`${API}/admin/dashboard/stats`, {
       headers: { Authorization: `Bearer ${getToken()}` },
