@@ -32,6 +32,7 @@ export default function AdminProfilePage() {
     try {
       const saved = await updateProfile(profile);
       setProfile(saved);
+      window.dispatchEvent(new CustomEvent("eclass-profile-updated", { detail: saved.foto_url ?? "" }));
       const existing = getUser();
       if (existing) saveSession(getToken() ?? "", { ...existing, nama: saved.nama, email: saved.email }, Boolean(localStorage.getItem("token")));
       setMessage("Profil berhasil disimpan.");
