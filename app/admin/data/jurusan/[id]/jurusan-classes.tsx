@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
@@ -130,9 +130,8 @@ export default function JurusanClasses({ jurusanId }: { jurusanId: number }) {
 
   return (
     <div className={styles.page}>
-      <Link href="/admin/data/jurusan" className={styles.backLink}><span aria-hidden="true">‹</span> KEMBALI KE JURUSAN</Link>
       <header className={styles.header}>
-        <div><h1 className={styles.title}>Daftar Kelas – {major?.kode ?? "..."}</h1><p className={styles.subtitle}>{major?.nama ?? "Kelola kelas pada jurusan ini."}</p></div>
+        <div><h1 className={styles.title}>{"Daftar Kelas \u2013 "}{major?.kode ?? "..."}</h1><p className={styles.subtitle}>{major?.nama ?? "Kelola kelas pada jurusan ini."}</p></div>
         {canWrite && <button type="button" className={styles.primaryButton} onClick={openCreate}><span aria-hidden="true">+</span> Tambah Kelas</button>}
       </header>
       {success && <p className={styles.success} role="status">{success}</p>}
@@ -159,7 +158,7 @@ export default function JurusanClasses({ jurusanId }: { jurusanId: number }) {
       )}
       {canWrite && deleting && <div className={styles.overlay} onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) { setDeleting(null); setFormError(""); } }}><section className={`${styles.modal} ${styles.confirmModal}`} role="alertdialog" aria-modal="true" aria-labelledby="delete-kelas-title"><div className={styles.confirmIcon}>!</div><h2 id="delete-kelas-title">Hapus Kelas?</h2><p>Kelas <strong>{deleting.nama}</strong> akan dihapus. Tindakan ini tidak dapat dibatalkan.</p>{formError && <p className={styles.formError} role="alert">{formError}</p>}<footer className={styles.actions}><button type="button" className={styles.secondaryButton} disabled={saving} onClick={() => { setDeleting(null); setFormError(""); }}>Batal</button><button type="button" className={styles.confirmDelete} disabled={saving} onClick={() => void remove()}>{saving ? "Menghapus..." : "Ya, Hapus"}</button></footer></section></div>}
       {canWrite && modalOpen && <div className={styles.overlay} onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) setModalOpen(false); }}><section className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="kelas-modal-title">
-        <header className={styles.modalHeader}><div><h2 id="kelas-modal-title">{editing ? "Edit Kelas" : "Tambah Kelas"}</h2><p>Atur informasi kelas dan wali kelas.</p></div><button type="button" className={styles.close} aria-label="Tutup" onClick={() => setModalOpen(false)}>×</button></header>
+        <header className={styles.modalHeader}><div><h2 id="kelas-modal-title">{editing ? "Edit Kelas" : "Tambah Kelas"}</h2><p>Atur informasi kelas dan wali kelas.</p></div><button type="button" className={styles.close} aria-label="Tutup" onClick={() => setModalOpen(false)}>Ã—</button></header>
         <form onSubmit={submit}>
           <label className={styles.field}>Nama Kelas<input autoFocus value={form.nama} onChange={(event) => setForm({ ...form, nama: event.target.value })} required placeholder="XI PPLG 1" /></label>
           <label className={styles.field}>Tingkat<select value={form.tingkat} onChange={(event) => setForm({ ...form, tingkat: event.target.value as KelasForm["tingkat"] })}>{LEVELS.map((level) => <option key={level}>{level}</option>)}</select></label>
