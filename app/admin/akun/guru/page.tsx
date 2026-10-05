@@ -143,7 +143,7 @@ export default function GuruPage() {
   }
 
   function photo(value: string, name: string, size: number) {
-    return <span className={styles.avatar} style={{ width: size, height: size }}>{value ? <Image src={value} alt="" width={size} height={size} unoptimized /> : initials(name) || "G"}</span>;
+    return <span className={styles.avatar} style={{ width: size, height: size, flexBasis: size }}>{value ? <Image src={value} alt="" width={size} height={size} unoptimized /> : initials(name) || "G"}</span>;
   }
 
   function printList() { window.print(); }
@@ -185,7 +185,7 @@ export default function GuruPage() {
       <section className={styles.printSheet} aria-hidden="true">
         <h1>Data Guru</h1>
         <p>{activeFilters.length ? activeFilters.join(" | ") : "Filter: Semua Data"}</p>
-        <p>Dicetak: {printedAt} · Jumlah data: {rows.length}</p>
+        <p>Dicetak: {printedAt} Â· Jumlah data: {rows.length}</p>
         <table><thead><tr><th>No</th><th>Nama</th><th>Username</th><th>Email</th><th>NIP</th><th>Mata Pelajaran</th><th>Telepon</th><th>Status</th></tr></thead>
           <tbody>{rows.map((item, index) => <tr key={item.id}><td>{index + 1}</td><td>{item.nama || "-"}</td><td>{item.username || "-"}</td><td>{item.email || "-"}</td><td>{item.nip || "-"}</td><td>{item.nama_pelajaran || "-"}</td><td>{item.telepon || "-"}</td><td>{item.status || "-"}</td></tr>)}</tbody>
         </table>
@@ -201,13 +201,13 @@ export default function GuruPage() {
 
       {(formOpen && canWrite || detail) && <div className={styles.overlay} onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) { setFormOpen(false); setDetail(null); } }}>
         <section className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby="guru-form-title">
-          <header className={styles.dialogHeader}><div className={styles.dialogHeading}><span className={styles.headerIcon}><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg></span><div><h2 id="guru-form-title">{detail ? "Detail Guru" : editing ? "Edit Akun Guru" : "Tambah Guru Baru"}</h2><p>{detail ? "Informasi lengkap akun ini." : editing ? "Perbarui informasi akun guru." : "Buat akun guru baru."}</p></div></div><button type="button" className={styles.closeButton} onClick={() => { setFormOpen(false); setDetail(null); }}>×</button></header>
+          <header className={styles.dialogHeader}><div className={styles.dialogHeading}><span className={styles.headerIcon}><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg></span><div><h2 id="guru-form-title">{detail ? "Detail Guru" : editing ? "Edit Akun Guru" : "Tambah Guru Baru"}</h2><p>{detail ? "Informasi lengkap akun ini." : editing ? "Perbarui informasi akun guru." : "Buat akun guru baru."}</p></div></div><button type="button" className={styles.closeButton} onClick={() => { setFormOpen(false); setDetail(null); }}>Ã—</button></header>
           <form className={styles.form} noValidate onSubmit={submit}>
             <section className={styles.formSection}><h3 className={styles.sectionTitle}>Informasi Akun</h3><div className={styles.accountGrid}>
               <Field label="Nama Lengkap" required error={!detail ? errors.nama : undefined}><input value={form.nama} readOnly={!!detail} onChange={(event) => setForm({ ...form, nama: event.target.value })} placeholder="Nama lengkap"/></Field>
               <Field label="Username" required error={!detail ? errors.username : undefined}><input value={form.username || (detail ? "-" : "")} readOnly={!!detail} onChange={(event) => setForm({ ...form, username: event.target.value })} placeholder="mis. guru_sekolah"/></Field>
-              {!detail && <Field label="Password" required={!editing} error={errors.password}><span className={styles.passwordWrap}><input type={showPassword ? "text" : "password"} value={form.password} onChange={(event) => setForm({ ...form, password: event.target.value })} placeholder={editing ? "Kosongkan jika tidak diubah" : "••••••••"}/><button type="button" onClick={() => setShowPassword(!showPassword)} aria-label="Tampilkan/sembunyikan password">◉</button></span><small>{editing ? "Kosongkan jika tidak diubah." : "Minimal 8 karakter."}</small></Field>}
-              {detail && <Field label="Password"><input value="••••••••" readOnly/></Field>}
+              {!detail && <Field label="Password" required={!editing} error={errors.password}><span className={styles.passwordWrap}><input type={showPassword ? "text" : "password"} value={form.password} onChange={(event) => setForm({ ...form, password: event.target.value })} placeholder={editing ? "Kosongkan jika tidak diubah" : "â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"}/><button type="button" onClick={() => setShowPassword(!showPassword)} aria-label="Tampilkan/sembunyikan password">â—‰</button></span><small>{editing ? "Kosongkan jika tidak diubah." : "Minimal 8 karakter."}</small></Field>}
+              {detail && <Field label="Password"><input value="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" readOnly/></Field>}
               <Field label="Status" required><Select value={detail ? (detail.status || "-") : form.status} disabled={!!detail} onChange={(value) => setForm({ ...form, status: value as FormData["status"] })} options={detail && !detail.status ? [["-","-"]] : [["aktif","Aktif"],["nonaktif","Nonaktif"]]}/></Field>
               <Field label="Mata Pelajaran" error={!detail ? pelajaranError : undefined}><Select value={detail ? (detail.pelajaran_id ? String(detail.pelajaran_id) : "") : String(form.pelajaran_id ?? "")} disabled={!!detail || pelajaran.length === 0} onChange={(value) => setForm({ ...form, pelajaran_id: value ? Number(value) : null })} options={detail ? (detail.pelajaran_id ? [[String(detail.pelajaran_id), detail.nama_pelajaran || "-"]] : [["","-"]]) : [["","Pilih mata pelajaran"], ...pelajaran.map((item) => [String(item.id), item.nama] as [string,string])]}/>{!detail && pelajaran.length === 0 && <small className={styles.fieldError}>{pelajaranError || "Belum ada mata pelajaran."}</small>}</Field>
             </div></section>
