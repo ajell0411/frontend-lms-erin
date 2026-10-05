@@ -17,7 +17,7 @@ const poin = [
 export default function LoginPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [error, setError] = useState("");
@@ -27,14 +27,14 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
 
-    if (!email.trim() || !password) {
-      setError("Email/username dan password wajib diisi");
+    if (!username.trim() || !password) {
+      setError("Username dan password wajib diisi");
       return;
     }
 
     setLoading(true);
     try {
-      const result = await loginRequest(email.trim(), password);
+      const result = await loginRequest(username.trim(), password);
 
       if (!result.success || !result.token || !result.data) {
         setError(result.message || "Login gagal");
@@ -114,7 +114,7 @@ export default function LoginPage() {
 
           <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles.field}>
-              <label htmlFor="email" className={styles.label}>Email / Username</label>
+              <label htmlFor="username" className={styles.label}>Username</label>
               <div className={styles.inputWrap}>
                 <span className={styles.inputIcon}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -123,12 +123,13 @@ export default function LoginPage() {
                   </svg>
                 </span>
                 <input
-                  id="email"
+                  id="username"
+                  name="username"
                   type="text"
-                  placeholder="nama@sekolah.sch.id"
+                  placeholder="Masukkan username"
                   className={styles.input}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   autoComplete="username"
                   required
                 />
