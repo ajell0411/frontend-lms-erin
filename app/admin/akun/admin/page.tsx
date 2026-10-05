@@ -380,6 +380,19 @@ export default function AdminAccountsPage() {
 
       <section className={styles.panel} aria-label="Daftar admin">
         <div className={styles.toolbar}>
+          <label className={styles.searchBox}>
+            <svg aria-hidden="true" viewBox="0 0 24 24" className={styles.searchIcon}>
+              <circle cx="10.8" cy="10.8" r="6.8" />
+              <path d="m16 16 4.5 4.5" />
+            </svg>
+            <span className={styles.visuallyHidden}>Cari admin</span>
+            <input
+              type="search"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Cari nama atau email..."
+            />
+          </label>
           <label className={styles.roleFilter}>
             <span className={styles.visuallyHidden}>Filter role</span>
             <select value={roleFilter} onChange={(event) => setRoleFilter(event.target.value as RoleFilter)}>
@@ -397,19 +410,9 @@ export default function AdminAccountsPage() {
             <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)}>
               <option value="">Semua Status</option><option value="aktif">Aktif</option><option value="nonaktif">Nonaktif</option>
             </select>
-          </label>
-          <label className={styles.searchBox}>
-            <svg aria-hidden="true" viewBox="0 0 24 24" className={styles.searchIcon}>
-              <circle cx="10.8" cy="10.8" r="6.8" />
-              <path d="m16 16 4.5 4.5" />
+            <svg aria-hidden="true" viewBox="0 0 24 24" className={styles.selectChevron}>
+              <path d="m7 10 5 5 5-5" />
             </svg>
-            <span className={styles.visuallyHidden}>Cari admin</span>
-            <input
-              type="search"
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder="Cari nama atau email..."
-            />
           </label>
           <span className={styles.resultCount}>
             {loading ? "Memuat data..." : `${filteredAdmins.length} admin`}
@@ -591,7 +594,7 @@ export default function AdminAccountsPage() {
                   </label>
                   {detailMode && <label className={styles.field}>
                     <span>Kata Sandi</span>
-                    <input type="text" value="••••••••" readOnly />
+                    <input type="text" value={"\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"} readOnly />
                   </label>}
                   {!detailMode && <label className={styles.field}>
                     <span>Kata Sandi {!editingAdmin && <b>*</b>}{editingAdmin && " (opsional)"}</span>
@@ -600,7 +603,7 @@ export default function AdminAccountsPage() {
                         type={showPassword ? "text" : "password"}
                         value={form.password}
                         onChange={(event) => setForm({ ...form, password: event.target.value })}
-                        placeholder={editingAdmin ? "Kosongkan jika tidak diubah" : "••••••••"}
+                        placeholder={editingAdmin ? "Kosongkan jika tidak diubah" : "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"}
                         autoComplete="new-password"
                         aria-invalid={Boolean(formErrors.password)}
                       />
