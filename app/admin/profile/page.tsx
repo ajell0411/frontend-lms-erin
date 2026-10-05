@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type FormEvent } from "react";
+import Image from "next/image";
 import { getProfile, getToken, getUser, saveSession, updateProfile, updateProfilePassword, type ProfileRecord } from "@/lib/api";
 import { roleLabel, useRole } from "@/lib/role";
 import styles from "./page.module.css";
@@ -53,13 +54,20 @@ export default function AdminProfilePage() {
   const name = profile.nama || "Pengguna";
   return (
     <main className={styles.page}>
-      <header className={styles.heading}><div><p className={styles.eyebrow}>Akun Saya</p><h1 className={styles.title}>Profile</h1><p className={styles.subtitle}>Informasi akun yang sedang digunakan.</p></div></header>
+      <header className={styles.heading}><div><p className={styles.eyebrow}>Akun Saya</p><h1 className={styles.title}>Profil</h1><p className={styles.subtitle}>Informasi akun yang sedang digunakan.</p></div></header>
       {message && <p className={styles.success} role="status">{message}</p>}{error && <p className={styles.error} role="alert">{error}</p>}
       <section className={styles.profile} aria-label="Informasi profil">
-        <div className={styles.avatar} aria-hidden="true">{initials(name) || "A"}</div>
-        <div className={styles.details}><h2>{name}</h2><p><span className={styles.roleBadge}>{roleLabel(profile.role ?? role)}</span></p>
-          <dl><div><dt>Nama</dt><dd>{profile.nama || "-"}</dd></div><div><dt>Email</dt><dd>{profile.email || "-"}</dd></div><div><dt>Username</dt><dd>{profile.username || "-"}</dd></div><div><dt>Telepon</dt><dd>{profile.telepon || "-"}</dd></div><div><dt>Alamat</dt><dd>{profile.alamat || "-"}</dd></div><div><dt>Role</dt><dd>{roleLabel(profile.role ?? role) || "-"}</dd></div></dl>
-        </div>
+        <article className={styles.profileCard}>
+          <div className={styles.avatar} aria-hidden="true">{profile.foto_url ? <Image src={profile.foto_url} alt="" width={96} height={96} unoptimized /> : initials(name) || "A"}</div>
+          <h2>{name}</h2><span className={styles.roleBadge}>{roleLabel(profile.role ?? role)}</span>
+          <span className={profile.status === "nonaktif" ? styles.inactiveBadge : styles.activeBadge}>{profile.status === "nonaktif" ? "Nonaktif" : "Aktif"}</span>
+        </article>
+        <article className={styles.dataCard}><h2>Data Pribadi</h2>
+          <dl><div><dt>Nama</dt><dd>{profile.nama || "-"}</dd></div><div><dt>Email</dt><dd>{profile.email || "-"}</dd></div><div><dt>Telepon</dt><dd>{profile.telepon || "-"}</dd></div><div className={styles.full}><dt>Alamat</dt><dd>{profile.alamat || "-"}</dd></div></dl>
+        </article>
+        <article className={styles.dataCard}><h2>Kredensial Akun</h2>
+          <dl><div><dt>Username</dt><dd>{profile.username || "-"}</dd></div><div><dt>Role</dt><dd>{roleLabel(profile.role ?? role) || "-"}</dd></div><div className={styles.full}><dt>Akun dibuat</dt><dd>{profile.created_at ? new Intl.DateTimeFormat("id-ID", { dateStyle: "long" }).format(new Date(profile.created_at)) : "-"}</dd></div></dl>
+        </article>
       </section>
       {loading ? <p className={styles.subtitle}>Memuat profile...</p> : <>
         <form className={styles.formCard} onSubmit={saveData}>
@@ -71,7 +79,7 @@ export default function AdminProfilePage() {
             <label className={styles.full}>Alamat<input value={profile.alamat} onChange={(event) => setProfile({ ...profile, alamat: event.target.value })}/></label>
           </div><button type="submit" disabled={saving}>{saving ? "Menyimpan..." : "Simpan"}</button>
         </form>
-        <form className={styles.formCard} onSubmit={savePassword}>
+        <form id="credentials" className={styles.formCard} onSubmit={savePassword}>
           <h2>Ubah Password</h2><div className={styles.formGrid}>
             <label>Password Lama<input required type="password" value={passwordLama} onChange={(event) => setPasswordLama(event.target.value)}/></label>
             <label>Password Baru<input required minLength={8} type="password" value={passwordBaru} onChange={(event) => setPasswordBaru(event.target.value)}/></label>
