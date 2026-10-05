@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Reveal from "./components/Reveal";
@@ -24,6 +24,19 @@ const alur = [
 export default function LandingPage() {
   // id elemen yang sedang menjalankan animasi klik
   const [pressed, setPressed] = useState<string | null>(null);
+  const [groupPhotoZoomed, setGroupPhotoZoomed] = useState(false);
+  const groupPhotoRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function closeGroupPhotoZoom(event: PointerEvent) {
+      if (!groupPhotoRef.current?.contains(event.target as Node)) {
+        setGroupPhotoZoomed(false);
+      }
+    }
+
+    document.addEventListener("pointerdown", closeGroupPhotoZoom);
+    return () => document.removeEventListener("pointerdown", closeGroupPhotoZoom);
+  }, []);
 
   // props bersama untuk semua foto/box yang bisa diklik
   const clickable = (id: string, base: string, active: string) => ({
@@ -92,7 +105,7 @@ export default function LandingPage() {
             </p></Reveal>
 
             <Reveal direction="none" delay={750} className={styles.heroActionsReveal}><div className={styles.heroActions}>
-              <a href="#alur" className={styles.btnPrimary}>Mulai Sekarang</a>
+              <Link href="/login" className={styles.btnPrimary}>Mulai Sekarang</Link>
               <a href="#fitur" className={styles.btnOutline}>Pelajari Lebih Lanjut</a>
             </div></Reveal>
           </div>
@@ -106,7 +119,7 @@ export default function LandingPage() {
               alt="Ilustrasi siswa belajar menggunakan E-CLASS"
               fill
               priority
-              style={{ objectFit: "cover", objectPosition: "center" }}
+              style={{ objectFit: "contain", objectPosition: "center" }}
             />
             <span className={`${styles.chip} ${styles.chip1}`}>📚 Materi</span>
             <span className={`${styles.chip} ${styles.chip2}`}>📝 Tugas</span>
@@ -154,7 +167,7 @@ export default function LandingPage() {
         <Reveal direction="none" className={styles.flowReveal}>
           <div className={`${styles.cardGrid} ${styles.cardGridAlur}`}>
             {alur.map((s, index) => (
-              <Reveal key={s.step} direction="up" delay={index * 120} duration={700} className={styles.cardReveal}>
+            <Reveal key={s.step} direction={index % 2 === 0 ? "left" : "right"} delay={index * 120} duration={700} className={styles.cardReveal}>
                 <div {...clickable(`alur-${s.step}`, styles.card, styles.cardActive)}>
                   <div className={styles.stepNumber}>{s.step}</div>
                   <h3 className={styles.cardTitle}>{s.title}</h3>
@@ -186,17 +199,31 @@ export default function LandingPage() {
           </div>
           </Reveal>
 
-          <Reveal direction="right" className={styles.ctaImageReveal}>
+          <Reveal direction="left" className={styles.ctaImageReveal}>
           <div
-            {...clickable("cta", styles.ctaImageWrap, styles.tiltCta)}
+            ref={groupPhotoRef}
+            className={`${styles.ctaImageWrap} ${styles.clickable}`}
+            role="button"
+            tabIndex={0}
+            aria-pressed={groupPhotoZoomed}
+            data-zoomed={groupPhotoZoomed}
+            onClick={() => setGroupPhotoZoomed((zoomed) => !zoomed)}
+            onKeyDown={(event: KeyboardEvent<HTMLDivElement>) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                setGroupPhotoZoomed((zoomed) => !zoomed);
+              }
+            }}
             aria-label="Foto siswa dan guru, klik untuk animasi"
           >
-            <Image
-              src="/bareng.png"
-              alt="Siswa dan guru berdiskusi menggunakan laptop"
-              fill
-              style={{ objectFit: "cover" }}
-            />
+            <span className={styles.ctaPhotoClip}>
+              <Image
+                src="/bareng.png"
+                alt="Siswa dan guru berdiskusi menggunakan laptop"
+                fill
+                style={{ objectFit: "contain", borderRadius: "30px" }}
+              />
+            </span>
           </div>
           </Reveal>
         </div>
