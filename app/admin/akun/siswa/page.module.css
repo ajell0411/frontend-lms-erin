@@ -9,3 +9,8 @@
 .dialogActions{gap:10px}
 @media(max-width:640px){.confirmDialog{align-self:center}}
 .avatar{box-sizing:border-box;overflow:hidden;border-radius:50%}
+
+.passwordWrap button svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.toolbar .searchBox{width:min(100%,340px);flex:0 1 340px}
+@media(max-width:640px){.toolbar .searchBox{width:100%;min-width:0;flex:1 1 100%}}
+.closeButton svg{display:block;width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
