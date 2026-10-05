@@ -131,11 +131,12 @@
 /* stretch: foto mengikuti tinggi kolom teks,
    atas foto sejajar badge, bawah foto sejajar dengan 2 tombol */
 .heroInner {
+  box-sizing: border-box;
   max-width: 1152px;
   margin: 0 auto;
   padding: 64px 24px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: stretch;
   gap: 48px;
 }
@@ -219,11 +220,28 @@
 /* foto hero: tinggi otomatis mengikuti kolom teks */
 .heroImageWrap {
   position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 380px;
+  width: 84%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  height: 300px;
+  min-height: 300px;
+  overflow: hidden;
+  border-radius: 30px;
+  clip-path: inset(0 round 30px);
   transform-origin: center;
   animation: photoFromRight 700ms ease-out both;
+}
+
+.heroImageReveal {
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 30px;
+  clip-path: inset(0 round 30px);
 }
 
 /* ===== Section umum ===== */
@@ -384,7 +402,8 @@
 
 .ctaCard {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  overflow: hidden;
   align-items: center;
   gap: 32px;
   padding: 40px;
@@ -410,10 +429,31 @@
 
 .ctaImageWrap {
   position: relative;
-  width: 100%;
+  width: 88%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   height: 300px;
-  border-radius: 18px;
+  border-radius: 30px;
+  clip-path: inset(0 round 30px);
   overflow: hidden;
+}
+
+.ctaPhotoClip {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  border-radius: 30px;
+  clip-path: inset(0 round 30px);
+}
+
+.ctaImageReveal {
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
 }
 
 /* ===== Footer (biru) ===== */
@@ -518,8 +558,8 @@
 
 @keyframes tiltCta {
   0%   { transform: rotate(0) scale(1); }
-  35%  { transform: rotate(-2deg) scale(1.03); }
-  70%  { transform: rotate(1.5deg) scale(1.01); }
+  35%  { transform: rotate(0) scale(1.08); }
+  70%  { transform: rotate(0) scale(1.03); }
   100% { transform: rotate(0) scale(1); }
 }
 
@@ -565,7 +605,9 @@
 /* Foto hero: kartu membulat + bayangan lembut, bernapas pelan */
 .heroImageWrap img {
   z-index: 1;
-  border-radius: 24px;
+  border-radius: 30px !important;
+  clip-path: inset(0 round 30px);
+  object-fit: contain !important;
   box-shadow: 0 24px 60px rgba(var(--primary-rgb), 0.22);
   transform-origin: center;
   animation: breathe 5s ease-in-out infinite;
@@ -624,11 +666,18 @@
 
 /* Foto CTA: zoom halus saat hover + kilau lewat */
 .ctaImageWrap img {
+  border-radius: 30px !important;
+  clip-path: inset(0 round 30px);
+  object-fit: contain !important;
   transition: transform 0.6s ease;
 }
 
 .ctaImageWrap:hover img {
-  transform: scale(1.08);
+  transform: none;
+}
+
+.ctaImageWrap[data-zoomed="true"] img {
+  transform: scale(1.1);
 }
 
 .ctaImageWrap::after {
@@ -768,7 +817,8 @@
 
   /* di layar kecil foto ada di bawah teks, jadi butuh tinggi sendiri */
   .heroImageWrap {
-    height: 340px;
+    width: 92%;
+    height: 240px;
     min-height: 0;
   }
 
@@ -777,6 +827,7 @@
   }
 
   .ctaImageWrap {
+    width: 92%;
     height: 240px;
   }
 
@@ -818,6 +869,7 @@
 
   .heroImageWrap img,
   .heroImageWrap::before,
+  .ctaImageWrap img,
   .chip,
   .ctaImageWrap::after,
   .popHero,
@@ -829,6 +881,12 @@
     animation: none !important;
   }
 
+  .ctaImageWrap img,
+  .ctaImageWrap[data-zoomed="true"] img {
+    transition: none !important;
+    transform: none !important;
+  }
+
   .footerGrid > div {
     animation: none !important;
   }
@@ -836,7 +894,7 @@
 
 /* Entry animations replay whenever a reveal target enters the viewport. */
 .logoName,.logoSub,.nav a,.rightGroup>.btnPrimary,.heroBadge,.heroLine,.heroDesc,.heroActions>*,
-.heroImageWrap,.footerBottom { animation: none; }
+.footerBottom { animation: none; }
 .heroTitleReveal[data-reveal-ready="true"] { opacity: 1!important; transform: none!important; transition: none!important; }
 .heroTitleReveal[data-reveal-ready="true"] .heroLine { opacity: 0; transform: translateX(var(--text-offset,-50px)); }
 .heroTitleReveal[data-reveal-visible="true"] .heroLine { animation: textFromLeft 700ms ease-out both; }
@@ -846,7 +904,6 @@
 .heroActionsReveal[data-reveal-ready="true"] { opacity: 1!important; transform: none!important; transition: none!important; }
 .heroActionsReveal[data-reveal-visible="true"] .heroActions>* { animation: textFromLeft 700ms ease-out both; animation-delay: var(--reveal-delay,750ms); }
 .heroActionsReveal[data-reveal-visible="true"] .heroActions>:last-child { animation-delay: calc(var(--reveal-delay,750ms) + 150ms); }
-.heroImageWrap { animation: none; }
 .logoReveal[data-reveal-visible="true"] .logoName,.logoReveal[data-reveal-visible="true"] .logoSub,
 .navReveal[data-reveal-visible="true"] .nav a,.navReveal[data-reveal-visible="true"] .rightGroup>.btnPrimary { animation: textFromLeft 700ms ease-out both; }
 .logoReveal[data-reveal-visible="true"] .logoSub { animation-delay: 150ms; }
@@ -855,10 +912,6 @@
 .navReveal[data-reveal-visible="true"] .nav a:nth-child(3) { animation-delay: 300ms; }
 .navReveal[data-reveal-visible="true"] .nav a:nth-child(4) { animation-delay: 450ms; }
 .navReveal[data-reveal-visible="true"] .rightGroup>.btnPrimary { animation-delay: 600ms; }
-.heroImageReveal[data-reveal-visible="true"] .chip { animation: textFromLeft 700ms ease-out both; }
-.heroImageReveal[data-reveal-visible="true"] .chip2 { animation-delay: 150ms; }
-.heroImageReveal[data-reveal-visible="true"] .chip3 { animation-delay: 300ms; }
-.heroImageReveal[data-reveal-visible="true"] .chip4 { animation-delay: 450ms; }
 .footerBottom { opacity: 1; transform: none; }
 .footerBottom[data-reveal-ready="true"] { opacity: 0; transform: translateX(var(--text-offset,-50px)); transition: opacity 700ms ease-out,transform 700ms ease-out; }
 .footerBottom[data-reveal-visible="true"] { opacity: 1; transform: translateX(0); }
@@ -868,5 +921,66 @@
   .logoReveal[data-reveal-visible="true"] .logoName,.logoReveal[data-reveal-visible="true"] .logoSub,
   .navReveal[data-reveal-visible="true"] .nav a,.navReveal[data-reveal-visible="true"] .rightGroup>.btnPrimary,
   .heroImageReveal[data-reveal-visible="true"] .chip { animation:none!important; opacity:1!important; transform:none!important; }
+}
+
+/* Animasi reveal satu kali saat tiap elemen pertama kali terlihat. */
+:global(.reveal[data-reveal-ready="true"]):not(.cardReveal):not(.flowReveal) {
+  opacity: 0;
+  transform: translateX(var(--text-offset, -50px));
+  transition: opacity 700ms ease-out var(--reveal-delay, 0ms), transform 700ms ease-out var(--reveal-delay, 0ms);
+}
+
+:global(.reveal[data-direction="right"][data-reveal-ready="true"]):not(.cardReveal):not(.flowReveal) {
+  transform: translateX(var(--photo-offset, 80px));
+}
+
+:global(.reveal[data-direction="up"][data-reveal-ready="true"]):not(.cardReveal):not(.flowReveal) {
+  transform: translateY(24px);
+}
+
+:global(.reveal[data-direction="down"][data-reveal-ready="true"]):not(.cardReveal):not(.flowReveal) {
+  transform: translateY(-24px);
+}
+
+:global(.reveal[data-reveal-visible="true"]):not(.cardReveal):not(.flowReveal) {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+:global(.reveal.cardReveal[data-reveal-ready="true"]) {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 700ms ease-out var(--reveal-delay, 0ms), transform 700ms ease-out var(--reveal-delay, 0ms);
+}
+
+:global(.reveal.cardReveal[data-direction="left"][data-reveal-ready="true"]) {
+  transform: translateX(var(--text-offset, -50px));
+}
+
+:global(.reveal.cardReveal[data-direction="right"][data-reveal-ready="true"]) {
+  transform: translateX(var(--photo-offset, 80px));
+}
+
+:global(.reveal.cardReveal[data-reveal-visible="true"]) {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+:global(.reveal.heroImageReveal[data-reveal-ready="true"]) {
+  transform: translateX(var(--photo-offset, 80px)) scale(0.96);
+}
+
+:global(.reveal.heroImageReveal[data-reveal-visible="true"]) {
+  transform: translateX(0) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(.reveal[data-reveal-ready="true"]),
+  :global(.reveal.cardReveal[data-reveal-ready="true"]),
+  :global(.reveal.heroImageReveal[data-reveal-ready="true"]) {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
