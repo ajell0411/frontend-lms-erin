@@ -104,6 +104,7 @@ export default function SiswaPage() {
   function openCreate() { if (!canWrite) return; setEditing(null); setForm(EMPTY); setErrors({}); setFile(null); setPreview(""); setShowPassword(false); setFormKelas([]); setFormOpen(true); setSuccess(""); }
   function openEdit(item: SiswaAccount) {
     if (!canWrite) return;
+    setDetail(null);
     setEditing(item);
     const selectedMajor = item.jurusan_id ?? null;
     setForm({ nama: item.nama, username: item.username, email: item.email, password: "", nisn: item.nisn ?? "", jenis_kelamin: item.jenis_kelamin ?? "", tempat_lahir: item.tempat_lahir ?? "", tanggal_lahir: item.tanggal_lahir ?? "", alamat: item.alamat ?? "", telepon: item.telepon ?? "", nama_wali: item.nama_wali ?? "", telepon_wali: item.telepon_wali ?? "", tahun_masuk: item.tahun_masuk, status: item.status, foto_url: item.foto_url ?? "", kelas_id: item.kelas_id, jurusan_id: selectedMajor });
@@ -131,6 +132,7 @@ export default function SiswaPage() {
     if (!form.status) next.status = "Status wajib dipilih.";
     if (!form.jurusan_id) next.jurusan_id = "Jurusan wajib dipilih.";
     if (!form.kelas_id) next.kelas_id = "Kelas wajib dipilih.";
+    if (form.nisn && !/^\d+$/.test(form.nisn)) next.nisn = "NISN hanya boleh berisi angka.";
     if (Object.keys(next).length) { setErrors(next); return; }
     setSaving(true); setErrors({});
     try {
@@ -219,7 +221,7 @@ export default function SiswaPage() {
           </div></section>
           <section className={styles.formSection}><h3 className={styles.sectionTitle}>Foto Profil</h3><div className={styles.photoPicker}>{photo(detail?.foto_url || preview, detail?.nama || form.nama, 66)}{!detail && <div className={styles.photoInfo}><span>Unggah foto (JPG, PNG)</span><small>Maks. 2 MB</small><label className={styles.fileLink}>Pilih File<input type="file" accept="image/jpeg,image/png" onChange={(event) => choosePhoto(event.target.files?.[0])}/></label></div>}</div>{errors.foto_url && <small className={styles.fieldError}>{errors.foto_url}</small>}</section>
           <section className={styles.formSection}><h3 className={styles.sectionTitle}>Data Pribadi</h3><div className={styles.personalGrid}>
-            <Field label="NISN" full><input value={form.nisn || (detail ? "-" : "")} readOnly={!!detail} onChange={(event) => setForm({ ...form, nisn: event.target.value })}/></Field>
+            <Field label="NISN" full error={!detail ? errors.nisn : undefined}><input inputMode="numeric" pattern="[0-9]*" value={form.nisn || (detail ? "-" : "")} readOnly={!!detail} onChange={(event) => setForm({ ...form, nisn: event.target.value.replace(/\D/g, "") })}/></Field>
             <Field label="Jenis Kelamin"><Select value={detail ? detail.jenis_kelamin || "-" : form.jenis_kelamin} disabled={!!detail} onChange={(value) => setForm({ ...form, jenis_kelamin: value as JenisKelamin | "" })} options={detail && !detail.jenis_kelamin ? [["-","-"]] : [["","Pilih..."],["L","Laki-laki"],["P","Perempuan"]]}/></Field>
             <Field label="Tempat Lahir"><input value={form.tempat_lahir || (detail ? "-" : "")} readOnly={!!detail} onChange={(event) => setForm({ ...form, tempat_lahir: event.target.value })}/></Field>
             <Field label="Tanggal Lahir"><input type={detail ? "text" : "date"} value={detail ? (form.tanggal_lahir || "-") : form.tanggal_lahir} readOnly={!!detail} onChange={(event) => setForm({ ...form, tanggal_lahir: event.target.value })}/></Field>
@@ -233,7 +235,7 @@ export default function SiswaPage() {
             {detail && <Field label="Dibuat pada" full><input value={dateLabel(detail.created_at)} readOnly/></Field>}
           </div></section>
           {!detail && errors.server && <p className={styles.formError}>{errors.server}</p>}
-          <footer className={styles.dialogActions}>{detail ? <button type="button" className={styles.cancelButton} onClick={() => setDetail(null)}>Tutup</button> : <><button type="button" className={styles.cancelButton} onClick={() => setFormOpen(false)}>Batal</button><button className={styles.submitButton} disabled={saving}>{saving ? "Menyimpan..." : editing ? "Simpan Perubahan" : "Simpan Siswa"}</button></>}</footer>
+          <footer className={styles.dialogActions}>{detail ? <><button type="button" className={styles.cancelButton} onClick={() => setDetail(null)}>Tutup</button>{canWrite && <><button type="button" className={styles.dangerButton} onClick={() => { setDeleting(detail); setDetail(null); }}>Hapus</button><button type="button" className={styles.submitButton} onClick={() => openEdit(detail)}>Edit Pengguna</button></>}</> : <><button type="button" className={styles.cancelButton} onClick={() => setFormOpen(false)}>Batal</button><button className={styles.submitButton} disabled={saving}>{saving ? "Menyimpan..." : editing ? "Simpan Perubahan" : "Simpan Siswa"}</button></>}</footer>
         </form>
       </section></div>}
       {canWrite && deleting && <div className={styles.overlay} onMouseDown={(event) => { if (event.target === event.currentTarget) setDeleting(null); }}><section className={`${styles.dialog} ${styles.confirmDialog}`} role="alertdialog"><div className={styles.confirmIcon}>!</div><h2>Hapus Akun?</h2><p>Akun siswa <strong>{deleting.nama}</strong> akan dihapus. Tindakan ini tidak dapat dibatalkan.</p>{errors.server && <p className={styles.formError}>{errors.server}</p>}<footer className={styles.dialogActions}><button className={styles.cancelButton} type="button" onClick={() => setDeleting(null)}>Batal</button><button className={styles.dangerButton} type="button" disabled={saving} onClick={() => void remove()}>{saving ? "Menghapus..." : "Ya, Hapus"}</button></footer></section></div>}
