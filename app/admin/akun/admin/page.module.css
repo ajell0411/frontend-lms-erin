@@ -136,6 +136,8 @@
 }
 
 .resultCount {
+  margin-left: auto;
+  flex-shrink: 0;
   color: #778096;
   font-size: 11px;
   white-space: nowrap;
