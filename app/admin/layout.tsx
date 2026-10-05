@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { clearSession, dashboardPath, getToken, getUser, listAktivitas, type AktivitasRecord, type UserRole } from "@/lib/api";
+import { clearSession, dashboardPath, getProfile, getToken, getUser, listAktivitas, type AktivitasRecord, type UserRole } from "@/lib/api";
 import { roleLabel, useRole } from "@/lib/role";
 import styles from "./layout.module.css";
 import BackButton from "./BackButton";
@@ -130,6 +130,17 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   const bellRef = useRef<HTMLDivElement>(null);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const accountMenuRef = useRef<HTMLDivElement>(null);
+  const [profilePhoto, setProfilePhoto] = useState("");
+
+  useEffect(() => {
+    let active = true;
+    void getProfile().then((profile) => { if (active) setProfilePhoto(profile.foto_url ?? ""); }).catch(() => undefined);
+    const updatePhoto = (event: Event) => {
+      if (event instanceof CustomEvent && typeof event.detail === "string") setProfilePhoto(event.detail);
+    };
+    window.addEventListener("eclass-profile-updated", updatePhoto);
+    return () => { active = false; window.removeEventListener("eclass-profile-updated", updatePhoto); };
+  }, []);
 
   // Guard token: harus di useEffect karena localStorage hanya ada di browser
   useEffect(() => {
@@ -290,7 +301,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           <div className={styles.accountMenuWrap} ref={accountMenuRef}>
             <button type="button" className={styles.topProfile} title="Menu akun" aria-label="Menu akun" aria-expanded={accountMenuOpen} onClick={() => setAccountMenuOpen((open) => !open)}>
               <span className={styles.topProfileText}><strong>{user?.nama ?? "Pengguna"}</strong><small>{roleLabel(role)}</small></span>
-              <span className={styles.topAvatar}>{initials}</span>
+              <span className={styles.topAvatar}>{profilePhoto ? <Image src={profilePhoto} alt="" width={36} height={36} unoptimized /> : initials}</span>
             </button>
             {accountMenuOpen && <div className={styles.accountMenu} role="menu">
               <Link role="menuitem" href="/admin/profile" onClick={() => setAccountMenuOpen(false)}>Profil</Link>
@@ -331,7 +342,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             </svg>
           </button>
           <div className={styles.profileCard}>
-            <div className={styles.avatar}>{initials}</div>
+            <div className={styles.avatar}>{profilePhoto ? <Image src={profilePhoto} alt="" width={42} height={42} unoptimized /> : initials}</div>
             <div className={styles.profileInfo}>
               <p className={styles.profileName}>{user?.nama ?? "Pengguna"}</p>
               <p className={styles.profileRole}>
