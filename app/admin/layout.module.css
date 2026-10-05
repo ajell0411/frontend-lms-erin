@@ -72,7 +72,15 @@
   gap: 9px;
   color: inherit;
   text-decoration: none;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  font: inherit;
 }
+.accountMenuWrap{position:relative}
+.accountMenu{position:absolute;z-index:30;top:calc(100% + 9px);right:0;width:220px;padding:6px;border:1px solid #e4e6ed;border-radius:8px;background:#fff;box-shadow:0 10px 28px rgb(20 28 52 / 16%)}
+.accountMenu a,.accountMenu button{display:flex;width:100%;min-height:38px;align-items:center;padding:0 10px;border:0;border-radius:5px;background:transparent;color:#394154;font:inherit;font-size:12px;text-align:left;text-decoration:none;cursor:pointer}
+.accountMenu a:hover,.accountMenu button:hover{background:#f3f4f8}
 .topProfileText {
   display: flex;
   flex-direction: column;
