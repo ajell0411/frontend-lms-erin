@@ -13,6 +13,8 @@ export type ProfileRecord = UserData & {
   alamat: string;
   foto_url: string;
   nip: string;
+  status?: AccountStatus;
+  created_at?: string;
 };
 
 export type LoginResult = {
