@@ -178,11 +178,11 @@ export type AktivitasRecord = {
 type AktivitasResponse = { success: boolean; data: AktivitasRecord[] };
 
 // Login ke backend Go (lewat proxy Next.js: /api -> localhost:8080)
-export async function loginRequest(email: string, password: string): Promise<LoginResult> {
+export async function loginRequest(username: string, password: string): Promise<LoginResult> {
   const res = await fetch("/api/auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ username, password }),
   });
 
   const json = await res.json().catch(() => null);
