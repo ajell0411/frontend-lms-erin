@@ -8,6 +8,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { clearSession, dashboardPath, getToken, getUser, listAktivitas, type AktivitasRecord, type UserRole } from "@/lib/api";
 import { roleLabel, useRole } from "@/lib/role";
 import styles from "./layout.module.css";
+import BackButton from "./BackButton";
 
 type IconName = "grid" | "users" | "database" | "megaphone" | "user" | "logout" | "bell";
 type MenuChild = { label: string; href: string };
@@ -39,7 +40,7 @@ const MENU: MenuItem[] = [
     ],
   },
   { label: "Pengumuman", icon: "megaphone", href: "/admin/pengumuman" },
-  { label: "Profile", icon: "user", href: "/admin/profile" },
+  { label: "Profil", icon: "user", href: "/admin/profile" },
 ];
 
 const ADMIN_ROLES: UserRole[] = ["admin", "admin_kurikulum", "kepala_sekolah"];
@@ -127,6 +128,8 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   const [confirmOut, setConfirmOut] = useState(false);
   const [bellOpen, setBellOpen] = useState(false);
   const bellRef = useRef<HTMLDivElement>(null);
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const accountMenuRef = useRef<HTMLDivElement>(null);
 
   // Guard token: harus di useEffect karena localStorage hanya ada di browser
   useEffect(() => {
@@ -186,6 +189,22 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [bellOpen]);
+
+  useEffect(() => {
+    if (!accountMenuOpen) return;
+    function onPointerDown(event: PointerEvent) {
+      if (event.target instanceof Node && !accountMenuRef.current?.contains(event.target)) setAccountMenuOpen(false);
+    }
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setAccountMenuOpen(false);
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [accountMenuOpen]);
 
   useEffect(() => {
     function onActivitiesRead(event: Event) {
@@ -268,18 +287,17 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             </section>}
           </div>
 
-          <Link
-            href="/admin/profile"
-            className={styles.topProfile}
-            title="Buka profile"
-            aria-label="Buka profile"
-          >
-            <span className={styles.topProfileText}>
-              <strong>{user?.nama ?? "Pengguna"}</strong>
-              <small>{roleLabel(role)}</small>
-            </span>
-            <span className={styles.topAvatar}>{initials}</span>
-          </Link>
+          <div className={styles.accountMenuWrap} ref={accountMenuRef}>
+            <button type="button" className={styles.topProfile} title="Menu akun" aria-label="Menu akun" aria-expanded={accountMenuOpen} onClick={() => setAccountMenuOpen((open) => !open)}>
+              <span className={styles.topProfileText}><strong>{user?.nama ?? "Pengguna"}</strong><small>{roleLabel(role)}</small></span>
+              <span className={styles.topAvatar}>{initials}</span>
+            </button>
+            {accountMenuOpen && <div className={styles.accountMenu} role="menu">
+              <Link role="menuitem" href="/admin/profile" onClick={() => setAccountMenuOpen(false)}>Profil</Link>
+              <Link role="menuitem" href="/admin/profile#credentials" onClick={() => setAccountMenuOpen(false)}>Ganti Username/Password</Link>
+              <button type="button" role="menuitem" onClick={() => { setAccountMenuOpen(false); setConfirmOut(true); }}>Keluar</button>
+            </div>}
+          </div>
         </div>
       </header>
 
@@ -392,11 +410,11 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
           <button type="button" className={styles.logout} onClick={() => setConfirmOut(true)}>
             <Icon name="logout" />
-            <span>Logout</span>
+            <span>Keluar</span>
           </button>
         </aside>
 
-        <main className={styles.content}>{children}</main>
+        <main className={styles.content}><BackButton />{children}</main>
 
         {confirmOut && (
           <div className={styles.overlay} onClick={() => setConfirmOut(false)}>
