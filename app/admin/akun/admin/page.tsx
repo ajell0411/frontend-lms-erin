@@ -81,6 +81,7 @@ export default function AdminAccountsPage() {
   const [loadError, setLoadError] = useState("");
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState<RoleFilter>("semua");
+  const [statusFilter, setStatusFilter] = useState("");
   const [editingAdmin, setEditingAdmin] = useState<AdminAccount | null>(null);
   const [detailAdmin, setDetailAdmin] = useState<AdminAccount | null>(null);
   const [actionMenu, setActionMenu] = useState<ActionMenuState | null>(null);
@@ -151,9 +152,9 @@ export default function AdminAccountsPage() {
       const matchesQuery = !query || `${admin.nama} ${admin.email}`
         .toLocaleLowerCase("id-ID")
         .includes(query);
-      return matchesQuery && (roleFilter === "semua" || admin.role === roleFilter);
+      return matchesQuery && (roleFilter === "semua" || admin.role === roleFilter) && (!statusFilter || admin.status === statusFilter);
     });
-  }, [admins, roleFilter, search]);
+  }, [admins, roleFilter, search, statusFilter]);
 
   function openCreateForm() {
     if (!canWrite) return;
@@ -169,6 +170,7 @@ export default function AdminAccountsPage() {
 
   function openEditForm(admin: AdminAccount) {
     if (!canWrite) return;
+    setDetailAdmin(null);
     setEditingAdmin(admin);
     setForm({
       ...FORM_KOSONG,
@@ -224,6 +226,7 @@ export default function AdminAccountsPage() {
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
       errors.email = "Format alamat email tidak valid.";
     }
+    if (form.nip && !/^\d+$/.test(form.nip)) errors.nip = "NIP hanya boleh berisi angka.";
     if (Object.keys(errors).length) {
       setFormErrors(errors);
       return;
@@ -388,6 +391,12 @@ export default function AdminAccountsPage() {
             <svg aria-hidden="true" viewBox="0 0 24 24" className={styles.selectChevron}>
               <path d="m7 10 5 5 5-5" />
             </svg>
+          </label>
+          <label className={styles.roleFilter}>
+            <span className={styles.visuallyHidden}>Filter status</span>
+            <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)}>
+              <option value="">Semua Status</option><option value="aktif">Aktif</option><option value="nonaktif">Nonaktif</option>
+            </select>
           </label>
           <label className={styles.searchBox}>
             <svg aria-hidden="true" viewBox="0 0 24 24" className={styles.searchIcon}>
@@ -670,7 +679,8 @@ export default function AdminAccountsPage() {
                   </label>
                   <label className={styles.field}>
                     <span>NIP (Nomor Induk Pegawai)</span>
-                    <input value={detailMode ? (form.nip || "-") : form.nip} onChange={(event) => setForm({ ...form, nip: event.target.value })} placeholder="198012345678" readOnly={detailMode} />
+                    <input inputMode="numeric" pattern="[0-9]*" value={detailMode ? (form.nip || "-") : form.nip} onChange={(event) => setForm({ ...form, nip: event.target.value.replace(/\D/g, "") })} placeholder="198012345678" readOnly={detailMode} />
+                    {!detailMode && formErrors.nip && <small className={styles.fieldError}>{formErrors.nip}</small>}
                   </label>
                   <label className={styles.field}>
                     <span>Nomor Telepon</span>
@@ -707,7 +717,10 @@ export default function AdminAccountsPage() {
               {!detailMode && formErrors.server && <p className={styles.formError} role="alert">{formErrors.server}</p>}
               <footer className={styles.dialogActions}>
                 {detailMode ? (
-                  <button type="button" className={styles.cancelButton} onClick={() => setDetailAdmin(null)}>Tutup</button>
+                  <>
+                    <button type="button" className={styles.cancelButton} onClick={() => setDetailAdmin(null)}>Tutup</button>
+                    {canWrite && <><button type="button" className={styles.dangerButton} onClick={() => { setConfirmAdmin(detailAdmin); setDetailAdmin(null); }}>Hapus</button><button type="button" className={styles.submitButton} onClick={() => detailAdmin && openEditForm(detailAdmin)}>Edit Pengguna</button></>}
+                  </>
                 ) : (
                   <>
                     <button type="button" className={styles.cancelButton} onClick={() => setFormOpen(false)} disabled={saving}>Batal</button>
