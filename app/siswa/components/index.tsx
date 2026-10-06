@@ -7,8 +7,8 @@ export function PageHeader({ title, subtitle }: { title: string; subtitle: strin
   return <div className={styles.pageHeader}><h1>{title}</h1><p>{subtitle}</p></div>;
 }
 
-export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <section className={`${styles.card} ${className}`}>{children}</section>;
+export function Card({ children, className = "", style }: { children: ReactNode; className?: string; style?: React.CSSProperties }) {
+  return <section className={`${styles.card} ${className}`} style={style}>{children}</section>;
 }
 
 export function Badge({ children, variant = "default" }: { children: ReactNode; variant?: "default" | "success" | "danger" | "warning" | "info" }) {
@@ -43,7 +43,7 @@ export function Dropdown({ options, value, onChange, placeholder = "Pilih", labe
       const choices = Array.from(root.current?.querySelectorAll<HTMLElement>('[role="option"]') ?? []);
       const next = event.key === "Home" ? 0 : event.key === "End" ? choices.length - 1 : (index + (event.key === "ArrowDown" ? 1 : -1) + choices.length) % choices.length;
       choices[next]?.focus();
-    }} onClick={() => { onChange(option.value); setOpen(false); }}>{option.label}</button>)}</div>}
+    }} onClick={() => { onChange(option.value); setOpen(false); }}>{option.label}<span aria-hidden="true">{value === option.value ? "✓" : ""}</span></button>)}</div>}
   </div>;
 }
 
