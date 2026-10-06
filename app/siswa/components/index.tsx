@@ -86,13 +86,15 @@ export function useToast() {
 
 export function Modal({ open, onClose, title, children, footer }: { open: boolean; onClose: () => void; title: string; children: ReactNode; footer?: ReactNode }) {
   const dialog = useRef<HTMLDivElement>(null);
+  const onCloseRef = useRef(onClose);
+  useEffect(() => { onCloseRef.current = onClose; }, [onClose]);
   useEffect(() => {
     if (!open) return;
     const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     const focusable = () => dialog.current?.querySelectorAll<HTMLElement>('button:not([disabled]),a[href],input:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])');
     focusable()?.[0]?.focus();
     const keyHandler = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") onCloseRef.current();
       if (event.key !== "Tab") return;
       const items = focusable();
       if (!items?.length) { event.preventDefault(); return; }
@@ -101,7 +103,7 @@ export function Modal({ open, onClose, title, children, footer }: { open: boolea
     };
     document.addEventListener("keydown", keyHandler);
     return () => { document.removeEventListener("keydown", keyHandler); previous?.focus(); };
-  }, [open, onClose]);
+  }, [open]);
   if (!open) return null;
   return <div className={styles.modalBackdrop} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><div ref={dialog} className={styles.modal} role="dialog" aria-modal="true" aria-label={title}><header><h2>{title}</h2><button type="button" aria-label="Tutup dialog" onClick={onClose}>×</button></header><div className={styles.modalBody}>{children}</div>{footer && <footer>{footer}</footer>}</div></div>;
 }
