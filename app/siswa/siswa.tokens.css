@@ -1,0 +1,18 @@
+:root {
+  --siswa-primary: #4338ca;
+  --siswa-primary-dark: #3730a3;
+  --siswa-primary-soft: #e8e8fb;
+  --siswa-primary-2: #0a8cff;
+  --siswa-bg: #f4f8fe;
+  --siswa-surface: #ffffff;
+  --siswa-text: #0f172a;
+  --siswa-muted: #64748b;
+  --siswa-border: #e2e8f0;
+  --siswa-success: #16a34a;
+  --siswa-danger: #dc2626;
+  --siswa-warning: #d97706;
+  --siswa-info: #2563eb;
+  --siswa-radius: 12px;
+  --siswa-shadow: 0 1px 3px rgb(15 23 42 / 7%);
+  --siswa-font: Arial, Helvetica, sans-serif;
+}

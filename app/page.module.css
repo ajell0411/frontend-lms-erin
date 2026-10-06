@@ -429,23 +429,34 @@
 
 .ctaImageWrap {
   position: relative;
+  z-index: 0;
   width: 88%;
   max-width: 100%;
   min-width: 0;
   box-sizing: border-box;
   height: 300px;
-  border-radius: 30px;
-  clip-path: inset(0 round 30px);
-  overflow: hidden;
+  border-radius: 24px;
+}
+
+.ctaImageWrap::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0 -20px -20px 0;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #bfdbfe 0%, #2563eb 100%);
+  content: "";
+  pointer-events: none;
 }
 
 .ctaPhotoClip {
   position: absolute;
+  z-index: 1;
   inset: 0;
   display: block;
   overflow: hidden;
-  border-radius: 30px;
-  clip-path: inset(0 round 30px);
+  border-radius: 24px;
+  clip-path: inset(0 round 24px);
+  box-shadow: 0 18px 42px rgba(29, 78, 216, 0.18);
 }
 
 .ctaImageReveal {
@@ -666,9 +677,9 @@
 
 /* Foto CTA: zoom halus saat hover + kilau lewat */
 .ctaImageWrap img {
-  border-radius: 30px !important;
-  clip-path: inset(0 round 30px);
-  object-fit: contain !important;
+  border-radius: 24px !important;
+  clip-path: inset(0 round 24px);
+  object-fit: cover !important;
   transition: transform 0.6s ease;
 }
 
@@ -827,8 +838,12 @@
   }
 
   .ctaImageWrap {
-    width: 92%;
+    width: 100%;
     height: 240px;
+  }
+
+  .ctaImageWrap::before {
+    inset: 0 -10px -10px 0;
   }
 
   /* label disembunyikan supaya tidak menutupi foto di layar kecil */
