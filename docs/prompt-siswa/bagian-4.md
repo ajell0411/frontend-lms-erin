@@ -1,4 +1,4 @@
-BAGIAN 4 dari 4: backend Go dan verifikasi akhir
+BAGIAN 4 dari 4: backend Go dan verifikasi akhir (tanpa gambar)
 
 Lanjutkan SISI SISWA E-CLASS (bagian 4 dari 4): BACKEND di e-class-backend + verifikasi akhir.
 
@@ -8,7 +8,8 @@ Buat handlers/siswa_*.go dan daftarkan route baru di main.go di bawah /api denga
 
 Endpoint yang dibutuhkan (hanya yang belum ada):
 - GET /api/siswa/dashboard: {asesmen, tugas, materi} masing-masing maks 3 terbaru
-- GET /api/siswa/pengumuman?jenis=&page=: feed gabungan materi/tugas/asesmen
+- GET /api/siswa/pengumuman?jenis=&page=&limit=: feed gabungan materi/tugas/asesmen (limit opsional, dipakai popup lonceng)
+- POST /api/siswa/pengumuman/dibaca: tandai pengumuman sudah dibaca (untuk titik biru dan titik merah lonceng)
 - GET /api/siswa/pelajaran: untuk dropdown
 - GET /api/siswa/materi?search=&pelajaran_id= ; GET /api/siswa/materi/:id/unduh (stream file + Content-Disposition nama asli)
 - GET /api/siswa/asesmen?search=&pelajaran_id=&tipe=ujian_harian|kuis (status aktif/selesai/terkunci + nilai)
