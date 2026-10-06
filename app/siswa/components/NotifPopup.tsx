@@ -36,7 +36,7 @@ export function NotifPopup() {
     setError("");
     try {
       const data = await listPengumumanSiswa();
-      setItems(data);
+      setItems(data.items.slice(0, 9));
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Pengumuman belum dapat dimuat.");
     } finally {
