@@ -1,0 +1,23 @@
+.wrap{position:relative}
+.chipBtn{font:inherit;color:inherit;cursor:pointer}
+.menu{position:absolute;z-index:80;top:calc(100% + 11px);right:0;width:240px;padding:7px;border:1px solid #e4e6ed;border-radius:11px;background:#fff;box-shadow:0 12px 30px rgb(20 28 52 / 18%);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-6px) scale(.98);transform-origin:top right;transition:opacity 160ms ease,transform 160ms ease,visibility 0s linear 160ms}
+.menu[data-open="true"]{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0) scale(1);transition-delay:0s}
+.arrow{position:absolute;top:-6px;right:17px;width:11px;height:11px;transform:rotate(45deg);border-top:1px solid #e4e6ed;border-left:1px solid #e4e6ed;background:#fff}
+.menu a,.menu button{position:relative;display:flex;width:100%;min-height:42px;align-items:center;gap:11px;padding:0 11px;border:0;border-radius:7px;background:transparent;color:#394154;font:inherit;font-size:12px;text-align:left;text-decoration:none;cursor:pointer;transition:background 140ms ease,color 140ms ease}
+.menu a:hover,.menu button:not(:disabled):hover,.menu a:focus-visible,.menu button:not(:disabled):focus-visible{background:#f0f2ff;color:#4338ca;outline:0}
+.menu svg{flex:0 0 17px;width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.menu button.disabledItem{flex-wrap:wrap;row-gap:0;min-height:48px;color:#94a3b8;cursor:not-allowed}
+.disabledItem span{flex:1 1 calc(100% - 28px)}
+.disabledItem em{flex:1 0 100%;margin-left:28px;margin-top:-10px;padding-bottom:4px;font-size:10px;font-style:normal;color:#94a3b8}
+.menu button.danger,.menu button.danger:not(:disabled):hover,.menu button.danger:not(:disabled):focus-visible{color:#dc2626}
+@media(prefers-reduced-motion:reduce){.menu{transition:none}}
+.logoutModal{width:100%;max-width:320px;padding:28px 24px 22px;border-radius:20px;background:#fff;text-align:center;box-shadow:0 20px 48px rgb(15 23 42 / 25%)}
+.logoutIcon{display:flex;align-items:center;justify-content:center;width:52px;height:52px;margin:0 auto 16px;border-radius:50%;background:#fee2e2;color:#dc2626}
+.logoutTitle{margin:0 0 6px;font-size:18px;font-weight:700;color:var(--siswa-text)}
+.logoutText{margin:0 0 22px;font-size:14px;color:var(--siswa-muted)}
+.logoutActions{display:flex;gap:10px}
+.btnBatal,.btnKeluar{flex:1;padding:10px 0;border-radius:10px;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.btnBatal{border:1px solid #334155;background:#fff;color:#0f172a}
+.btnBatal:hover{background:#f1f5f9}
+.btnKeluar{border:1px solid #dc2626;background:#dc2626;color:#fff}
+.btnKeluar:hover{background:#b91c1c}
