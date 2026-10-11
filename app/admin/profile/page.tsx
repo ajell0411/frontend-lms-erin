@@ -53,22 +53,35 @@ export default function AdminProfilePage() {
   }
 
   const name = profile.nama || "Pengguna";
+  const roleText = roleLabel(profile.role ?? role) || "-";
+  const orDash = (v?: string | null) => (v && v.trim() ? v : "-");
   return (
     <main className={styles.page}>
       <header className={styles.heading}><div><p className={styles.eyebrow}>Akun Saya</p><h1 className={styles.title}>Profil</h1><p className={styles.subtitle}>Informasi akun yang sedang digunakan.</p></div></header>
       {message && <p className={styles.success} role="status">{message}</p>}{error && <p className={styles.error} role="alert">{error}</p>}
-      <section className={styles.profile} aria-label="Informasi profil">
+      <section className={styles.columns} aria-label="Informasi profil">
         <article className={styles.profileCard}>
-          <div className={styles.avatar} aria-hidden="true">{profile.foto_url ? <Image src={profile.foto_url} alt="" width={96} height={96} unoptimized /> : initials(name) || "A"}</div>
-          <h2>{name}</h2><span className={styles.roleBadge}>{roleLabel(profile.role ?? role)}</span>
-          <span className={profile.status === "nonaktif" ? styles.inactiveBadge : styles.activeBadge}>{profile.status === "nonaktif" ? "Nonaktif" : "Aktif"}</span>
+          <div className={styles.profileCover} />
+          <span className={styles.avatar} aria-hidden="true">{profile.foto_url ? <Image src={profile.foto_url} alt="" width={92} height={92} unoptimized /> : initials(name) || "A"}</span>
+          <h2>{name}</h2>
+          <p className={styles.username}>@{profile.username || "-"}</p>
+          <div className={styles.profileBadges}><span className={styles.roleBadge}>{roleText}</span></div>
         </article>
-        <article className={styles.dataCard}><h2>Data Pribadi</h2>
-          <dl><div><dt>Nama</dt><dd>{profile.nama || "-"}</dd></div><div><dt>Email</dt><dd>{profile.email || "-"}</dd></div><div><dt>Telepon</dt><dd>{profile.telepon || "-"}</dd></div><div className={styles.full}><dt>Alamat</dt><dd>{profile.alamat || "-"}</dd></div></dl>
-        </article>
-        <article className={styles.dataCard}><h2>Kredensial Akun</h2>
-          <dl><div><dt>Username</dt><dd>{profile.username || "-"}</dd></div><div><dt>Role</dt><dd>{roleLabel(profile.role ?? role) || "-"}</dd></div><div className={styles.full}><dt>Akun dibuat</dt><dd>{profile.created_at ? new Intl.DateTimeFormat("id-ID", { dateStyle: "long" }).format(new Date(profile.created_at)) : "-"}</dd></div></dl>
-        </article>
+        <div className={styles.details}>
+          <article className={styles.dataCard}><h2><span aria-hidden="true">{"\u25A6"}</span>Data Akun</h2>
+            <div className={styles.fields}>
+              <label><span>Nama Lengkap</span><input readOnly value={orDash(profile.nama)} /></label>
+              <label><span>Username</span><input readOnly value={orDash(profile.username)} /></label>
+              <label><span>Role</span><input readOnly value={roleText} /></label>
+            </div>
+          </article>
+          <article className={styles.dataCard}><h2><span aria-hidden="true">{"\u2709"}</span>Informasi Kontak</h2>
+            <div className={styles.fields}>
+              <label><span>Email</span><input readOnly value={orDash(profile.email)} /></label>
+              <label><span>Nomor Telepon</span><input readOnly value={orDash(profile.telepon)} /></label>
+            </div>
+          </article>
+        </div>
       </section>
       {loading ? <p className={styles.subtitle}>Memuat profile...</p> : <>
         <form className={styles.formCard} onSubmit={saveData}>
