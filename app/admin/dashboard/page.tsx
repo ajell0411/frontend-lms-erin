@@ -187,6 +187,7 @@ export default function DashboardPage() {
   return (
     <div className={styles.page}>
       <section className={styles.banner}>
+        <div className={styles.bannerDate} aria-hidden="true"><small>{new Date().toLocaleDateString("id-ID", { weekday: "long" })}</small><strong>{new Date().getDate()}</strong><span>{new Date().toLocaleDateString("id-ID", { month: "long", year: "numeric" })}</span></div>
         <h1 className={styles.bannerTitle}>Selamat datang {nama}</h1>
         <p className={styles.bannerText}>
           "Kelola akun, jurusan, kelas, dan pelajaran E-CLASS dari sini."
