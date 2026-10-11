@@ -67,7 +67,10 @@ export default function PengumumanPage() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState("");
   const [now, setNow] = useState(0);
+  const [filter, setFilter] = useState("semua");
   const hasMore = items.length >= limit && limit < 100;
+  const kategori = (k: string) => (["kelas", "jurusan", "pelajaran"].includes(k) ? k : "akun");
+  const tampil = filter === "semua" ? items : items.filter((i) => kategori(i.objek_jenis.toLocaleLowerCase("id-ID")) === filter);
 
   useEffect(() => {
     const openedAt = Date.now();
@@ -113,9 +116,12 @@ export default function PengumumanPage() {
       <Link href="/admin/dashboard" className={styles.backLink}><span aria-hidden="true">‹</span> Kembali ke Dashboard</Link>
       <header className={styles.heading}><h1 className={styles.title}>Pengumuman</h1><p className={styles.subtitle}>Update terbaru dari aktivitas di sistem. Informasi penting dan perubahan terkini untuk staf.</p></header>
       {error && <p className={styles.error} role="alert">{error}</p>}
-      {loading ? <p className={styles.state}>Memuat aktivitas...</p> : items.length === 0 ? <p className={styles.state}>Belum ada aktivitas terbaru.</p> : (
+      <div className={styles.filters} role="group" aria-label="Filter aktivitas">
+      {[["semua", "Semua"], ["akun", "Akun"], ["kelas", "Kelas"], ["jurusan", "Jurusan"], ["pelajaran", "Pelajaran"]].map(([k, l]) => <button key={k} type="button" className={styles.filterBtn + (filter === k ? " " + styles.filterActive : "")} aria-pressed={filter === k} onClick={() => setFilter(k)}>{l}</button>)}
+    </div>
+    {loading ? <p className={styles.state}>Memuat aktivitas...</p> : items.length === 0 ? <p className={styles.state}>Belum ada aktivitas terbaru.</p> : (
         <section className={styles.feed} aria-label="Aktivitas terbaru">
-          {items.map((item) => <article className={styles.item} key={item.id}>
+          {tampil.length === 0 ? <p className={styles.state}>Tidak ada aktivitas untuk filter ini.</p> : tampil.map((item) => <article className={styles.item} key={item.id}>
             <span className={styles.icon + " " + styles["icon_" + item.aksi]} aria-hidden="true">{actionIcon[item.aksi]}</span>
             <span className={styles.itemText}>
               <strong><ActivityText item={item} /></strong>
