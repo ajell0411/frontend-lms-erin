@@ -1,2 +1,78 @@
 .page{max-width:1100px;margin:0 auto}.filters{display:flex;flex-wrap:wrap;gap:8px;margin:-2px 0 16px}.filters button{padding:7px 15px;border:1px solid #e2e8f0;border-radius:999px;background:#fff;color:#475569;font:inherit;font-size:12px;cursor:pointer;transition:background 150ms ease,color 150ms ease,border 150ms ease}.filters button:hover{border-color:#c7d2fe;background:#f4f3ff;color:#4338ca}.filters .selected{border-color:#4338ca;background:#4338ca;color:#fff}.feed{display:grid;gap:10px}.feedLink{color:inherit;text-decoration:none}.feedCard{display:flex;align-items:center;gap:13px;padding:14px 16px;transition:box-shadow 150ms ease,border-color 150ms ease}.feedLink:hover .feedCard{border-color:#c7d2fe;box-shadow:0 5px 15px rgb(67 56 202 / 8%)}.icon{display:grid;place-items:center;flex:0 0 38px;width:38px;height:38px;border-radius:50%;background:#e0e7ff;color:#4338ca;font-size:16px}.icon_tugas{background:#dbeafe;color:#2563eb}.icon_asesmen{background:#fef3c7;color:#b45309}.feedText{display:grid;flex:1;min-width:0;gap:5px}.feedText strong{overflow:hidden;color:#20283b;font-size:13px;font-weight:650;text-overflow:ellipsis;white-space:nowrap}.feedText small{color:#64748b;font-size:11px}.unread{flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:#2563eb}.chevron{color:#8290a5;font-size:22px}.moreButton{display:block;min-height:38px;margin:18px auto 0;padding:0 22px;border:1px solid #c7d2fe;border-radius:8px;background:#fff;color:#4338ca;font:inherit;font-size:13px;font-weight:650;cursor:pointer}.moreButton:hover{background:#f4f3ff}.moreButton:disabled{opacity:.6;cursor:wait}.moreError{margin-top:12px;color:#b91c1c;font-size:12px;text-align:center}.skeletonList{display:grid;gap:10px}.skeletonList>section{display:grid;gap:10px}
 @media(max-width:640px){.feedCard{gap:9px;padding:12px}.feedText strong{font-size:12px}.feedText small{font-size:10px}}
+/* sinkron-v2 */
+.startButton,.downloadButton,.moreButton,.viewerBtn{background:linear-gradient(90deg,#4147d5,#0a8cff);border-color:transparent;color:#fff;border-radius:12px;font-weight:700;box-shadow:0 6px 16px rgb(65 71 213 / 26%);transition:transform 150ms ease,box-shadow 150ms ease,filter 150ms ease}
+.startButton:hover:not(:disabled),.downloadButton:hover:not(:disabled),.moreButton:hover:not(:disabled),.viewerBtn:hover:not(:disabled){background:linear-gradient(90deg,#4147d5,#0a8cff);filter:brightness(1.06);transform:translateY(-1px);box-shadow:0 9px 22px rgb(65 71 213 / 34%)}
+.assessmentCard,.taskCard,.materialCard,.feedCard{border-top:3px solid #4147d5;transition:transform 180ms ease,box-shadow 180ms ease}
+.assessmentCard:hover,.taskCard:hover,.materialCard:hover,.feedCard:hover{transform:translateY(-3px);box-shadow:0 16px 30px rgb(65 71 213 / 15%)}
+.assessmentCard:nth-child(3n+2),.taskCard:nth-child(3n+2),.materialCard:nth-child(3n+2){border-top-color:#0a8cff}
+.assessmentCard:nth-child(3n),.taskCard:nth-child(3n),.materialCard:nth-child(3n){border-top-color:#06b6d4}
+.toolbar{border-radius:14px}
+/* tanpa-garis-v1 */
+.assessmentCard,.taskCard,.materialCard,.feedCard,.assessmentCard:nth-child(3n+2),.taskCard:nth-child(3n+2),.materialCard:nth-child(3n+2),.assessmentCard:nth-child(3n),.taskCard:nth-child(3n),.materialCard:nth-child(3n){border-top:1px solid #e2e8f0}
+/* warna-kartu-v1 */
+.assessmentCard.assessmentCard,.taskCard.taskCard{background:linear-gradient(135deg,color-mix(in srgb,var(--siswa-subject-color,#6366f1) 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(4n+1){background:linear-gradient(160deg,#eef0ff,#fff 62%)}
+.materialCard.materialCard:nth-child(4n+2){background:linear-gradient(160deg,#e6f7fb,#fff 62%)}
+.materialCard.materialCard:nth-child(4n+3){background:linear-gradient(160deg,#e8f8f1,#fff 62%)}
+.materialCard.materialCard:nth-child(4n+4){background:linear-gradient(160deg,#fff2e8,#fff 62%)}
+.feedCard.feedCard:nth-child(4n+1){background:linear-gradient(160deg,#eef0ff,#fff 62%)}
+.feedCard.feedCard:nth-child(4n+2){background:linear-gradient(160deg,#e6f7fb,#fff 62%)}
+.feedCard.feedCard:nth-child(4n+3){background:linear-gradient(160deg,#e8f8f1,#fff 62%)}
+.feedCard.feedCard:nth-child(4n+4){background:linear-gradient(160deg,#fff2e8,#fff 62%)}
+/* tepi-warna-v1 */
+.materialCard.materialCard:nth-child(6n+1){border-left:4px solid #6366f1;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#6366f1 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(6n+2){border-left:4px solid #0ea5e9;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#0ea5e9 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(6n+3){border-left:4px solid #10b981;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#10b981 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(6n+4){border-left:4px solid #f59e0b;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#f59e0b 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(6n+5){border-left:4px solid #ec4899;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#ec4899 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(6n+6){border-left:4px solid #8b5cf6;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#8b5cf6 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(6n+1){border-left:4px solid #6366f1;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#6366f1 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(6n+2){border-left:4px solid #0ea5e9;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#0ea5e9 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(6n+3){border-left:4px solid #10b981;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#10b981 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(6n+4){border-left:4px solid #f59e0b;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#f59e0b 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(6n+5){border-left:4px solid #ec4899;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#ec4899 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(6n+6){border-left:4px solid #8b5cf6;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#8b5cf6 11%,#fff),#fff 62%)}
+/* tepi-warna-v2 */
+.materialCard.materialCard:nth-child(8n+1){border-left:4px solid #3b82f6;background:linear-gradient(135deg,color-mix(in srgb,#3b82f6 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(8n+2){border-left:4px solid #f97316;background:linear-gradient(135deg,color-mix(in srgb,#f97316 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(8n+3){border-left:4px solid #22c55e;background:linear-gradient(135deg,color-mix(in srgb,#22c55e 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(8n+4){border-left:4px solid #a855f7;background:linear-gradient(135deg,color-mix(in srgb,#a855f7 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(8n+5){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(8n+6){border-left:4px solid #14b8a6;background:linear-gradient(135deg,color-mix(in srgb,#14b8a6 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(8n+7){border-left:4px solid #eab308;background:linear-gradient(135deg,color-mix(in srgb,#eab308 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(8n+8){border-left:4px solid #ec4899;background:linear-gradient(135deg,color-mix(in srgb,#ec4899 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(8n+1){border-left:4px solid #3b82f6;background:linear-gradient(135deg,color-mix(in srgb,#3b82f6 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(8n+2){border-left:4px solid #f97316;background:linear-gradient(135deg,color-mix(in srgb,#f97316 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(8n+3){border-left:4px solid #22c55e;background:linear-gradient(135deg,color-mix(in srgb,#22c55e 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(8n+4){border-left:4px solid #a855f7;background:linear-gradient(135deg,color-mix(in srgb,#a855f7 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(8n+5){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(8n+6){border-left:4px solid #14b8a6;background:linear-gradient(135deg,color-mix(in srgb,#14b8a6 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(8n+7){border-left:4px solid #eab308;background:linear-gradient(135deg,color-mix(in srgb,#eab308 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(8n+8){border-left:4px solid #ec4899;background:linear-gradient(135deg,color-mix(in srgb,#ec4899 11%,#fff),#fff 62%)}
+/* tepi-warna-v3 */
+.materialCard.materialCard.materialCard:nth-child(8n+1){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 7%,#fff),#fff 62%)}
+.materialCard.materialCard.materialCard:nth-child(8n+2){border-left:4px solid #14b8a6;background:linear-gradient(135deg,color-mix(in srgb,#14b8a6 7%,#fff),#fff 62%)}
+.materialCard.materialCard.materialCard:nth-child(8n+3){border-left:4px solid #a855f7;background:linear-gradient(135deg,color-mix(in srgb,#a855f7 7%,#fff),#fff 62%)}
+.materialCard.materialCard.materialCard:nth-child(8n+4){border-left:4px solid #f97316;background:linear-gradient(135deg,color-mix(in srgb,#f97316 7%,#fff),#fff 62%)}
+.materialCard.materialCard.materialCard:nth-child(8n+5){border-left:4px solid #3b82f6;background:linear-gradient(135deg,color-mix(in srgb,#3b82f6 7%,#fff),#fff 62%)}
+.materialCard.materialCard.materialCard:nth-child(8n+6){border-left:4px solid #ec4899;background:linear-gradient(135deg,color-mix(in srgb,#ec4899 7%,#fff),#fff 62%)}
+.materialCard.materialCard.materialCard:nth-child(8n+7){border-left:4px solid #22c55e;background:linear-gradient(135deg,color-mix(in srgb,#22c55e 7%,#fff),#fff 62%)}
+.materialCard.materialCard.materialCard:nth-child(8n+8){border-left:4px solid #f59e0b;background:linear-gradient(135deg,color-mix(in srgb,#f59e0b 7%,#fff),#fff 62%)}
+.feedCard.feedCard.feedCard:nth-child(8n+1){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 7%,#fff),#fff 62%)}
+.feedCard.feedCard.feedCard:nth-child(8n+2){border-left:4px solid #14b8a6;background:linear-gradient(135deg,color-mix(in srgb,#14b8a6 7%,#fff),#fff 62%)}
+.feedCard.feedCard.feedCard:nth-child(8n+3){border-left:4px solid #a855f7;background:linear-gradient(135deg,color-mix(in srgb,#a855f7 7%,#fff),#fff 62%)}
+.feedCard.feedCard.feedCard:nth-child(8n+4){border-left:4px solid #f97316;background:linear-gradient(135deg,color-mix(in srgb,#f97316 7%,#fff),#fff 62%)}
+.feedCard.feedCard.feedCard:nth-child(8n+5){border-left:4px solid #3b82f6;background:linear-gradient(135deg,color-mix(in srgb,#3b82f6 7%,#fff),#fff 62%)}
+.feedCard.feedCard.feedCard:nth-child(8n+6){border-left:4px solid #ec4899;background:linear-gradient(135deg,color-mix(in srgb,#ec4899 7%,#fff),#fff 62%)}
+.feedCard.feedCard.feedCard:nth-child(8n+7){border-left:4px solid #22c55e;background:linear-gradient(135deg,color-mix(in srgb,#22c55e 7%,#fff),#fff 62%)}
+.feedCard.feedCard.feedCard:nth-child(8n+8){border-left:4px solid #f59e0b;background:linear-gradient(135deg,color-mix(in srgb,#f59e0b 7%,#fff),#fff 62%)}
+/* warna-feed-v1 */
+.feedLink:nth-child(8n+1) .feedCard.feedCard.feedCard{border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 7%,#fff),#fff 62%)}
+.feedLink:nth-child(8n+2) .feedCard.feedCard.feedCard{border-left:4px solid #14b8a6;background:linear-gradient(135deg,color-mix(in srgb,#14b8a6 7%,#fff),#fff 62%)}
+.feedLink:nth-child(8n+3) .feedCard.feedCard.feedCard{border-left:4px solid #a855f7;background:linear-gradient(135deg,color-mix(in srgb,#a855f7 7%,#fff),#fff 62%)}
+.feedLink:nth-child(8n+4) .feedCard.feedCard.feedCard{border-left:4px solid #f97316;background:linear-gradient(135deg,color-mix(in srgb,#f97316 7%,#fff),#fff 62%)}
+.feedLink:nth-child(8n+5) .feedCard.feedCard.feedCard{border-left:4px solid #3b82f6;background:linear-gradient(135deg,color-mix(in srgb,#3b82f6 7%,#fff),#fff 62%)}
+.feedLink:nth-child(8n+6) .feedCard.feedCard.feedCard{border-left:4px solid #ec4899;background:linear-gradient(135deg,color-mix(in srgb,#ec4899 7%,#fff),#fff 62%)}
+.feedLink:nth-child(8n+7) .feedCard.feedCard.feedCard{border-left:4px solid #22c55e;background:linear-gradient(135deg,color-mix(in srgb,#22c55e 7%,#fff),#fff 62%)}
+.feedLink:nth-child(8n+8) .feedCard.feedCard.feedCard{border-left:4px solid #f59e0b;background:linear-gradient(135deg,color-mix(in srgb,#f59e0b 7%,#fff),#fff 62%)}
