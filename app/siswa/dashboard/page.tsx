@@ -80,7 +80,7 @@ export default function DashboardSiswaPage() {
 
   return <div className={styles.page}>
     <PageHeader title="Dashboard" subtitle="Ringkasan materi, tugas, dan asesmen pembelajaran Anda."/>
-    <section className={styles.welcome}><div><h2>Selamat datang, {name}!</h2><p>{semester} sedang berjalan. Terus semangat belajarnya!</p></div><span className={styles.welcomeMark} aria-hidden="true">✦</span></section>
+    <section className={styles.welcome}><div><h2>Selamat datang, {name}!</h2><p>{semester} sedang berjalan. Terus semangat belajarnya!</p></div></section>
     {error ? <Card><ErrorState message={error} onRetry={() => void load()}/></Card> : loading || !data ? <div className={styles.loading}><Skeleton/><Skeleton/><Skeleton className={styles.loadingPanel}/></div> : <>
       <section className={styles.section}>
         <div className={styles.sectionHeading}><h2>Asesmen Terbaru</h2><Link href="/siswa/asesmen">LIHAT SEMUA <span aria-hidden="true">›</span></Link></div>
