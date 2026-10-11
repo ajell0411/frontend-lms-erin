@@ -36,3 +36,43 @@
 .formCard>button:disabled{opacity:.6;cursor:wait}
 @media(max-width:800px){.columns{grid-template-columns:1fr}.profileCard{min-height:240px}}
 @media(max-width:560px){.fields{grid-template-columns:1fr}.formCard{padding:16px}.formGrid{grid-template-columns:1fr}.formGrid .full{grid-column:auto}}
+/* profil-v2 */
+.profileCard{transition:transform 180ms ease,box-shadow 180ms ease}
+.profileCard:hover{transform:translateY(-3px);box-shadow:0 16px 30px rgb(65 71 213 / 15%)}
+.profileCover{height:110px;background:radial-gradient(circle at 85% 15%,rgb(255 255 255 / 30%),transparent 45%),linear-gradient(135deg,#4147d5,#0a8cff)}
+.avatar{box-shadow:0 0 0 3px rgb(65 71 213 / 20%),0 8px 20px rgb(65 71 213 / 25%)}
+.profileCard h2{font-size:17px;font-weight:700}
+.roleBadge{background:linear-gradient(90deg,#4147d5,#0a8cff);color:#fff;padding:5px 12px;letter-spacing:.02em;box-shadow:0 4px 10px rgb(65 71 213 / 22%)}
+.dataCard{position:relative;overflow:hidden;transition:transform 180ms ease,box-shadow 180ms ease}
+.dataCard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,#4147d5,#0a8cff)}
+.dataCard:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgb(65 71 213 / 12%)}
+.details>.dataCard:nth-child(2)::before{background:linear-gradient(180deg,#10b981,#06b6d4)}
+.details>.dataCard:nth-child(3)::before{background:linear-gradient(180deg,#f59e0b,#f97316)}
+.details>.dataCard:nth-child(4)::before{background:linear-gradient(180deg,#ec4899,#f43f5e)}
+.dataCard h2{padding-left:6px}
+.dataCard h2 span{display:grid;place-items:center;width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,#4147d5,#0a8cff);color:#fff;font-size:13px}
+.details>.dataCard:nth-child(2) h2 span{background:linear-gradient(135deg,#10b981,#06b6d4)}
+.details>.dataCard:nth-child(3) h2 span{background:linear-gradient(135deg,#f59e0b,#f97316)}
+.details>.dataCard:nth-child(4) h2 span{background:linear-gradient(135deg,#ec4899,#f43f5e)}
+.fields label>span{font-size:11px;font-weight:600;letter-spacing:.02em}
+.fields input{height:37px;border-radius:9px;transition:border-color 150ms ease,background 150ms ease}
+.fields input:hover{border-color:#c7cdf5;background:#f0f2ff}
+.formCard>button,.save{background:linear-gradient(90deg,#4147d5,#0a8cff);border-color:transparent;border-radius:10px;min-height:38px;box-shadow:0 6px 16px rgb(65 71 213 / 26%);transition:transform 150ms ease,filter 150ms ease}
+.formCard>button:hover:not(:disabled),.save:hover:not(:disabled){background:linear-gradient(90deg,#4147d5,#0a8cff);filter:brightness(1.06);transform:translateY(-1px)}
+.formCard{border-radius:16px}
+/* profil-layout-v1 */
+@media(min-width:801px){
+.page.page{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:stretch;max-width:1200px}
+.page.page>.heading,.page.page>.success,.page.page>.error,.page.page>.subtitle,.page.page>.columns{grid-column:1/-1}
+.columns.columns{grid-template-columns:1fr;gap:16px}
+.profileCard.profileCard{display:grid;grid-template-columns:auto 1fr;grid-template-areas:"avatar name" "avatar user" "avatar badges";column-gap:24px;row-gap:2px;align-content:center;align-items:center;justify-items:start;min-height:160px;padding:26px 34px}
+.profileCard.profileCard .profileCover{inset:0;height:auto}
+.profileCard.profileCard .avatar{grid-area:avatar;width:108px;height:108px;margin:0;font-size:28px}
+.profileCard.profileCard h2{grid-area:name;margin:0;color:#fff;font-size:24px}
+.profileCard.profileCard .username{grid-area:user;margin:2px 0 0;color:rgb(255 255 255 / 88%);font-size:13px}
+.profileCard.profileCard .profileBadges{grid-area:badges;margin-top:12px}
+.profileCard.profileCard h2,.profileCard.profileCard .username,.profileCard.profileCard .profileBadges{position:relative;z-index:1}
+.profileCard.profileCard .roleBadge{border:1px solid rgb(255 255 255 / 50%);background:rgb(255 255 255 / 20%);box-shadow:none;color:#fff}
+.details.details{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:stretch}
+.formCard.formCard{width:auto;max-width:none}
+}
