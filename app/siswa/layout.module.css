@@ -12,3 +12,50 @@
 @media(max-width:1023px){.shell{display:block}.sidebar{position:fixed;left:0;top:0;bottom:0;width:min(280px,84vw);height:100dvh;transform:translateX(-102%);transition:transform 190ms ease;box-shadow:8px 0 28px rgb(15 23 42 / 12%)}.sidebarOpen{transform:translateX(0)}.overlay{position:fixed;z-index:60;inset:0;display:block;border:0;background:rgb(15 23 42 / 42%)}.main{min-height:100vh}.topbar{padding:0 18px}.hamburger{display:grid}.content{padding:22px 20px 32px}.skeletonShell{display:block}.skeletonShell>aside{display:none}.skeletonMain{padding:0 20px}}
 @media(max-width:639px){.content{padding:18px 14px 28px}.topbar{padding:0 12px}.topbarRight{gap:8px}.skeletonMain{padding:0 14px}.skeletonMain header{margin:0 -14px 24px}}
 @media(prefers-reduced-motion:reduce){.navItem,.sidebar{transition:none}}
+
+/* layout-v2 */
+.shell{grid-template-columns:260px minmax(0,1fr)}
+.sidebar{padding:0 16px 16px}
+.brand{height:72px;margin:0 -16px 16px;padding:0 18px;gap:10px}
+.brandLogo{width:48px;height:48px;flex:0 0 auto;object-fit:contain}
+.brandText{display:grid;min-width:0;gap:2px}
+.brandText strong{font-size:20px;font-weight:800;line-height:1.1;letter-spacing:.02em;color:var(--siswa-primary)}
+.brandText small{overflow:hidden;font-size:10px;color:var(--siswa-muted);text-overflow:ellipsis;white-space:nowrap}
+.topbar{height:72px}
+.profileRow{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.profileRow .profileCard{flex:1;min-width:0;margin-bottom:0;border-radius:12px;background:#fff}
+.dotsBtn{display:grid;place-items:center;flex:0 0 auto;width:42px;height:42px;padding:0;border:1px solid var(--siswa-border);border-radius:12px;background:#fff;color:var(--siswa-primary);box-shadow:var(--siswa-shadow);cursor:pointer;transition:background 150ms ease,color 150ms ease}
+.dotsBtn:hover{border-color:transparent;background:linear-gradient(135deg,var(--siswa-primary),var(--siswa-primary-2));color:#fff}
+.dotsBtn:focus-visible{outline:2px solid var(--siswa-primary);outline-offset:2px}
+.navItem{min-height:44px;padding:0 14px;border-radius:10px;font-size:14px}
+.navActive,.navActive:hover{background:linear-gradient(90deg,var(--siswa-primary),var(--siswa-primary-2));color:#fff;font-weight:650}
+.logout{min-height:44px;border-radius:10px;font-size:14px;font-weight:600}
+.userChip{display:flex;align-items:center;gap:10px;padding:5px 6px 5px 14px;border:1px solid var(--siswa-border);border-radius:14px;background:#fff;box-shadow:var(--siswa-shadow);text-decoration:none}
+.userChip:hover{background:var(--siswa-primary-soft)}
+.userChip:focus-visible{outline:2px solid var(--siswa-primary);outline-offset:2px}
+.userText{display:grid;line-height:1.2;text-align:right}
+.userText strong{max-width:150px;overflow:hidden;font-size:13px;color:var(--siswa-text);text-overflow:ellipsis;white-space:nowrap}
+.userText small{font-size:11px;color:var(--siswa-muted)}
+.topAvatar{width:36px;height:36px;font-size:12px}
+.confirmOverlay{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;background:rgb(15 23 42 / 45%)}
+.confirmModal{width:100%;max-width:380px;padding:26px 24px 22px;border-radius:16px;background:#fff;box-shadow:0 20px 48px rgb(15 23 42 / 25%)}
+.confirmTitle{margin:0 0 8px;font-size:18px;font-weight:700;color:var(--siswa-text)}
+.confirmText{margin:0 0 22px;font-size:14px;color:var(--siswa-muted)}
+.confirmActions{display:flex;justify-content:flex-end;gap:10px}
+.btnCancel,.btnOut{padding:10px 20px;border-radius:10px;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.btnCancel{border:1px solid var(--siswa-border);background:#fff;color:var(--siswa-text)}
+.btnCancel:hover{background:var(--siswa-primary-soft)}
+.btnOut{border:0;background:#ef4444;color:#fff}
+.btnOut:hover{background:#dc2626}
+@media(min-width:1024px){
+  .shellMini{grid-template-columns:84px minmax(0,1fr)}
+  .shellMini .sidebar{padding:0 14px 16px}
+  .shellMini .brand{justify-content:center;margin:0 -14px 16px;padding:0 14px}
+  .shellMini .brandText,.shellMini .profileCard,.shellMini .navItem span,.shellMini .logout span{display:none}
+  .shellMini .profileRow{justify-content:center}
+  .shellMini .navItem,.shellMini .logout{justify-content:center;padding:0}
+}
+@media(max-width:639px){
+  .userText{display:none}
+  .userChip{padding:4px;border-radius:50%}
+}
