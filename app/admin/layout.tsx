@@ -300,7 +300,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           </div>
 
           <div className={styles.accountMenuWrap} ref={accountMenuRef}>
-            <button type="button" className={styles.topProfile} title="Menu akun" aria-label="Menu akun" aria-expanded={accountMenuOpen} onClick={() => setAccountMenuOpen((open) => !open)}>
+            <button type="button" className={styles.topProfile} title="Menu akun" aria-label="Menu akun" aria-haspopup="menu" aria-expanded={accountMenuOpen} onClick={() => setAccountMenuOpen((open) => !open)}>
               <span className={styles.topProfileText}><strong>{user?.nama ?? "Pengguna"}</strong><small>{roleLabel(role)}</small></span>
               <span className={styles.topAvatar}>{profilePhoto ? <Image src={profilePhoto} alt="" width={36} height={36} unoptimized /> : initials}</span>
             </button>
@@ -312,7 +312,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
               <Link role="menuitem" href="/admin/profile#credentials" onClick={() => setAccountMenuOpen(false)}>
                 <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Ganti Username/Password
               </Link>
-              <button type="button" role="menuitem" onClick={() => { setAccountMenuOpen(false); setConfirmOut(true); }}>
+              <button type="button" role="menuitem" style={{ color: "#dc2626" }} onClick={() => { setAccountMenuOpen(false); setConfirmOut(true); }}>
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/><path d="m16 17 5-5-5-5M21 12H9"/></svg>Keluar
               </button>
             </div>
