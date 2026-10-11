@@ -12,3 +12,9 @@
 @media(max-width:640px){.pageHeader h1{font-size:23px}.card{padding:14px}.toastStack{left:12px;right:12px;bottom:12px}.toast{min-width:0}}
 @media(max-width:520px){.notifPopup{position:fixed;top:66px;right:8px;width:min(360px,calc(100vw - 16px))}}
 @media(prefers-reduced-motion:reduce){.skeleton,.notifPopup{animation:none}}
+
+/* bell-v2 */
+.bellButton{position:relative;display:grid;place-items:center;width:38px;height:38px;padding:0;border:0;border-radius:50%;background:transparent;color:#64748b;cursor:pointer}
+.bellButton:hover,.bellButton[aria-expanded=true]{background:var(--siswa-primary-soft);color:var(--siswa-primary)}
+.bellButton svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.bellDot{position:absolute;top:7px;right:8px;width:9px;height:9px;border:2px solid #fff;border-radius:50%;background:#ef4444}
