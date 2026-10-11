@@ -83,6 +83,14 @@ export type ProfilSiswa = {
   kelas?: string | { nama?: string } | null;
   nama_kelas?: string;
   foto_url?: string;
+  jenis_kelamin?: string;
+  tempat_lahir?: string;
+  tanggal_lahir?: string;
+  alamat?: string;
+  nama_wali?: string;
+  telepon_wali?: string;
+  tahun_masuk?: number | null;
+  status?: string;
 };
 
 export type OpsiSoalSiswa = { kode: "A" | "B" | "C" | "D"; teks: string };
@@ -123,7 +131,6 @@ function unwrap<T>(response: T | Envelope<T>): T {
   return response as T;
 }
 
-// TODO (backend bagian 4): sediakan feed terpaginasikan untuk siswa.
 export async function listPengumumanSiswa(filters: { jenis?: JenisPengumuman | ""; page?: number; limit?: number } = {}): Promise<DaftarPengumumanSiswa> {
   const response = await apiFetch<DaftarPengumumanSiswa | PengumumanSiswa[] | Envelope<DaftarPengumumanSiswa | PengumumanSiswa[]>>(
     "/siswa/pengumuman" + queryString({ jenis: filters.jenis, page: filters.page ?? 1, limit: filters.limit ?? 9 }),
@@ -138,7 +145,6 @@ export async function listPengumumanSiswa(filters: { jenis?: JenisPengumuman | "
   };
 }
 
-// TODO (backend bagian 4): sediakan endpoint data dashboard siswa.
 export async function getDashboardSiswa(): Promise<DashboardSiswa> {
   const response = await apiFetch<DashboardSiswa | Envelope<DashboardSiswa>>("/siswa/dashboard");
   const dashboard = unwrap(response);
@@ -148,7 +154,6 @@ export async function getDashboardSiswa(): Promise<DashboardSiswa> {
   return { asesmen: dashboard.asesmen.slice(0, 3), tugas: dashboard.tugas.slice(0, 3), materi: dashboard.materi.slice(0, 3) };
 }
 
-// TODO (backend bagian 4): sediakan pelajaran yang diikuti siswa.
 export async function listPelajaranSiswa(): Promise<PelajaranSiswa[]> {
   const response = await apiFetch<PelajaranSiswa[] | Envelope<PelajaranSiswa[]>>("/siswa/pelajaran");
   const lessons = unwrap(response);
@@ -156,7 +161,6 @@ export async function listPelajaranSiswa(): Promise<PelajaranSiswa[]> {
   return lessons;
 }
 
-// TODO (backend bagian 4): filter materi siswa berdasarkan pencarian dan pelajaran.
 export async function listMateriSiswa(filters: { search?: string; pelajaran_id?: number } = {}): Promise<MateriSiswa[]> {
   const response = await apiFetch<MateriSiswa[] | Envelope<MateriSiswa[]>>(
     "/siswa/materi" + queryString({ search: filters.search, pelajaran_id: filters.pelajaran_id }),
@@ -166,7 +170,6 @@ export async function listMateriSiswa(filters: { search?: string; pelajaran_id?:
   return materials;
 }
 
-// TODO (backend bagian 4): stream lampiran materi dengan Content-Disposition.
 export async function downloadMateriSiswa(id: number, fallbackName?: string): Promise<{ blob: Blob; filename: string }> {
   const token = getToken();
   const response = await fetch("/api/siswa/materi/" + encodeURIComponent(String(id)) + "/unduh", {
@@ -195,7 +198,6 @@ export async function downloadMateriSiswa(id: number, fallbackName?: string): Pr
   return { blob: await response.blob(), filename };
 }
 
-// TODO (backend bagian 4): sediakan daftar asesmen sesuai kelas siswa.
 export async function listAsesmenSiswa(filters: { search?: string; pelajaran_id?: number; tipe?: AsesmenSiswa["tipe"] } = {}): Promise<AsesmenSiswa[]> {
   const response = await apiFetch<AsesmenSiswa[] | Envelope<AsesmenSiswa[]>>(
     "/siswa/asesmen" + queryString({ search: filters.search, pelajaran_id: filters.pelajaran_id, tipe: filters.tipe }),
@@ -205,7 +207,6 @@ export async function listAsesmenSiswa(filters: { search?: string; pelajaran_id?
   return assessments;
 }
 
-// TODO (backend bagian 4): endpoint detail harus mengirim soal tanpa kunci jawaban.
 export async function getDetailAsesmenSiswa(id: number): Promise<DetailAsesmenSiswa> {
   const response = await apiFetch<DetailAsesmenSiswa | Envelope<DetailAsesmenSiswa>>("/siswa/asesmen/" + encodeURIComponent(String(id)));
   const assessment = unwrap(response);
@@ -213,7 +214,6 @@ export async function getDetailAsesmenSiswa(id: number): Promise<DetailAsesmenSi
   return assessment;
 }
 
-// TODO (backend bagian 4): waktu selesai dikembalikan server dan idempoten saat asesmen sudah dimulai.
 export async function mulaiAsesmenSiswa(id: number): Promise<StatusMulaiAsesmen> {
   const response = await apiFetch<StatusMulaiAsesmen | Envelope<StatusMulaiAsesmen>>(
     "/siswa/asesmen/" + encodeURIComponent(String(id)) + "/mulai",
@@ -224,7 +224,6 @@ export async function mulaiAsesmenSiswa(id: number): Promise<StatusMulaiAsesmen>
   return result;
 }
 
-// TODO (backend bagian 4): simpan jawaban tanpa mengirimkan kunci jawaban.
 export async function simpanJawabanAsesmenSiswa(id: number, jawaban: Record<string, string>): Promise<void> {
   await apiFetch<unknown>("/siswa/asesmen/" + encodeURIComponent(String(id)) + "/jawaban", {
     method: "PUT",
@@ -232,7 +231,6 @@ export async function simpanJawabanAsesmenSiswa(id: number, jawaban: Record<stri
   });
 }
 
-// TODO (backend bagian 4): kirim jawaban satu kali dan kembalikan nilai bila sudah dirilis.
 export async function kirimAsesmenSiswa(id: number, jawaban: Record<string, string>): Promise<HasilKirimAsesmen> {
   const response = await apiFetch<HasilKirimAsesmen | Envelope<HasilKirimAsesmen>>(
     "/siswa/asesmen/" + encodeURIComponent(String(id)) + "/kirim",
@@ -241,7 +239,6 @@ export async function kirimAsesmenSiswa(id: number, jawaban: Record<string, stri
   return unwrap(response);
 }
 
-// TODO (backend bagian 4): sediakan daftar tugas yang sesuai dengan kelas siswa.
 export async function listTugasSiswa(filters: { search?: string; pelajaran_id?: number } = {}): Promise<TugasSiswa[]> {
   const response = await apiFetch<TugasSiswa[] | Envelope<TugasSiswa[]>>(
     "/siswa/tugas" + queryString({ search: filters.search, pelajaran_id: filters.pelajaran_id }),
@@ -251,13 +248,11 @@ export async function listTugasSiswa(filters: { search?: string; pelajaran_id?: 
   return tasks;
 }
 
-// TODO (backend bagian 4): sediakan detail, instruksi, dan status pengumpulan tugas.
 export async function getDetailTugasSiswa(id: number): Promise<DetailTugasSiswa> {
   const response = await apiFetch<DetailTugasSiswa | Envelope<DetailTugasSiswa>>("/siswa/tugas/" + encodeURIComponent(String(id)));
   return unwrap(response);
 }
 
-// TODO (backend bagian 4): bila lampiran bersifat privat, URL harus tetap terautentikasi.
 export async function downloadTugasLampiranSiswa(id: number, fileUrl: string, fallbackName?: string): Promise<{ blob: Blob; filename: string }> {
   const token = getToken();
   const url = fileUrl.startsWith("http") ? fileUrl : fileUrl.startsWith("/api/") ? fileUrl : "/api/siswa/tugas/" + encodeURIComponent(String(id)) + "/lampiran";
@@ -279,7 +274,6 @@ export async function downloadTugasLampiranSiswa(id: number, fileUrl: string, fa
   return { blob: await response.blob(), filename };
 }
 
-// TODO (backend bagian 4): validasi file dan proses multipart berada di handler siswa.
 export function kumpulkanTugasSiswa(id: number, file: File, catatan: string, onProgress: (progress: number) => void): Promise<DetailTugasSiswa> {
   return new Promise((resolve, reject) => {
     const request = new XMLHttpRequest();
@@ -319,7 +313,6 @@ export function kumpulkanTugasSiswa(id: number, file: File, catatan: string, onP
   });
 }
 
-// TODO (backend bagian 4): profil siswa hanya dapat mengubah nomor HP dan password sendiri.
 export async function perbaruiProfilSiswa(input: { no_hp: string; password_lama?: string; password_baru?: string }): Promise<ProfilSiswa> {
   const response = await apiFetch<ProfilSiswa | Envelope<ProfilSiswa>>("/siswa/profil", {
     method: "PUT",
@@ -328,7 +321,6 @@ export async function perbaruiProfilSiswa(input: { no_hp: string; password_lama?
   return unwrap(response);
 }
 
-// TODO (backend bagian 4): unggah foto profil JPG/PNG maksimal 2 MB.
 export async function unggahFotoProfilSiswa(file: File): Promise<string> {
   const form = new FormData();
   form.append("foto", file);
