@@ -858,3 +858,7 @@
 }
 @media (prefers-reduced-motion: reduce) { .notificationPopover { animation: none; } }
 @media print{:global(body.print-teacher-list) .header,:global(body.print-teacher-list) .sidebar{display:none!important}:global(body.print-teacher-list) .content{width:100%;padding:0!important}}
+/* profil-sync-v1 */
+.sideToggle{margin:12px 0 -54px 0}
+.sidebar>.profileCard{transition:border-color 150ms ease,box-shadow 150ms ease}
+.sidebar>.profileCard:hover{border-color:#c7cdf5;box-shadow:0 6px 16px rgb(65 71 213 / 12%)}
