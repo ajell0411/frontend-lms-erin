@@ -9,6 +9,7 @@ import { clearSession, dashboardPath, getProfile, getToken, getUser, listAktivit
 import { roleLabel, useRole } from "@/lib/role";
 import styles from "./layout.module.css";
 import BackButton from "./BackButton";
+import { AktivitasNotif } from "@/components/notif/AktivitasNotif";
 
 type IconName = "grid" | "users" | "database" | "megaphone" | "user" | "logout" | "bell";
 type MenuChild = { label: string; href: string };
@@ -267,39 +268,8 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     <div className={styles.wrapper}>
       <header className={styles.header}>
 <div className={styles.headerRight}>
-          <div className={styles.bellWrap} ref={bellRef}>
-            <button
-              type="button"
-              className={styles.bellBtn}
-              aria-label="Buka pengumuman aktivitas"
-              aria-expanded={bellOpen}
-              aria-haspopup="dialog"
-              onClick={() => {
-                const latest = latestActivityAt || Date.now();
-                setBellOpen((open) => !open);
-                markActivitiesRead();
-                setAktivitasSeenAt(latest);
-                try { localStorage.setItem("eclass_aktivitas_seen_at", String(latest)); } catch { /* Penyimpanan browser bisa tidak tersedia. */ }
-              }}
-            >
-              <Icon name="bell" />
-              {hasUnreadActivity && <span className={styles.bellDot} />}
-            </button>
-            {bellOpen && <section className={styles.notificationPopover} aria-label="Pengumuman terbaru">
-              <span className={styles.notificationArrow} aria-hidden="true" />
-              <h2>Pengumuman terbaru</h2>
-              {aktivitas.slice(0, 6).length === 0 ? <p className={styles.notificationEmpty}>Belum ada pengumuman</p> : <div className={styles.notificationList}>
-                {aktivitas.slice(0, 6).map((item) => <Link key={item.id} href="/admin/pengumuman" className={styles.notificationItem} onClick={() => setBellOpen(false)}>
-                  <strong>{item.objek_nama ? `${item.objek_jenis}: ${item.objek_nama}` : item.objek_jenis}</strong>
-                  <span>{item.aktor_nama} telah {item.aksi} {item.objek_jenis.toLowerCase()}.</span>
-                  <small>{relativeTime(item.created_at)}</small>
-                </Link>)}
-              </div>}
-              <Link href="/admin/pengumuman" className={styles.notificationAll} onClick={() => setBellOpen(false)}>Lihat semua pengumuman</Link>
-            </section>}
-          </div>
-
-          <div className={styles.accountMenuWrap} ref={accountMenuRef}>
+          <AktivitasNotif storageKey="eclass_aktivitas_seen_at" href="/admin/pengumuman" />
+<div className={styles.accountMenuWrap} ref={accountMenuRef}>
             <button type="button" className={styles.topProfile} title="Menu akun" aria-label="Menu akun" aria-haspopup="menu" aria-expanded={accountMenuOpen} onClick={() => setAccountMenuOpen((open) => !open)}>
               <span className={styles.topProfileText}><strong>{user?.nama ?? "Pengguna"}</strong><small>{roleLabel(role)}</small></span>
               <span className={styles.topAvatar}>{profilePhoto ? <Image src={profilePhoto} alt="" width={36} height={36} unoptimized /> : initials}</span>
