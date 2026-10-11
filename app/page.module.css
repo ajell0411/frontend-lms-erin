@@ -998,4 +998,88 @@
     transition: none !important;
   }
 }
-
+/* landing-v2 */
+.btnPrimary{background:linear-gradient(90deg,#4147d5,#0a8cff);box-shadow:0 8px 20px rgb(65 71 213 / 28%);transition:transform 180ms ease,box-shadow 180ms ease,filter 180ms ease}
+.btnPrimary:hover{filter:brightness(1.07);transform:translateY(-2px);box-shadow:0 12px 26px rgb(65 71 213 / 36%)}
+.btnOutline{transition:transform 180ms ease,box-shadow 180ms ease,background 180ms ease}
+.btnOutline:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgb(65 71 213 / 16%)}
+.nav a{position:relative;transition:color 160ms ease}
+.nav a::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:linear-gradient(90deg,#4147d5,#0a8cff);transform:scaleX(0);transform-origin:left;transition:transform 200ms ease}
+.nav a:hover::after{transform:scaleX(1)}
+.heroLineTwo>span{background:linear-gradient(90deg,#4147d5,#0a8cff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.eyebrow{display:inline-block;padding:6px 14px;border-radius:999px;background:var(--primary-soft);letter-spacing:.1em}
+.sectionTitle{font-size:34px;letter-spacing:-.01em}
+.sectionTitle::after{content:"";display:block;width:64px;height:4px;margin:14px auto 0;border-radius:4px;background:linear-gradient(90deg,#4147d5,#0a8cff)}
+.card{border-radius:20px;border-color:#e6eaf5;box-shadow:0 2px 10px rgb(15 23 42 / 5%)}
+.card::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,#4147d5,#0a8cff)}
+.cardReveal:nth-child(3n+2) .card::before{background:linear-gradient(90deg,#0a8cff,#06b6d4)}
+.cardReveal:nth-child(3n) .card::before{background:linear-gradient(90deg,#10b981,#06b6d4)}
+.cardReveal:nth-child(4n) .card::before{background:linear-gradient(90deg,#f59e0b,#f97316)}
+.cardIcon,.stepNumber{width:50px;height:50px;border-radius:15px;background:linear-gradient(135deg,#4147d5,#0a8cff);color:#fff;box-shadow:0 8px 18px rgb(65 71 213 / 28%)}
+.cardReveal:nth-child(3n+2) .cardIcon,.cardReveal:nth-child(3n+2) .stepNumber{background:linear-gradient(135deg,#0a8cff,#06b6d4);box-shadow:0 8px 18px rgb(10 140 255 / 28%)}
+.cardReveal:nth-child(3n) .cardIcon,.cardReveal:nth-child(3n) .stepNumber{background:linear-gradient(135deg,#10b981,#06b6d4);box-shadow:0 8px 18px rgb(16 185 129 / 26%)}
+.cardReveal:nth-child(4n) .cardIcon,.cardReveal:nth-child(4n) .stepNumber{background:linear-gradient(135deg,#f59e0b,#f97316);box-shadow:0 8px 18px rgb(249 115 22 / 26%)}
+.cardTitle{font-size:18px}
+.cardGridAlur::before{height:3px;border-radius:3px;background:linear-gradient(90deg,rgb(65 71 213 / 15%),rgb(10 140 255 / 45%),rgb(65 71 213 / 15%))}
+.ctaCard{background:radial-gradient(circle at 90% 10%,rgb(10 140 255 / 14%),transparent 45%),linear-gradient(135deg,#eef2ff 0%,#f4f9ff 100%);box-shadow:0 18px 44px rgb(65 71 213 / 12%)}
+.ctaTitle{font-size:30px;letter-spacing:-.01em}
+.footer{background:radial-gradient(circle at 85% 0%,rgb(10 140 255 / 30%),transparent 40%),linear-gradient(160deg,#1e2a8a 0%,#1d4ed8 100%)}
+.footerHeading{position:relative;padding-bottom:10px}
+.footerHeading::after{content:"";position:absolute;left:0;bottom:0;width:28px;height:3px;border-radius:3px;background:rgb(255 255 255 / 55%)}
+.footerList li{transition:transform 160ms ease,color 160ms ease}
+.footerList li:hover{transform:translateX(4px);color:#fff}
+@media(max-width:768px){.sectionTitle{font-size:27px}.ctaTitle{font-size:24px}}
+@media(prefers-reduced-motion:reduce){.btnPrimary,.btnOutline,.nav a::after,.footerList li{transition:none}}
+/* anim-v1 */
+.cardIcon,.stepNumber{animation:iconFloat 3.2s ease-in-out infinite}
+.cardReveal:nth-child(2) .cardIcon,.cardReveal:nth-child(2) .stepNumber{animation-delay:.4s}
+.cardReveal:nth-child(3) .cardIcon,.cardReveal:nth-child(3) .stepNumber{animation-delay:.8s}
+.cardReveal:nth-child(4) .cardIcon,.cardReveal:nth-child(4) .stepNumber{animation-delay:1.2s}
+.cardReveal:nth-child(5) .cardIcon,.cardReveal:nth-child(5) .stepNumber{animation-delay:1.6s}
+@keyframes iconFloat{0%,100%{translate:0 0;scale:1}50%{translate:0 -6px;scale:1.06}}
+.card::before{background-size:200% 100%;animation:barFlow 3.4s ease-in-out infinite alternate}
+.cardReveal:nth-child(2) .card::before{animation-delay:.3s}
+.cardReveal:nth-child(3) .card::before{animation-delay:.6s}
+.cardReveal:nth-child(4) .card::before{animation-delay:.9s}
+.cardReveal:nth-child(5) .card::before{animation-delay:1.2s}
+@keyframes barFlow{from{background-position:0% 0}to{background-position:100% 0}}
+.cardGridAlur::after{content:"";position:absolute;top:44px;left:10%;z-index:0;width:70px;height:5px;border-radius:5px;background:linear-gradient(90deg,transparent,#0a8cff,transparent);box-shadow:0 0 12px rgb(10 140 255 / 70%);animation:lineRun 3.6s ease-in-out infinite;pointer-events:none}
+@keyframes lineRun{0%{left:10%;opacity:0}12%{opacity:1}88%{opacity:1}100%{left:calc(90% - 70px);opacity:0}}
+@media(max-width:1023px){.cardGridAlur::after{display:none}}
+@media(prefers-reduced-motion:reduce){.cardIcon,.stepNumber,.card::before,.cardGridAlur::after{animation:none!important}}
+/* anim-v2 */
+.cardGrid:not(.cardGridAlur){position:relative}
+.cardGrid:not(.cardGridAlur)::before{content:"";position:absolute;top:48px;left:12.5%;z-index:0;width:75%;height:3px;border-radius:3px;background:linear-gradient(90deg,rgb(65 71 213 / 15%),rgb(10 140 255 / 45%),rgb(65 71 213 / 15%));pointer-events:none}
+.cardGrid:not(.cardGridAlur)::after{content:"";position:absolute;top:47px;left:12.5%;z-index:0;width:70px;height:5px;border-radius:5px;background:linear-gradient(90deg,transparent,#0a8cff,transparent);box-shadow:0 0 12px rgb(10 140 255 / 70%);animation:lineRunFitur 3.6s ease-in-out infinite;pointer-events:none}
+@keyframes lineRunFitur{0%{left:12.5%;opacity:0}12%{opacity:1}88%{opacity:1}100%{left:calc(87.5% - 70px);opacity:0}}
+@media(max-width:1023px){.cardGrid:not(.cardGridAlur)::before,.cardGrid:not(.cardGridAlur)::after{display:none}}
+@media(prefers-reduced-motion:reduce){.cardGrid:not(.cardGridAlur)::after{animation:none!important}}
+/* tone-v1 */
+.cardReveal:nth-child(n) .card::before{background:linear-gradient(90deg,#4147d5,#0a8cff);animation:none}
+.cardReveal:nth-child(n) .cardIcon,.cardReveal:nth-child(n) .stepNumber{background:linear-gradient(135deg,#4147d5,#0a8cff);box-shadow:0 8px 18px rgb(65 71 213 / 28%)}
+/* hero-smooth-v1 */
+.heroImageWrap{will-change:translate;animation:heroFloat 7s ease-in-out infinite}
+@keyframes heroFloat{0%,100%{translate:0 0}50%{translate:0 -9px}}
+.heroImageWrap img{animation:none}
+.heroImageWrap::before{animation:glowSoft 6s ease-in-out infinite;will-change:opacity,scale}
+@keyframes glowSoft{0%,100%{opacity:.6;scale:.95}50%{opacity:1;scale:1.05}}
+.heroImageWrap.popHero{animation:heroFloat 7s ease-in-out infinite,popHeroSoft .8s cubic-bezier(.3,.7,.3,1)}
+@keyframes popHeroSoft{0%,100%{scale:1}40%{scale:1.035}}
+.chip{will-change:translate;animation:chipDrift 5s ease-in-out infinite}
+.chip1{animation-duration:4.6s;animation-delay:-1s}
+.chip2{animation-duration:5.2s;animation-delay:-2.4s}
+.chip3{animation-duration:4.9s;animation-delay:-3.1s}
+.chip4{animation-duration:5.6s;animation-delay:-.6s}
+@keyframes chipDrift{0%,100%{translate:0 0}50%{translate:3px -8px}}
+:global(.reveal).heroImageReveal{transition-duration:1000ms!important;transition-timing-function:cubic-bezier(.22,1,.36,1)!important}
+@media(prefers-reduced-motion:reduce){.heroImageWrap,.heroImageWrap.popHero,.heroImageWrap::before,.chip{animation:none!important}}
+/* warna-v2 */
+.cardReveal:nth-child(n) .card::before{display:none}
+.cardReveal:nth-child(1) .cardIcon,.cardReveal:nth-child(1) .stepNumber{background:linear-gradient(135deg,#4147d5,#0a8cff);box-shadow:0 8px 18px rgb(65 71 213 / 28%)}
+.cardReveal:nth-child(2) .cardIcon,.cardReveal:nth-child(2) .stepNumber{background:linear-gradient(135deg,#0891b2,#22d3ee);box-shadow:0 8px 18px rgb(8 145 178 / 28%)}
+.cardReveal:nth-child(3) .cardIcon,.cardReveal:nth-child(3) .stepNumber{background:linear-gradient(135deg,#059669,#34d399);box-shadow:0 8px 18px rgb(5 150 105 / 28%)}
+.cardReveal:nth-child(4) .cardIcon,.cardReveal:nth-child(4) .stepNumber{background:linear-gradient(135deg,#ea580c,#fb923c);box-shadow:0 8px 18px rgb(234 88 12 / 28%)}
+/* tanpa-garis-fitur */
+.cardGrid:not(.cardGridAlur)::before,.cardGrid:not(.cardGridAlur)::after{display:none!important;animation:none!important}
+/* cahaya-fitur */
+@media(min-width:1024px) and (prefers-reduced-motion:no-preference){.cardGrid:not(.cardGridAlur)::after{display:block!important;animation:lineRunFitur 3.6s ease-in-out infinite!important}}
