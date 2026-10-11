@@ -36,6 +36,8 @@ function actionLabel(aksi: AktivitasRecord["aksi"]): string {
   return "menghapus";
 }
 
+const actionIcon: Record<AktivitasRecord["aksi"], string> = { menambahkan: "+", mengubah: "\u270E", menghapus: "\u2715" };
+
 function accountLabel(kind: string): string {
   switch (kind) {
     case "murid":
@@ -52,9 +54,9 @@ function ActivityText({ item }: { item: AktivitasRecord }) {
   const action = actionLabel(item.aksi);
   const kind = item.objek_jenis.toLocaleLowerCase("id-ID");
   if (["kelas", "jurusan", "pelajaran"].includes(kind)) {
-    return <><strong>{item.aktor_nama}</strong> telah {action} {kind} <strong>{item.objek_nama}</strong></>;
+    return <>{item.aktor_nama} telah {action} {kind} {item.objek_nama}</>;
   }
-  return <><strong>{item.aktor_nama}</strong> telah {action} <strong>{item.objek_nama}</strong> sebagai {accountLabel(kind)}</>;
+  return <>{item.aktor_nama} telah {action} {item.objek_nama} sebagai {accountLabel(kind)}</>;
 }
 
 export default function PengumumanPage() {
@@ -114,8 +116,11 @@ export default function PengumumanPage() {
       {loading ? <p className={styles.state}>Memuat aktivitas...</p> : items.length === 0 ? <p className={styles.state}>Belum ada aktivitas terbaru.</p> : (
         <section className={styles.feed} aria-label="Aktivitas terbaru">
           {items.map((item) => <article className={styles.item} key={item.id}>
-            <span className={styles.checkIcon} aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 12 4 4 8-8" /></svg></span>
-            <div className={styles.text}><p className={styles.itemTitle}><ActivityText item={item} /></p><p className={styles.time}>{relativeTime(item.created_at, now)}</p></div>
+            <span className={styles.icon + " " + styles["icon_" + item.aksi]} aria-hidden="true">{actionIcon[item.aksi]}</span>
+            <span className={styles.itemText}>
+              <strong><ActivityText item={item} /></strong>
+              <small>{relativeTime(item.created_at, now)}</small>
+            </span>
           </article>)}
         </section>
       )}
