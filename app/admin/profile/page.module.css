@@ -1,18 +1,38 @@
-.page{display:flex;flex-direction:column;gap:16px;min-width:0;color:#172033}.heading{min-height:58px}.eyebrow{margin:0 0 4px;color:#626be0;font-size:11px;font-weight:700}.title{margin:0;color:#111827;font-size:22px;font-weight:700}.subtitle{margin:5px 0 0;color:#667085;font-size:12px}.profile{display:grid;grid-template-columns:minmax(190px,240px) minmax(0,1fr);gap:14px;width:min(100%,920px)}.profileCard,.dataCard{padding:18px;border:1px solid #dfe3f0;border-radius:7px;background:#fff;box-shadow:0 2px 8px rgb(33 43 77 / 4%)}.profileCard{grid-row:span 2;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}.profileCard h2{margin:5px 0 0;color:#20283b;font-size:15px}.avatar{display:grid;place-items:center;flex:0 0 96px;width:96px;height:96px;overflow:hidden;border:3px solid #e7efff;border-radius:50%;background:#e8e8fb;color:#4338ca;font-size:25px;font-weight:750}.avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover}.dataCard h2{margin:0 0 14px;color:#20283b;font-size:13px}.dataCard dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 22px;margin:0}.dataCard dl div{min-width:0}.dataCard dt{margin-bottom:4px;color:#7a8295;font-size:9px}.dataCard dd{overflow-wrap:anywhere;margin:0;color:#30394e;font-size:11px;font-weight:600}.full{grid-column:1/-1}.roleBadge,.activeBadge,.inactiveBadge{display:inline-flex;padding:4px 9px;border-radius:999px;background:#e8e8fb;color:#4338ca;font-size:10px;font-weight:700}.activeBadge{background:#eaf8ef;color:#237448}.inactiveBadge{background:#f0f1f5;color:#747b8c}@media(max-width:700px){.profile{grid-template-columns:1fr}.profileCard{grid-row:auto}.dataCard dl{grid-template-columns:1fr 1fr}}@media(max-width:560px){.dataCard{padding:15px}.dataCard dl{grid-template-columns:1fr}.full{grid-column:auto}}
-.success,.error{margin:0;padding:10px 12px;border:1px solid #bfe7d0;border-radius:6px;background:#f0fbf4;color:#237448;font-size:12px}.error{border-color:#f2c8cc;background:#fff5f5;color:#a63843}
-.formCard{display:flex;flex-direction:column;gap:16px;width:min(100%,720px);padding:20px;border:1px solid #dfe3f0;border-radius:7px;background:#fff;box-shadow:0 2px 8px rgb(33 43 77 / 4%)}
-.formCard h2{margin:0;color:#20283b;font-size:14px}.formGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.formGrid label{display:flex;flex-direction:column;gap:6px;color:#596176;font-size:10px;font-weight:650}.formGrid input{width:100%;height:36px;padding:0 10px;border:1px solid #d9deeb;border-radius:5px;background:#fff;color:#20283b;font:inherit;font-size:11px}.formGrid input:focus{outline:2px solid rgb(98 107 224 / 22%);border-color:#626be0}.formGrid .full{grid-column:1/-1}
-.formCard>button{align-self:flex-start;min-height:36px;padding:0 15px;border:1px solid #4147d5;border-radius:5px;background:#4147d5;color:#fff;font:inherit;font-size:11px;font-weight:650;cursor:pointer}.formCard>button:hover{background:#3339c2}.formCard>button:disabled{opacity:.6;cursor:wait}
-@media(max-width:560px){.formCard{padding:15px}.formGrid{grid-template-columns:1fr}.formGrid .full{grid-column:auto}}
-
-.profileCard,.dataCard,.formCard{border-radius:13px;box-shadow:0 8px 24px rgb(33 43 77 / 7%)}
-.profileCard{padding:24px 20px;background:linear-gradient(180deg,#f7f9ff 0%,#fff 72%)}
-.profileCard h2{font-size:17px;letter-spacing:.01em}
-.avatar{border:4px solid #fff;box-shadow:0 0 0 1px #dce6ff,0 7px 20px rgb(65 71 213 / 16%)}
-.dataCard{padding:20px}
-.dataCard h2{padding-bottom:10px;border-bottom:1px solid #edf0f7;font-size:14px}
-.dataCard dd{line-height:1.55}
-.formCard{padding:22px;border-color:#e1e5f0}
-.formCard h2{font-size:15px}
-@media(max-width:560px){.dataCard,.formCard{padding:16px}}
+.page{display:flex;flex-direction:column;gap:16px;min-width:0;max-width:1200px;color:#172033}
+.heading{min-height:58px}
+.eyebrow{margin:0 0 4px;color:#626be0;font-size:11px;font-weight:700}
+.title{margin:0;color:#111827;font-size:22px;font-weight:700}
+.subtitle{margin:5px 0 0;color:#667085;font-size:12px}
+.columns{display:grid;grid-template-columns:minmax(250px,330px) minmax(0,1fr);align-items:start;gap:18px}
+.profileCard,.dataCard{border:1px solid #e2e8f0;border-radius:12px;background:#fff;box-shadow:0 1px 3px rgb(15 23 42 / 5%)}
+.profileCard{position:relative;display:flex;min-height:260px;flex-direction:column;align-items:center;overflow:hidden;padding:0 18px 20px}
+.profileCover{position:absolute;inset:0 0 auto;height:92px;background:linear-gradient(135deg,#c7d2fe,#e0e7ff 55%,#eef2ff)}
+.avatar{position:relative;display:grid;place-items:center;width:92px;height:92px;margin-top:43px;overflow:hidden;border:4px solid #fff;border-radius:50%;background:linear-gradient(135deg,#0a8cff,#4338ca);box-shadow:0 2px 10px rgb(15 23 42 / 15%);color:#fff;font-size:23px;font-weight:700}
+.avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.profileCard h2{max-width:100%;overflow:hidden;margin:12px 0 0;color:#20283b;font-size:16px;text-overflow:ellipsis;white-space:nowrap}
+.username{margin:3px 0 0;color:#64748b;font-size:12px}
+.profileBadges{display:flex;gap:7px;margin-top:10px}
+.roleBadge{display:inline-flex;padding:4px 10px;border-radius:999px;background:#e0e7ff;color:#4338ca;font-size:10px;font-weight:700}
+.details{display:grid;gap:14px}
+.dataCard{padding:18px}
+.dataCard h2{display:flex;align-items:center;gap:8px;margin:0 0 14px;padding-bottom:11px;border-bottom:1px solid #edf0f5;color:#20283b;font-size:14px}
+.dataCard h2 span{color:#4338ca}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.fields label{display:grid;min-width:0;gap:5px}
+.fields label>span{color:#64748b;font-size:10px}
+.fields input{box-sizing:border-box;width:100%;height:33px;padding:0 9px;overflow:hidden;border:1px solid #edf0f5;border-radius:6px;background:#f8f9ff;color:#334155;font:inherit;font-size:11px;text-overflow:ellipsis}
+.full{grid-column:1/-1}
+.success,.error{margin:0;padding:10px 12px;border:1px solid #bfe7d0;border-radius:6px;background:#f0fbf4;color:#237448;font-size:12px}
+.error{border-color:#f2c8cc;background:#fff5f5;color:#a63843}
+.formCard{display:flex;flex-direction:column;gap:16px;width:min(100%,720px);padding:22px;border:1px solid #e1e5f0;border-radius:13px;background:#fff;box-shadow:0 8px 24px rgb(33 43 77 / 7%)}
+.formCard h2{margin:0;color:#20283b;font-size:15px}
+.formGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.formGrid label{display:flex;flex-direction:column;gap:6px;color:#596176;font-size:10px;font-weight:650}
+.formGrid input{width:100%;height:36px;padding:0 10px;border:1px solid #d9deeb;border-radius:5px;background:#fff;color:#20283b;font:inherit;font-size:11px}
+.formGrid input:focus{outline:2px solid rgb(98 107 224 / 22%);border-color:#626be0}
+.formGrid .full{grid-column:1/-1}
+.formCard>button{align-self:flex-start;min-height:36px;padding:0 15px;border:1px solid #4147d5;border-radius:5px;background:#4147d5;color:#fff;font:inherit;font-size:11px;font-weight:650;cursor:pointer}
+.formCard>button:hover{background:#3339c2}
+.formCard>button:disabled{opacity:.6;cursor:wait}
+@media(max-width:800px){.columns{grid-template-columns:1fr}.profileCard{min-height:240px}}
+@media(max-width:560px){.fields{grid-template-columns:1fr}.formCard{padding:16px}.formGrid{grid-template-columns:1fr}.formGrid .full{grid-column:auto}}
