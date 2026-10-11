@@ -27,6 +27,7 @@ export default function MateriSiswaPage() {
   const [error, setError] = useState("");
   const [lessonError, setLessonError] = useState("");
   const [downloadId, setDownloadId] = useState<number | null>(null);
+  const [viewId, setViewId] = useState<number | null>(null);
   const showToast = useToast();
 
   const loadLessons = useCallback(async () => {
@@ -72,6 +73,55 @@ export default function MateriSiswaPage() {
     } finally { setDownloadId(null); }
   }
 
+  const [preview, setPreview] = useState<{ item: MateriSiswa; kind: "pdf" | "image" | "text" | "none"; url?: string; text?: string; blob: Blob; filename: string } | null>(null);
+
+  const closePreview = useCallback(() => {
+    setPreview((current) => {
+      if (current?.url) URL.revokeObjectURL(current.url);
+      return null;
+    });
+  }, []);
+  useEffect(() => {
+    if (!preview) return;
+    const onKey = (event: KeyboardEvent) => { if (event.key === "Escape") closePreview(); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [preview, closePreview]);
+
+  function saveFile(blob: Blob, filename: string) {
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = filename;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  async function view(item: MateriSiswa) {
+    setViewId(item.id);
+    try {
+      const result = await downloadMateriSiswa(item.id, item.nama_file);
+      const filename = result.filename || item.nama_file;
+      const blob = result.blob;
+      const type = blob.type || "";
+      if (type === "application/pdf") {
+        setPreview({ item, kind: "pdf", url: URL.createObjectURL(blob), blob, filename });
+      } else if (type.startsWith("image/")) {
+        setPreview({ item, kind: "image", url: URL.createObjectURL(blob), blob, filename });
+      } else {
+        let text = "";
+        if (blob.size < 200000 && (type === "" || type === "application/octet-stream" || type.startsWith("text/"))) {
+          text = await blob.text().catch(() => "");
+        }
+        if (text.startsWith("=== DOKUMEN MATERI E-CLASS")) setPreview({ item, kind: "text", text, blob, filename });
+        else setPreview({ item, kind: "none", blob, filename });
+      }
+    } catch (reason) {
+      showToast(reason instanceof Error ? reason.message : "Materi gagal dibuka.", "error");
+    } finally { setViewId(null); }
+  }
   const options = [{ value: "", label: "Semua Pelajaran" }, ...lessons.map((item) => ({ value: String(item.id), label: item.nama }))];
   return <div className={styles.page}>
     <PageHeader title="Materi Pembelajaran" subtitle="Cari dan unduh materi pembelajaran dari guru Anda."/>
@@ -80,7 +130,22 @@ export default function MateriSiswaPage() {
       <div className={styles.cardTitle}><span className={styles.fileIcon} data-ext={extension(item)}>{extension(item).slice(0, 4)}</span><strong>{item.judul}</strong></div>
       <Badge>{subject(item.pelajaran)}</Badge>
       <p className={styles.uploaded}>▢ Diunggah: {formatDate(item.created_at)}</p>
-      <button type="button" className={styles.download} disabled={downloadId === item.id} onClick={() => void download(item)}><span aria-hidden="true">↓</span>{downloadId === item.id ? "Mengunduh..." : "Unduh Materi"}</button>
+      <div className={styles.actions}>
+        <button type="button" className={styles.view} disabled={viewId === item.id} onClick={() => void view(item)}>{viewId === item.id ? "Membuka..." : "Lihat Materi"}</button>
+        <button type="button" className={styles.download} disabled={downloadId === item.id} onClick={() => void download(item)}><span aria-hidden="true">{"\u2193"}</span>{downloadId === item.id ? "Mengunduh..." : "Unduh"}</button>
+      </div>
     </Card>)}</div>}
-  </div>;
+    {preview && <div className={styles.viewerOverlay} onClick={closePreview}>
+      <div className={styles.viewer} role="dialog" aria-modal="true" aria-label={"Materi " + preview.item.judul} onClick={(event) => event.stopPropagation()}>
+        <div className={styles.viewerHead}>
+          <strong>{preview.item.judul}</strong>
+          <Badge>{subject(preview.item.pelajaran)}</Badge>
+          <button type="button" className={styles.view + " " + styles.viewerBtn} onClick={() => saveFile(preview.blob, preview.filename)}>Unduh</button>
+          <button type="button" className={styles.viewerClose} aria-label="Tutup" onClick={closePreview}>{"\u00D7"}</button>
+        </div>
+        <div className={styles.viewerBody}>
+          {preview.kind === "pdf" && preview.url ? <iframe src={preview.url} title={preview.item.judul}/> : preview.kind === "image" && preview.url ? (/* eslint-disable-next-line @next/next/no-img-element */ <img src={preview.url} alt={preview.item.judul}/>) : preview.kind === "text" ? <pre className={styles.viewerText}>{preview.text}</pre> : <div className={styles.viewerEmpty}><p>Format file ini belum bisa ditampilkan di halaman. Silakan unduh untuk membukanya.</p></div>}
+        </div>
+      </div>
+    </div>}  </div>;
 }
