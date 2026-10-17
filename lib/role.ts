@@ -26,3 +26,6 @@ export function useRole(): { user: UserData | null; role: UserRole | null; canWr
   const role = user?.role ?? null;
   return { user, role, canWrite: role === "admin" };
 }
+export function isPemantauRole(role: UserRole | null | undefined): boolean {
+  return role === "admin_kurikulum" || role === "kepala_sekolah";
+}
