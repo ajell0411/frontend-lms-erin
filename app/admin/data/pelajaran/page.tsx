@@ -6,6 +6,7 @@ import Link from "next/link";
 import { createPelajaran, deletePelajaran, listGuru, listPelajaran, updatePelajaran } from "@/lib/api";
 import type { GuruAccount, PelajaranInput, PelajaranRecord } from "@/lib/api";
 import { useRole } from "@/lib/role";
+import { useViewMode } from "@/lib/view-mode";
 import styles from "./page.module.css";
 
 const EMPTY: PelajaranInput = { nama: "", kode: "", guru_ids: [] };
@@ -13,6 +14,7 @@ function message(error: unknown) { return error instanceof Error ? error.message
 
 export default function PelajaranPage() {
   const { canWrite } = useRole();
+  const { basePath } = useViewMode();
   const [items, setItems] = useState<PelajaranRecord[]>([]);
   const [teachers, setTeachers] = useState<GuruAccount[]>([]);
   const [loading, setLoading] = useState(true);
@@ -128,7 +130,7 @@ export default function PelajaranPage() {
             </div>}</div>
             <h2 className={styles.cardTitle}>{item.nama}</h2>
             <p className={styles.teacherCount}>{item.guru?.length ?? item.guru_ids?.length ?? 0} guru pengampu</p>
-            <Link href={`/admin/data/pelajaran/${item.id}`} className={styles.cardLink}>Lihat Daftar Guru <span aria-hidden="true">→</span></Link>
+            <Link href={`${basePath}/data/pelajaran/${item.id}`} className={styles.cardLink}>Lihat Daftar Guru <span aria-hidden="true">→</span></Link>
           </article>)}
         </section>
       )}
