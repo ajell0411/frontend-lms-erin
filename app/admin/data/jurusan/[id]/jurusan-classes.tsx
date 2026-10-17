@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
@@ -6,6 +6,7 @@ import Link from "next/link";
 import { createKelas, deleteKelas, getJurusan, listGuru, listKelas, updateKelas } from "@/lib/api";
 import type { GuruAccount, JurusanRecord, KelasInput, KelasRecord } from "@/lib/api";
 import { useRole } from "@/lib/role";
+import { useViewMode } from "@/lib/view-mode";
 import styles from "./page.module.css";
 
 type KelasForm = Omit<KelasInput, "wali_kelas_id"> & { wali_kelas_id: string };
@@ -16,6 +17,7 @@ function message(error: unknown) { return error instanceof Error ? error.message
 
 export default function JurusanClasses({ jurusanId }: { jurusanId: number }) {
   const { canWrite } = useRole();
+  const { basePath } = useViewMode();
   const [major, setMajor] = useState<JurusanRecord | null>(null);
   const [items, setItems] = useState<KelasRecord[]>([]);
   const [teachers, setTeachers] = useState<GuruAccount[]>([]);
@@ -151,7 +153,7 @@ export default function JurusanClasses({ jurusanId }: { jurusanId: number }) {
               <h2 className={styles.cardTitle}>{item.nama}</h2>
               <div className={styles.info}><span>Wali Kelas</span><strong>{item.wali_kelas_nama || "Belum ditentukan"}</strong></div>
               <div className={styles.info}><span>Jumlah Siswa</span><strong>{item.jumlah_siswa} Siswa</strong></div>
-              <Link href={`/admin/data/kelas/${item.id}`} className={styles.manageLink}>Kelola Kelas</Link>
+              <Link href={`${basePath}/data/kelas/${item.id}`} className={styles.manageLink}>Kelola Kelas</Link>
             </article>
           ))}
         </section>
