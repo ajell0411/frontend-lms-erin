@@ -234,9 +234,10 @@ export function clearSession() {
 export function dashboardPath(role: string): string {
   switch (role) {
     case "admin":
+    return "/admin/dashboard";
     case "admin_kurikulum":
     case "kepala_sekolah":
-      return "/admin/dashboard";
+      return "/pemantau/dashboard";
     case "guru":
       return "/guru/dashboard";
     case "siswa":
