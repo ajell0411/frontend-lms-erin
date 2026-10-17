@@ -1,0 +1,23 @@
+.tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 14px; }
+.tab { border: 1px solid #e2e8f0; background: #fff; color: #475569; font: inherit; font-size: 14px; font-weight: 600; padding: 8px 18px; border-radius: 999px; cursor: pointer; transition: border-color 0.15s, color 0.15s; }
+.tab:hover { border-color: #0057d9; color: #0057d9; }
+.tabActive, .tabActive:hover { background: linear-gradient(135deg, #0057d9, #7c3aed); border-color: transparent; color: #fff; }
+
+.dateField { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #64748b; }
+.dateField input { height: 40px; border: 1px solid #e2e8f0; border-radius: 10px; padding: 0 10px; font: inherit; color: #0f172a; background: #fff; }
+.dateError { margin: 8px 0 0; font-size: 13px; color: #dc2626; }
+
+.badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+.badgeMateri { background: #dbeafe; color: #1d4ed8; }
+.badgeTugas { background: #fef3c7; color: #b45309; }
+.badgeUlangan { background: #ede9fe; color: #6d28d9; }
+.badgeDone { background: #f1f5f9; color: #475569; }
+
+.clickRow { cursor: pointer; }
+.clickRow:hover { background: #f8fafc; }
+.clickRow:focus-visible { outline: 2px solid #0057d9; outline-offset: -2px; }
+.titleCell { font-weight: 600; color: #0f172a; max-width: 280px; }
+
+.longText { white-space: pre-wrap; line-height: 1.55; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc; color: #334155; font-size: 14px; }
+.fileRow { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc; font-size: 14px; color: #334155; }
+.fileLink { margin-left: auto; padding: 6px 14px; border-radius: 8px; background: linear-gradient(135deg, #0057d9, #7c3aed); color: #fff; font-weight: 600; text-decoration: none; }
