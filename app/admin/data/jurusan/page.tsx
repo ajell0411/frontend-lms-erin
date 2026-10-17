@@ -6,6 +6,7 @@ import Link from "next/link";
 import { createJurusan, deleteJurusan, listJurusan, updateJurusan } from "@/lib/api";
 import type { JurusanInput, JurusanRecord } from "@/lib/api";
 import { useRole } from "@/lib/role";
+import { useViewMode } from "@/lib/view-mode";
 import styles from "./page.module.css";
 
 const FORM_EMPTY: JurusanInput = { nama: "", kode: "", kepala_jurusan: "" };
@@ -16,6 +17,7 @@ function errorMessage(error: unknown): string {
 
 export default function JurusanPage() {
   const { canWrite } = useRole();
+  const { basePath } = useViewMode();
   const [items, setItems] = useState<JurusanRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
@@ -157,7 +159,7 @@ export default function JurusanPage() {
                 <span><strong>{item.jumlah_kelas}</strong> kelas</span>
                 <span><strong>{item.jumlah_siswa}</strong> siswa</span>
               </div>
-              <Link href={`/admin/data/jurusan/${item.id}`} className={styles.cardLink}>Lihat Daftar Kelas <span aria-hidden="true">→</span></Link>
+              <Link href={`${basePath}/data/jurusan/${item.id}`} className={styles.cardLink}>Lihat Daftar Kelas <span aria-hidden="true">→</span></Link>
               {canWrite && deleting?.id === item.id && (
                 <div className={styles.popover} role="alertdialog" aria-label={`Konfirmasi hapus jurusan ${item.nama}`}>
                   <strong>Hapus Jurusan</strong>
