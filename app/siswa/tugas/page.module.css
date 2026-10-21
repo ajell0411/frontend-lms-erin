@@ -9,8 +9,8 @@
 .overdue{color:#dc2626;font-weight:650}
 .cardFooter{display:grid;width:100%;gap:10px;margin-top:3px}
 .doneText{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#15803d;font-size:12px}
-.startButton{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:35px;border:0;border-radius:7px;background:#4338ca;color:#fff;font:inherit;font-size:12px;font-weight:650;text-decoration:none;cursor:pointer}
-.startButton:hover{background:#3730a3}
+.startButton{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:35px;border:0;border-radius:7px;background:#4147d5;color:#fff;font:inherit;font-size:12px;font-weight:650;text-decoration:none;cursor:pointer}
+.startButton:hover{background:#3338b8}
 .startButton span{font-size:17px}
 .skeletonCard{display:grid;align-content:start;gap:18px;min-height:180px}
 .skeletonCard>span{height:17px}
