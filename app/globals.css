@@ -21,3 +21,13 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+/* eclass-brand: palet sama dengan landing page dan login */
+:root {
+  --brand: #4147d5;
+  --brand-2: #0a8cff;
+  --brand-blue: #1d4ed8;
+  --brand-soft: #dbeafe;
+  --brand-border: #bfdbfe;
+  --brand-navy: #08133f;
+  --brand-grad: linear-gradient(90deg, #4147d5, #0a8cff);
+}
