@@ -1,61 +1,62 @@
 "use client";
 
-import { useEffect, useRef, type CSSProperties, type ElementType, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import styles from "./Reveal.module.css";
 
-export type RevealDirection = "left" | "right" | "up" | "down" | "none";
+type Direction = "left" | "right" | "up" | "down" | "zoom" | "none";
 
-type RevealProps = {
+type Props = {
   children: ReactNode;
-  direction: RevealDirection;
+  direction?: Direction;
   delay?: number;
   duration?: number;
-  as?: ElementType;
   className?: string;
+  once?: boolean;
 };
 
 export default function Reveal({
   children,
-  direction,
+  direction = "up",
   delay = 0,
-  duration = 700,
-  as: Tag = "div",
-  className,
-}: RevealProps) {
-  const elementRef = useRef<HTMLDivElement>(null);
+  duration = 900,
+  className = "",
+  once = false,
+}: Props) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const element = elementRef.current;
-    if (!element) return;
+    const el = ref.current;
+    if (!el) return;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
-      element.dataset.revealVisible = "true";
-      return;
-    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          if (once) observer.disconnect();
+        } else if (!once) {
+          setVisible(false);
+        }
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" }
+    );
 
-    element.dataset.revealReady = "true";
-    const observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        element.dataset.revealVisible = entry.isIntersecting ? "true" : "false";
-      }
-    }, { threshold: 0.2 });
-
-    observer.observe(element);
+    observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [once]);
 
   const style = {
-    "--reveal-delay": `${Math.max(0, delay)}ms`,
-    "--reveal-duration": `${Math.max(0, duration)}ms`,
+    "--delay": `${delay}ms`,
+    "--dur": `${duration}ms`,
   } as CSSProperties;
 
   return (
-    <Tag
-      ref={elementRef}
-      className={className ? `reveal ${className}` : "reveal"}
-      data-direction={direction}
+    <div
+      ref={ref}
       style={style}
+      className={`${styles.base} ${styles[direction] ?? ""} ${visible ? styles.visible : ""} ${className}`}
     >
       {children}
-    </Tag>
+    </div>
   );
 }
