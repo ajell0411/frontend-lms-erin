@@ -17,7 +17,6 @@ export default function AdminProfilePage() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [passwordLama, setPasswordLama] = useState("");
   const [passwordBaru, setPasswordBaru] = useState("");
   const [passwordKonfirmasi, setPasswordKonfirmasi] = useState("");
 
@@ -46,8 +45,8 @@ export default function AdminProfilePage() {
     if (passwordBaru !== passwordKonfirmasi) { setError("Konfirmasi password baru tidak sama."); return; }
     setSaving(true);
     try {
-      const result = await updateProfilePassword(passwordLama, passwordBaru);
-      setPasswordLama(""); setPasswordBaru(""); setPasswordKonfirmasi(""); setMessage(result.message);
+      const result = await updateProfilePassword(passwordBaru);
+      setPasswordBaru(""); setPasswordKonfirmasi(""); setMessage(result.message);
     } catch (reason) { setError(errorMessage(reason)); }
     finally { setSaving(false); }
   }
@@ -89,13 +88,12 @@ export default function AdminProfilePage() {
             <label>Nama<input required value={profile.nama} onChange={(event) => setProfile({ ...profile, nama: event.target.value })}/></label>
             <label>Email<input required type="email" value={profile.email} onChange={(event) => setProfile({ ...profile, email: event.target.value })}/></label>
             <label>Username<input value={profile.username} onChange={(event) => setProfile({ ...profile, username: event.target.value })}/></label>
-            <label>Telepon<input value={profile.telepon} onChange={(event) => setProfile({ ...profile, telepon: event.target.value })}/></label>
+            <label>Telepon<input inputMode="numeric" pattern="[0-9]*" onInput={(event) => { event.currentTarget.value = event.currentTarget.value.replace(/\D/g, ""); }} value={profile.telepon} onChange={(event) => setProfile({ ...profile, telepon: event.target.value })}/></label>
             <label className={styles.full}>Alamat<input value={profile.alamat} onChange={(event) => setProfile({ ...profile, alamat: event.target.value })}/></label>
           </div><button type="submit" disabled={saving}>{saving ? "Menyimpan..." : "Simpan"}</button>
         </form>
         <form id="credentials" className={styles.formCard} onSubmit={savePassword}>
           <h2>Ubah Password</h2><div className={styles.formGrid}>
-            <label>Password Lama<input required type="password" value={passwordLama} onChange={(event) => setPasswordLama(event.target.value)}/></label>
             <label>Password Baru<input required minLength={8} type="password" value={passwordBaru} onChange={(event) => setPasswordBaru(event.target.value)}/></label>
             <label>Konfirmasi Password Baru<input required type="password" value={passwordKonfirmasi} onChange={(event) => setPasswordKonfirmasi(event.target.value)}/></label>
           </div><button type="submit" disabled={saving}>{saving ? "Menyimpan..." : "Simpan Password"}</button>
