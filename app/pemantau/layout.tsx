@@ -19,20 +19,20 @@ type MenuItem = { label: string; icon: IconName; href?: string; children?: MenuC
 const MENU: MenuItem[] = [
   { label: "Dashboard", icon: "grid", href: "/pemantau/dashboard" },
   {
-    label: "Manajemen Akun",
-    icon: "users",
-    children: [
-      { label: "Guru", href: "/pemantau/akun/guru" },
-      { label: "Siswa", href: "/pemantau/akun/siswa" },
-    ],
-  },
-  {
     label: "Manajemen Data",
     icon: "database",
     children: [
       { label: "Jurusan", href: "/pemantau/data/jurusan" },
       { label: "Kelas", href: "/pemantau/data/kelas" },
       { label: "Pelajaran", href: "/pemantau/data/pelajaran" },
+    ],
+  },
+  {
+    label: "Manajemen Akun",
+    icon: "users",
+    children: [
+      { label: "Guru", href: "/pemantau/akun/guru" },
+      { label: "Siswa", href: "/pemantau/akun/siswa" },
     ],
   },
   { label: "Aktivitas Guru", icon: "activity", href: "/pemantau/aktivitas-guru" },
