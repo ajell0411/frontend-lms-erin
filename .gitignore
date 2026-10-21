@@ -43,3 +43,8 @@ next-env.d.ts
 _backup/
 
 *.bak*
+backup-*/
+*.bak
+*.bak-*
+.next/
+node_modules/
