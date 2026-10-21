@@ -609,7 +609,7 @@
 
 .printButton:hover {
   border-color: #aab0c4;
-  background: #f9faff;
+  background: #f6f9ff;
 }
 
 .printButton svg {
@@ -991,7 +991,7 @@
 }
 
 .fileLink {
-  color: #4c55cf;
+  color: #4147d5;
   font-size: 9px;
   font-weight: 650;
   cursor: pointer;
@@ -1273,7 +1273,7 @@
 .toolbar{border-radius:14px}
 .table th{background:linear-gradient(90deg,#eef0ff,#e8f3ff);color:#3b4370}
 .table tbody tr:hover td{background:#f6f7ff}
-.dialogHeader{background:linear-gradient(90deg,#f0f2ff,#e8f3ff)}
+.dialogHeader{background:linear-gradient(90deg,#eef4ff,#e8f3ff)}
 .roleBadge{background:linear-gradient(90deg,#4147d5,#0a8cff);color:#fff;letter-spacing:.02em}
 /* tanpa-garis-v1 */
 .assessmentCard,.taskCard,.materialCard,.feedCard,.assessmentCard:nth-child(3n+2),.taskCard:nth-child(3n+2),.materialCard:nth-child(3n+2),.assessmentCard:nth-child(3n),.taskCard:nth-child(3n),.materialCard:nth-child(3n){border-top:1px solid #e2e8f0}
