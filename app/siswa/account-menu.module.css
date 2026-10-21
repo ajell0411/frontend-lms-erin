@@ -4,7 +4,7 @@
 .menu[data-open="true"]{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0) scale(1);transition-delay:0s}
 .arrow{position:absolute;top:-6px;right:17px;width:11px;height:11px;transform:rotate(45deg);border-top:1px solid #e4e6ed;border-left:1px solid #e4e6ed;background:#fff}
 .menu a,.menu button{position:relative;display:flex;width:100%;min-height:42px;align-items:center;gap:11px;padding:0 11px;border:0;border-radius:7px;background:transparent;color:#394154;font:inherit;font-size:12px;text-align:left;text-decoration:none;cursor:pointer;transition:background 140ms ease,color 140ms ease}
-.menu a:hover,.menu button:not(:disabled):hover,.menu a:focus-visible,.menu button:not(:disabled):focus-visible{background:#f0f2ff;color:#4338ca;outline:0}
+.menu a:hover,.menu button:not(:disabled):hover,.menu a:focus-visible,.menu button:not(:disabled):focus-visible{background:#eef4ff;color:#4147d5;outline:0}
 .menu svg{flex:0 0 17px;width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .menu button.disabledItem{flex-wrap:wrap;row-gap:0;min-height:48px;color:#94a3b8;cursor:not-allowed}
 .disabledItem span{flex:1 1 calc(100% - 28px)}
