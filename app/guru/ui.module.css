@@ -64,7 +64,7 @@
 .chipGreen{background:#dcfce7;color:#15803d}
 .chipYellow{background:#fef3c7;color:#b45309}
 .chipRed{background:#fee2e2;color:#dc2626}
-.chipBlue{background:#e0e7ff;color:#3730a3}
+.chipBlue{background:#e0e7ff;color:#3338b8}
 .overlay{position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:16px;background:rgb(15 23 42 / 50%)}
 .modal{display:flex;flex-direction:column;width:min(480px,100%);max-height:92vh;overflow:hidden;border-radius:16px;background:#fff;box-shadow:0 24px 60px rgb(15 23 42 / 30%)}
 .modalLg{width:min(640px,100%)}
@@ -149,7 +149,7 @@
 .btnExport{border:1.5px solid #16a34a;background:#fff;color:#15803d}
 .btnExport:hover:not(:disabled){border-color:#15803d;background:#f0fdf4;color:#15803d}
 .tabActive,.tabActive:hover{border-color:transparent;background:linear-gradient(90deg,#4147d5,#0a8cff);color:#fff;box-shadow:0 4px 12px rgb(65 71 213 / 24%)}
-.back{display:inline-flex;align-items:center;gap:8px;margin-bottom:16px;padding:9px 18px 9px 12px;border:1.5px solid #c7cdf5;border-radius:999px;background:#fff;color:#4147d5;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 2px 8px rgb(65 71 213 / 10%);transition:transform 150ms ease,box-shadow 150ms ease,background 150ms ease,color 150ms ease}
+.back{display:inline-flex;align-items:center;gap:8px;margin-bottom:16px;padding:9px 18px 9px 12px;border:1.5px solid #bfdbfe;border-radius:999px;background:#fff;color:#4147d5;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 2px 8px rgb(65 71 213 / 10%);transition:transform 150ms ease,box-shadow 150ms ease,background 150ms ease,color 150ms ease}
 .back svg{width:16px;height:16px;transition:transform 150ms ease}
 .back:hover{border-color:transparent;background:linear-gradient(90deg,#4147d5,#0a8cff);color:#fff;box-shadow:0 8px 20px rgb(65 71 213 / 30%)}
 .back:hover svg{transform:translateX(-3px)}
@@ -162,14 +162,14 @@
 .materiCard{border-top:3px solid #4147d5}
 .materiCard:nth-child(3n+2),.classCard:nth-child(3n+2){border-top-color:#0a8cff}
 .materiCard:nth-child(3n),.classCard:nth-child(3n){border-top-color:#06b6d4}
-.detailHead{border-left:5px solid #4147d5;background:linear-gradient(135deg,#ffffff 0%,#f0f2ff 100%)}
+.detailHead{border-left:5px solid #4147d5;background:linear-gradient(135deg,#ffffff 0%,#eef4ff 100%)}
 .table th{background:linear-gradient(90deg,#eef0ff,#e8f3ff);color:#3b4370}
 .table tbody tr:hover td{background:#f6f7ff}
-.jadwalItem{border-left-color:#4147d5;background:linear-gradient(90deg,#f0f2ff,#ffffff)}
+.jadwalItem{border-left-color:#4147d5;background:linear-gradient(90deg,#eef4ff,#ffffff)}
 .feedIcon{background:linear-gradient(135deg,#4147d5,#0a8cff);color:#fff}
 .empty{background:linear-gradient(180deg,#ffffff,#f6f7ff)}
 .modal{border-radius:18px}
-.modalHead{background:linear-gradient(90deg,#f0f2ff,#e8f3ff)}
+.modalHead{background:linear-gradient(90deg,#eef4ff,#e8f3ff)}
 .badge{letter-spacing:.02em}
 /* tanpa-garis-v1 */
 .classCard,.materiCard,.classCard:nth-child(3n+2),.materiCard:nth-child(3n+2),.classCard:nth-child(3n),.materiCard:nth-child(3n){border-top:1px solid #e2e8f0}
