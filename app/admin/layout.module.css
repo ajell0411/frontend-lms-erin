@@ -1,7 +1,7 @@
 .wrapper {
-  --primary: #4338ca;
+  --primary: #4147d5;
   --primary-2: #0a8cff;
-  --primary-soft: #e8e8fb;
+  --primary-soft: #e4ecff;
   --text: #0f172a;
   --muted: #64748b;
   --border: #e2e8f0;
@@ -82,7 +82,7 @@
 .accountMenu[data-open="true"]{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0) scale(1);transition-delay:0s}
 .accountMenuArrow{position:absolute;top:-6px;right:17px;width:11px;height:11px;transform:rotate(45deg);border-top:1px solid #e4e6ed;border-left:1px solid #e4e6ed;background:#fff}
 .accountMenu a,.accountMenu button{position:relative;display:flex;width:100%;min-height:42px;align-items:center;gap:11px;padding:0 11px;border:0;border-radius:7px;background:transparent;color:#394154;font:inherit;font-size:12px;text-align:left;text-decoration:none;cursor:pointer;transition:background 140ms ease,color 140ms ease}
-.accountMenu a:hover,.accountMenu button:hover{background:#f0f2ff;color:#4338ca}
+.accountMenu a:hover,.accountMenu button:hover{background:#eef4ff;color:#4147d5}
 .accountMenu svg{flex:0 0 17px;width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 @media(prefers-reduced-motion:reduce){.accountMenu{transition:none}}
 .topProfileText {
@@ -208,13 +208,13 @@
 }
 .navActive,
 .navActive:hover {
-  background: #4338ca;
+  background: #4147d5;
   color: #ffffff;
   font-weight: 600;
 }
 .navParentActive,
 .navParentActive:hover {
-  background: #4338ca;
+  background: #4147d5;
   color: #ffffff;
   font-weight: 600;
 }
@@ -256,15 +256,15 @@
 }
 .subActive,
 .subActive:hover {
-  background: #e8e8fb;
-  color: #4338ca;
+  background: #e4ecff;
+  color: #4147d5;
   font-weight: 600;
 }
 .navItem:focus-visible,
 .subItem:focus-visible,
 .bellBtn:focus-visible,
 .logout:focus-visible {
-  outline: 1px solid #7771d8;
+  outline: 1px solid #4147d5;
   outline-offset: 1px;
 }
 .logout {
@@ -324,7 +324,7 @@
 }
 
 .topProfile{padding:5px 8px;border:1px solid #e1e6f3;border-radius:12px;background:#fff;box-shadow:0 2px 8px rgb(33 43 77 / 6%);cursor:pointer;transition:background 150ms ease,border-color 150ms ease,box-shadow 150ms ease}
-.topProfile:hover{border-color:#cbd5f3;background:#f9faff;box-shadow:0 4px 12px rgb(33 43 77 / 10%)}
+.topProfile:hover{border-color:#bfdbfe;background:#f6f9ff;box-shadow:0 4px 12px rgb(33 43 77 / 10%)}
 .topProfile:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 .bellWrap {
   position: relative;
@@ -850,7 +850,7 @@
 .notificationItem small { color: #8a91a1; font-size: 9px; }
 .notificationItem:hover { background: #f8f9ff; }
 .notificationEmpty { margin: 18px 0; color: #768095; font-size: 11px; text-align: center; }
-.notificationAll { display: block; padding-top: 11px; border-top: 1px solid #edf0f6; color: #4c55cf; font-size: 10px; font-weight: 650; text-align: center; text-decoration: none; }
+.notificationAll { display: block; padding-top: 11px; border-top: 1px solid #edf0f6; color: #4147d5; font-size: 10px; font-weight: 650; text-align: center; text-decoration: none; }
 @keyframes notificationIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 @media (max-width: 520px) {
   .headerRight { gap: 6px; padding: 0 10px; }
@@ -861,4 +861,22 @@
 /* profil-sync-v1 */
 .sideToggle{margin:12px 0 -54px 0}
 .sidebar>.profileCard{transition:border-color 150ms ease,box-shadow 150ms ease}
-.sidebar>.profileCard:hover{border-color:#c7cdf5;box-shadow:0 6px 16px rgb(65 71 213 / 12%)}
+.sidebar>.profileCard:hover{border-color:#bfdbfe;box-shadow:0 6px 16px rgb(65 71 213 / 12%)}
+
+/* eclass-navy-v1: header + latar saja (sidebar tetap putih) */
+.wrapper {
+  --primary: #4147d5;
+  --primary-2: #0a8cff;
+  --primary-soft: #dbeafe;
+  --bg: #f1f5fb;
+  --border: #e2e8f5;
+  background:
+    radial-gradient(circle at 92% 0%, rgba(10, 140, 255, 0.08), transparent 40%),
+    radial-gradient(circle at 4% 100%, rgba(65, 71, 213, 0.07), transparent 40%),
+    #f1f5fb;
+}
+.header {
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f5;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05);
+}
