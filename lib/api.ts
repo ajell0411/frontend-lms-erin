@@ -503,6 +503,6 @@ export function updateProfile(input: Pick<ProfileRecord, "nama" | "email" | "use
   return apiFetch<ProfileRecord>("/profile", { method: "PUT", body: JSON.stringify(input) });
 }
 
-export function updateProfilePassword(password_lama: string, password_baru: string): Promise<{ message: string }> {
-  return apiFetch<{ message: string }>("/profile/password", { method: "PUT", body: JSON.stringify({ password_lama, password_baru }) });
+export function updateProfilePassword(password_baru: string): Promise<{ message: string }> {
+  return apiFetch<{ message: string }>("/profile/password", { method: "PUT", body: JSON.stringify({ password_baru }) });
 }
