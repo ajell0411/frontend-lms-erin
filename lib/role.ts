@@ -5,6 +5,7 @@ import { getUser } from "@/lib/api";
 import type { UserData, UserRole } from "@/lib/api";
 
 const ROLE_LABELS: Record<UserRole, string> = {
+  super_admin: "Super Admin",
   admin: "Admin",
   admin_kurikulum: "Admin Kurikulum",
   kepala_sekolah: "Kepala Sekolah",
@@ -16,7 +17,7 @@ export function roleLabel(role: UserRole | null): string {
   return role ? ROLE_LABELS[role] : "";
 }
 
-export function useRole(): { user: UserData | null; role: UserRole | null; canWrite: boolean } {
+export function useRole(): { user: UserData | null; role: UserRole | null; canWrite: boolean; isSuperAdmin: boolean } {
   const [user, setUser] = useState<UserData | null>(null);
 
   useEffect(() => {
@@ -24,7 +25,7 @@ export function useRole(): { user: UserData | null; role: UserRole | null; canWr
   }, []);
 
   const role = user?.role ?? null;
-  return { user, role, canWrite: role === "admin" };
+  return { user, role, canWrite: role === "admin" || role === "super_admin", isSuperAdmin: role === "super_admin" };
 }
 export function isPemantauRole(role: UserRole | null | undefined): boolean {
   return role === "admin_kurikulum" || role === "kepala_sekolah";
