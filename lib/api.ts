@@ -1,4 +1,4 @@
-export type UserRole = "admin" | "admin_kurikulum" | "kepala_sekolah" | "guru" | "siswa";
+export type UserRole = "super_admin" | "admin" | "admin_kurikulum" | "kepala_sekolah" | "guru" | "siswa";
 
 export type UserData = {
   id: number;
@@ -233,6 +233,7 @@ export function clearSession() {
 // Role di backend: admin | admin_kurikulum | kepala_sekolah | guru | siswa
 export function dashboardPath(role: string): string {
   switch (role) {
+    case "super_admin":
     case "admin":
     return "/admin/dashboard";
     case "admin_kurikulum":
