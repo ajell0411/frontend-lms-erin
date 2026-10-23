@@ -44,7 +44,7 @@ const MENU: MenuItem[] = [
   { label: "Profil", icon: "user", href: "/admin/profile" },
 ];
 
-const ADMIN_ROLES: UserRole[] = ["admin"];
+const ADMIN_ROLES: UserRole[] = ["admin", "super_admin"];
 
 function Icon({ name }: { name: IconName }) {
   const p = {
