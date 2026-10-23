@@ -74,7 +74,7 @@ function inisial(nama: string): string {
 }
 
 export default function AdminAccountsPage() {
-  const { canWrite } = useRole();
+  const { canWrite, isSuperAdmin } = useRole(); const canManage = (r?: string) => (r === "admin" ? isSuperAdmin : canWrite);
   const [admins, setAdmins] = useState<AdminAccount[]>([]);
   const [currentUser, setCurrentUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -169,7 +169,7 @@ export default function AdminAccountsPage() {
   }
 
   function openEditForm(admin: AdminAccount) {
-    if (!canWrite) return;
+    if (!canManage(admin.role)) return;
     setDetailAdmin(null);
     setEditingAdmin(admin);
     setForm({
@@ -275,7 +275,7 @@ export default function AdminAccountsPage() {
   }
 
   async function handleDelete() {
-    if (!canWrite || !confirmAdmin) return;
+    if (!confirmAdmin || !canManage(confirmAdmin.role)) return;
     setSaving(true);
     setFormErrors({});
     try {
@@ -340,7 +340,7 @@ export default function AdminAccountsPage() {
 
   const detailMode = detailAdmin !== null;
   const editingOwnAdmin = Boolean(
-    editingAdmin && currentUser?.role === "admin" &&
+    editingAdmin && (currentUser?.role === "admin" || currentUser?.role === "super_admin") &&
     String(currentUser.id) === String(editingAdmin.id),
   );
 
@@ -513,15 +513,15 @@ export default function AdminAccountsPage() {
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7Z" /><circle cx="12" cy="12" r="2.5" /></svg>
             Lihat Detail
           </button>
-          {canWrite && <>
+          {canManage(actionMenu.admin.role) && <>
             <button type="button" role="menuitem" onClick={() => { openEditForm(actionMenu.admin); setActionMenu(null); }}>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5 4 4M4 20l4.2-.8L19 8.4a2.1 2.1 0 0 0-3-3L5.2 16.2 4 20Z" /></svg>
               Edit
             </button>
-            <button type="button" role="menuitem" className={styles.menuDelete} onClick={() => { setFormErrors({}); setConfirmAdmin(actionMenu.admin); setActionMenu(null); }}>
+            {canManage(actionMenu.admin.role) && (<button type="button" role="menuitem" className={styles.menuDelete} onClick={() => { setFormErrors({}); setConfirmAdmin(actionMenu.admin); setActionMenu(null); }}>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6m4-6v6M5.5 7l1 14h11l1-14M9 7V4h6v3" /></svg>
               Hapus
-            </button>
+            </button>)}
           </>}
         </div>,
         document.body,
@@ -585,7 +585,7 @@ export default function AdminAccountsPage() {
                         aria-invalid={!detailMode && Boolean(formErrors.role)}
                       >
                         <option value="">Pilih role...</option>
-                        {ROLE_OPTIONS.map((role) => <option key={role.value} value={role.value}>{role.label}</option>)}
+                        {ROLE_OPTIONS.filter((role) => isSuperAdmin || role.value !== "admin").map((role) => <option key={role.value} value={role.value}>{role.label}</option>)}
                       </select>
                       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5" /></svg>
                     </span>
@@ -689,7 +689,7 @@ export default function AdminAccountsPage() {
                     <span>Nomor Telepon</span>
                     <span className={styles.phoneWrap}>
                       <span>+62</span>
-                      <input type="tel" value={detailMode ? (form.telepon || "-") : form.telepon} onChange={(event) => setForm({ ...form, telepon: event.target.value })} placeholder="812-3456-7890" autoComplete="tel-national" readOnly={detailMode} />
+                      <input type="tel" value={detailMode ? (form.telepon || "-") : form.telepon} inputMode="numeric" pattern="[0-9]*" onChange={(event) => setForm({ ...form, telepon: event.target.value.replace(/\D/g, "") })} placeholder="812-3456-7890" autoComplete="tel-national" readOnly={detailMode} />
                     </span>
                   </label>
                   <label className={`${styles.field} ${styles.fullWidth}`}>
@@ -722,7 +722,7 @@ export default function AdminAccountsPage() {
                 {detailMode ? (
                   <>
                     <button type="button" className={styles.cancelButton} onClick={() => setDetailAdmin(null)}>Tutup</button>
-                    {canWrite && <><button type="button" className={styles.dangerButton} onClick={() => { setConfirmAdmin(detailAdmin); setDetailAdmin(null); }}>Hapus</button><button type="button" className={styles.submitButton} onClick={() => detailAdmin && openEditForm(detailAdmin)}>Edit Pengguna</button></>}
+                    {canManage(detailAdmin?.role) && <>{canManage(detailAdmin?.role) && <button type="button" className={styles.dangerButton} onClick={() => { setConfirmAdmin(detailAdmin); setDetailAdmin(null); }}>Hapus</button>}<button type="button" className={styles.submitButton} onClick={() => detailAdmin && openEditForm(detailAdmin)}>Edit Pengguna</button></>}
                   </>
                 ) : (
                   <>
