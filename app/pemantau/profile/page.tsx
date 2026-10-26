@@ -27,7 +27,7 @@ export default function PemantauProfilePage() {
 
   return (
     <main className={styles.page}>
-      <header className={styles.heading}><div><p className={styles.eyebrow}>Akun Saya</p><h1 className={styles.title}>Profil</h1><p className={styles.subtitle}>Informasi akun yang sedang digunakan.</p></div></header>
+      <header className={styles.heading}><div><h1 className={styles.title}>Profil</h1><p className={styles.subtitle}>Informasi akun yang sedang digunakan.</p></div></header>
       {error && <p className={styles.error} role="alert">{error}</p>}
       {loading ? <p className={styles.subtitle}>Memuat profile...</p> : (
         <section className={styles.columns} aria-label="Informasi profil">
