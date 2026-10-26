@@ -7,7 +7,7 @@ import type { UserData, UserRole } from "@/lib/api";
 const ROLE_LABELS: Record<UserRole, string> = {
   super_admin: "Super Admin",
   admin: "Admin",
-  admin_kurikulum: "Admin Kurikulum",
+  admin_kurikulum: "Kurikulum",
   kepala_sekolah: "Kepala Sekolah",
   guru: "Guru",
   siswa: "Siswa",
@@ -15,6 +15,21 @@ const ROLE_LABELS: Record<UserRole, string> = {
 
 export function roleLabel(role: UserRole | null): string {
   return role ? ROLE_LABELS[role] : "";
+}
+export const WAVE = "\u{1F44B}";
+
+export function welcomeTitle(role: UserRole | null, nama?: string | null): string {
+  switch (role) {
+    case "admin":
+    case "super_admin":
+      return `Selamat datang, Admin E-CLASS ${WAVE}`;
+    case "admin_kurikulum":
+      return `Selamat datang, Admin Kurikulum E-CLASS ${WAVE}`;
+    case "kepala_sekolah":
+      return `Selamat datang, Admin Kepala Sekolah E-CLASS ${WAVE}`;
+    default:
+      return `Selamat datang, ${nama || roleLabel(role) || "pengguna"} ${WAVE}`;
+  }
 }
 
 export function useRole(): { user: UserData | null; role: UserRole | null; canWrite: boolean; isSuperAdmin: boolean } {
