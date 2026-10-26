@@ -23,12 +23,22 @@ export type GuruJadwal = {
   ruangan: string;
 };
 
+export type GuruPerluDinilai = {
+  tugas_id: number;
+  judul: string;
+  kelas_nama: string;
+  jurusan_kode: string;
+  jurusan_nama: string;
+  jumlah: number;
+};
+
 export type GuruDashboard = {
   nama: string;
   jumlah_kelas: number;
   tugas_aktif: number;
   asesmen_aktif: number;
   perlu_dinilai: number;
+  perlu_dinilai_list?: GuruPerluDinilai[];
   jadwal_hari_ini: GuruJadwal[];
   aktivitas: GuruAktivitas[];
 };
