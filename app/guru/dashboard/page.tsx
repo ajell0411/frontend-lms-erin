@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getGuruDashboard, type GuruDashboard, type GuruJadwal } from "@/lib/guru";
+import { WAVE } from "@/lib/role";
 import styles from "./page.module.css";
 
 function timeAgo(iso: string) {
@@ -51,6 +52,8 @@ export default function GuruDashboardPage() {
   if (error) return <div className={styles.state}>{error}</div>;
   if (!data) return <div className={styles.state}>Memuat dashboard...</div>;
 
+  const perlu = data.perlu_dinilai_list ?? [];
+
   const stats: { label: string; value: number; icon: StatIcon }[] = [
     { label: "Kelas Saya", value: data.jumlah_kelas, icon: "kelas" },
     { label: "Tugas Aktif", value: data.tugas_aktif, icon: "tugas" },
@@ -62,7 +65,7 @@ export default function GuruDashboardPage() {
     <div className={styles.page}>
       <section className={styles.banner}>
         <div>
-          <h1>Selamat datang, {data.nama || "Guru"}</h1>
+          <h1>Selamat datang, {data.nama || "Guru"} {WAVE}</h1>
           <p>Ringkasan kegiatan mengajarmu hari ini.</p>
         </div>
         <div className={styles.bannerDate} aria-label={tanggal}>
@@ -84,51 +87,75 @@ export default function GuruDashboardPage() {
         ))}
       </section>
 
-      <section>
-        <div className={styles.sectionHead}>
-          <h2>Jadwal Hari Ini</h2>
-          <Link href="/guru/jadwal">Lihat Semua</Link>
-        </div>
-        {data.jadwal_hari_ini.length === 0 ? (
-          <div className={styles.empty}>Tidak ada jadwal mengajar hari ini.</div>
-        ) : (
-          <div className={styles.jadwalGrid}>
-            {data.jadwal_hari_ini.map((j) => (
-              <article key={j.id} className={styles.jadwal}>
-                <div className={styles.jadwalTop}>
-                  <span className={styles.jam}>{j.jam_mulai} - {j.jam_selesai}</span>
-                  {sedangBerlangsung(j) && <span className={styles.live}>Sedang berlangsung</span>}
-                </div>
-                <strong>{j.kelas_nama}</strong>
-                <small>{j.pelajaran_nama}{j.ruangan ? " \u2022 " + j.ruangan : ""}</small>
-              </article>
-            ))}
+      <div className={styles.splitRow}>
+        <section className={styles.box}>
+          <div className={styles.sectionHead}>
+            <h2>Jadwal Hari Ini</h2>
+            <Link href="/guru/jadwal">Lihat Semua</Link>
           </div>
-        )}
-      </section>
+          {data.jadwal_hari_ini.length === 0 ? (
+            <div className={styles.empty}>Tidak ada jadwal mengajar hari ini.</div>
+          ) : (
+            <div className={styles.jadwalGrid}>
+              {data.jadwal_hari_ini.map((j) => (
+                <article key={j.id} className={styles.jadwal}>
+                  <div className={styles.jadwalTop}>
+                    <span className={styles.jam}>{j.jam_mulai} - {j.jam_selesai}</span>
+                    {sedangBerlangsung(j) && <span className={styles.live}>Sedang berlangsung</span>}
+                  </div>
+                  <strong>{j.kelas_nama}</strong>
+                  <small>{j.pelajaran_nama}{j.ruangan ? " \u2022 " + j.ruangan : ""}</small>
+                </article>
+              ))}
+            </div>
+          )}
+        </section>
 
-      <section>
-        <div className={styles.sectionHead}>
-          <h2>Aktivitas Terbaru</h2>
-        </div>
-        {data.aktivitas.length === 0 ? (
-          <div className={styles.empty}>Belum ada aktivitas siswa.</div>
-        ) : (
-          <div className={styles.activity}>
-            {data.aktivitas.map((a, i) => (
-              <div key={`${a.jenis}-${a.siswa_id}-${a.waktu}-${i}`} className={styles.activityItem}>
-                <span className={styles.activityIcon}><StatSvg name={a.jenis === "tugas" ? "tugas" : "asesmen"} /></span>
-                <div>
-                  <p>
-                    <strong>{a.siswa_nama || "Siswa"}</strong>{" "}
-                    {a.jenis === "tugas" ? "mengumpulkan tugas" : "selesai mengerjakan asesmen"}{" "}
-                    <strong>{a.judul}</strong>
-                  </p>
-                  <small>{timeAgo(a.waktu)}</small>
+        <section className={styles.box}>
+          <div className={styles.sectionHead}>
+            <h2>Aktivitas Terbaru</h2>
+            <Link href="/guru/pengumuman">Lihat Semua</Link>
+          </div>
+          {data.aktivitas.length === 0 ? (
+            <div className={styles.empty}>Belum ada aktivitas siswa.</div>
+          ) : (
+            <div className={styles.activity}>
+              {data.aktivitas.map((a, i) => (
+                <div key={`${a.jenis}-${a.siswa_id}-${a.waktu}-${i}`} className={styles.activityItem}>
+                  <span className={styles.activityIcon}><StatSvg name={a.jenis === "tugas" ? "tugas" : "asesmen"} /></span>
+                  <div>
+                    <p>
+                      <strong>{a.siswa_nama || "Siswa"}</strong>{" "}
+                      {a.jenis === "tugas" ? "mengumpulkan tugas" : "selesai mengerjakan asesmen"}{" "}
+                      <strong>{a.judul}</strong>
+                    </p>
+                    <small>{timeAgo(a.waktu)}</small>
+                  </div>
                 </div>
-              </div>
+              ))}
+            </div>
+          )}
+        </section>
+      </div>
+
+      <section className={`${styles.box} ${styles.boxFull}`}>
+        <div className={styles.sectionHead}>
+          <h2>Perlu Dinilai</h2>
+          <Link href="/guru/tugas">Lihat Semua</Link>
+        </div>
+        {perlu.length === 0 ? (
+          <div className={styles.empty}>Semua pengumpulan tugas sudah dinilai.</div>
+        ) : (
+          <div className={styles.nilaiList}>
+            {perlu.map((p) => (
+              <Link key={p.tugas_id} href={`/guru/tugas/${p.tugas_id}`} className={styles.nilaiItem}>
+                <span className={styles.nilaiText}>
+                  <strong>{p.judul}</strong>
+                  <small>{[p.kelas_nama, p.jurusan_kode || p.jurusan_nama].filter(Boolean).join(" \u2022 ")}</small>
+                </span>
+                <span className={styles.nilaiJumlah}>{p.jumlah} belum dinilai</span>
+              </Link>
             ))}
-            <Link href="/guru/pengumuman" className={styles.activityAll}>Lihat Semua Aktivitas</Link>
           </div>
         )}
       </section>
