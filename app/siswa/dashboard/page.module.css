@@ -101,3 +101,18 @@
     radial-gradient(circle at 85% 75%, rgba(65, 71, 213, 0.5), transparent 45%),
     linear-gradient(135deg, #0b1d5c 0%, #1d4ed8 100%) !important;
 }
+
+/* garis-biru-v1 */
+.sectionHeading h2{display:flex;align-items:center;gap:10px}
+.sectionHeading h2::before{content:"";flex:0 0 4px;height:20px;border-radius:4px;background:linear-gradient(180deg,#1d4ed8,#0a8cff)}
+/* siswa-split-v1 */
+.splitRow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:20px;align-items:stretch}
+.splitRow>.section{margin-top:0;display:flex;flex-direction:column;min-width:0}
+.splitRow>.section>.listCard{flex:1}
+@media(max-width:900px){.splitRow{grid-template-columns:1fr;gap:0}.splitRow>.section{margin-top:20px}}
+/* lihat-semua-v1 */
+.section{padding:16px 18px;border:1px solid #e2e8f0;border-radius:14px;background:#fff}
+.section .listCard,.section .materialList{border:0;box-shadow:none;background:transparent;border-radius:0}
+.sectionHeading{margin-bottom:12px}
+.sectionHeading a{padding:6px 12px;border:1px solid #dbeafe;border-radius:8px;background:#eff6ff;color:#1d4ed8;font-size:12px;font-weight:650;white-space:nowrap;text-decoration:none}
+.sectionHeading a:hover{background:#dbeafe;text-decoration:none}
