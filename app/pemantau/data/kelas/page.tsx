@@ -40,7 +40,6 @@ export default function PemantauKelasPage() {
     <div className={styles.page}>
       <header className={styles.header}>
         <div>
-          <p className={styles.eyebrow}>Manajemen Data</p>
           <h1 className={styles.title}>Daftar Kelas</h1>
           <p className={styles.subtitle}>Seluruh kelas yang terdaftar di sekolah.</p>
         </div>
