@@ -3,11 +3,18 @@ import { apiFetch } from "@/lib/api";
 export type JenisAktivitas = "materi" | "tugas" | "ulangan";
 
 export type PemantauStatistik = {
+  total_admin: number;
   total_guru: number;
   total_siswa: number;
   total_kelas: number;
   total_jurusan: number;
   total_pelajaran: number;
+  aktif_admin: number;
+  aktif_guru: number;
+  aktif_siswa: number;
+  total_akun_aktif: number;
+  total_akun: number;
+  jurusan?: { kode?: string; nama?: string; total_siswa?: number; total_kelas?: number }[];
 };
 
 export type AktivitasGuruItem = {
