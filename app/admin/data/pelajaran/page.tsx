@@ -114,7 +114,7 @@ export default function PelajaranPage() {
 
   return (
     <div className={styles.page}>
-      <header className={styles.header}><div><p className={styles.eyebrow}>Manajemen Data</p><h1 className={styles.title}>Daftar Pelajaran</h1><p className={styles.subtitle}>Kelola mata pelajaran dan guru pengampu.</p></div>{canWrite && <button type="button" className={styles.primaryButton} onClick={openCreate}><span aria-hidden="true">+</span> Tambah Pelajaran</button>}</header>
+      <header className={styles.header}><div><h1 className={styles.title}>Daftar Pelajaran</h1><p className={styles.subtitle}>Kelola mata pelajaran dan guru pengampu.</p></div>{canWrite && <button type="button" className={styles.primaryButton} onClick={openCreate}><span aria-hidden="true">+</span> Tambah Pelajaran</button>}</header>
       {success && <p className={styles.success} role="status">{success}</p>}
       {loadError && <div className={styles.error} role="alert"><span>{loadError}</span><button type="button" onClick={() => void reload()}>Coba lagi</button></div>}
       {formError && !modalOpen && <p className={styles.error} role="alert">{formError}</p>}
