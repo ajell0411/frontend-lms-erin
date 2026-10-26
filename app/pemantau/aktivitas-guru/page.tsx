@@ -125,7 +125,6 @@ export default function AktivitasGuruPage() {
     <div className={base.page}>
       <header className={base.pageHeader}>
         <div className={base.titleBlock}>
-          <p className={base.eyebrow}>Pemantauan</p>
           <h1 className={base.title}>Aktivitas Guru</h1>
           <p className={base.subtitle}>Pantau materi, tugas, dan ulangan yang dibuat guru.</p>
         </div>
