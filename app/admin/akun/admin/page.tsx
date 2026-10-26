@@ -348,7 +348,6 @@ export default function AdminAccountsPage() {
     <div className={styles.page}>
       <header className={styles.pageHeader}>
         <div className={styles.titleBlock}>
-          <p className={styles.eyebrow}>Manajemen Akun</p>
           <h1 className={styles.title}>Admin</h1>
           <p className={styles.subtitle}>Kelola akun admin sekolah.</p>
         </div>
