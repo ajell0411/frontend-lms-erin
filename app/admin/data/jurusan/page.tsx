@@ -120,7 +120,6 @@ export default function JurusanPage() {
     <div className={styles.page}>
       <header className={styles.header}>
         <div>
-          <p className={styles.eyebrow}>Manajemen Data</p>
           <h1 className={styles.title}>Daftar Jurusan</h1>
           <p className={styles.subtitle}>Kelola program keahlian dan kelas di sekolah.</p>
         </div>
