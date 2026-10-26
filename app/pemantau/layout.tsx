@@ -35,7 +35,7 @@ const MENU: MenuItem[] = [
       { label: "Siswa", href: "/pemantau/akun/siswa" },
     ],
   },
-  { label: "Aktivitas Guru", icon: "activity", href: "/pemantau/aktivitas-guru" },
+  { label: "Pengumuman", icon: "activity", href: "/pemantau/aktivitas-guru" },
   { label: "Profile", icon: "user", href: "/pemantau/profile" },
 ];
 
