@@ -1,7 +1,7 @@
 .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 14px; }
 .tab { border: 1px solid #e2e8f0; background: #fff; color: #475569; font: inherit; font-size: 14px; font-weight: 600; padding: 8px 18px; border-radius: 999px; cursor: pointer; transition: border-color 0.15s, color 0.15s; }
 .tab:hover { border-color: #0057d9; color: #0057d9; }
-.tabActive, .tabActive:hover { background: linear-gradient(135deg, #0057d9, #7c3aed); border-color: transparent; color: #fff; }
+.tabActive, .tabActive:hover { background: linear-gradient(135deg, #1d4ed8, #0a8cff); border-color: transparent; color: #fff; }
 
 .dateField { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #64748b; }
 .dateField input { height: 40px; border: 1px solid #e2e8f0; border-radius: 10px; padding: 0 10px; font: inherit; color: #0f172a; background: #fff; }
@@ -20,4 +20,4 @@
 
 .longText { white-space: pre-wrap; line-height: 1.55; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc; color: #334155; font-size: 14px; }
 .fileRow { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc; font-size: 14px; color: #334155; }
-.fileLink { margin-left: auto; padding: 6px 14px; border-radius: 8px; background: linear-gradient(135deg, #0057d9, #7c3aed); color: #fff; font-weight: 600; text-decoration: none; }
+.fileLink { margin-left: auto; padding: 6px 14px; border-radius: 8px; background: linear-gradient(135deg, #1d4ed8, #0a8cff); color: #fff; font-weight: 600; text-decoration: none; }
