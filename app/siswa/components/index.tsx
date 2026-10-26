@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useId, useRef, useState, type ChangeEvent, type DragEvent, type ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import styles from "./components.module.css";
 
 export function PageHeader({ title, subtitle }: { title: string; subtitle: string }) {
@@ -55,8 +56,13 @@ export function EmptyState({ icon = "◇", title, description }: { icon?: ReactN
   return <div className={styles.state}><span className={styles.stateIcon}>{icon}</span><strong>{title}</strong>{description && <p>{description}</p>}</div>;
 }
 
-export function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
-  return <div className={`${styles.state} ${styles.error}`} role="alert"><strong>Data gagal dimuat</strong><p>{message}</p><button type="button" onClick={onRetry}>Coba lagi</button></div>;
+export function ErrorState(_props: { message: string; onRetry: () => void }) {
+  const path = usePathname() ?? "";
+  const title = path.includes("/tugas") ? "Belum ada tugas mendatang"
+    : path.includes("/asesmen") ? "Belum ada asesmen mendatang"
+    : path.includes("/materi") ? "Belum ada materi terbaru"
+    : "Belum ada data";
+  return <EmptyState title={title} />;
 }
 
 export function Skeleton({ className = "" }: { className?: string }) {
