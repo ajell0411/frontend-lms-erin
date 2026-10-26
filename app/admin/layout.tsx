@@ -24,6 +24,14 @@ type MenuItem = {
 const MENU: MenuItem[] = [
   { label: "Dashboard", icon: "grid", href: "/admin/dashboard" },
   {
+    label: "Manajemen Data",
+    icon: "database",
+    children: [
+      { label: "Pelajaran", href: "/admin/data/pelajaran" },
+      { label: "Jurusan & Kelas", href: "/admin/data/jurusan" },
+    ],
+  },
+  {
     label: "Manajemen Akun",
     icon: "users",
     children: [
@@ -32,16 +40,8 @@ const MENU: MenuItem[] = [
       { label: "Siswa", href: "/admin/akun/siswa" },
     ],
   },
-  {
-    label: "Manajemen Data",
-    icon: "database",
-    children: [
-      { label: "Pelajaran", href: "/admin/data/pelajaran" },
-      { label: "Jurusan & Kelas", href: "/admin/data/jurusan" },
-    ],
-  },
   { label: "Pengumuman", icon: "megaphone", href: "/admin/pengumuman" },
-  { label: "Profil", icon: "user", href: "/admin/profile" },
+  { label: "Profile", icon: "user", href: "/admin/profile" },
 ];
 
 const ADMIN_ROLES: UserRole[] = ["admin", "super_admin"];
