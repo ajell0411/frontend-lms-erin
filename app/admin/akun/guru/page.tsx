@@ -158,7 +158,7 @@ export default function GuruPage() {
   return (
     <div className={styles.page}>
       <header className={styles.pageHeader}>
-        <div className={styles.titleBlock}><p className={styles.eyebrow}>Manajemen Akun</p><h1 className={styles.title}>Guru</h1><p className={styles.subtitle}>Kelola akun dan informasi guru.</p></div>
+        <div className={styles.titleBlock}><h1 className={styles.title}>Guru</h1><p className={styles.subtitle}>Kelola akun dan informasi guru.</p></div>
         <div className={styles.headerActions}>
           <button type="button" className={styles.printButton} onClick={printList} disabled={loading || rows.length === 0}>
             <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z"/><path d="M17 11h.01"/></svg>
