@@ -535,7 +535,7 @@ export default function AdminAccountsPage() {
           }
         }}>
           <section className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby="admin-form-title">
-            <header className={styles.dialogHeader}>
+            <header className={`${styles.dialogHeader} form-modal-header`}>
               <div className={styles.dialogHeading}>
                 <span className={styles.headerIcon} aria-hidden="true">
                   <svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" /><path d="M4.5 21a7.5 7.5 0 0 1 15 0M19 8v6m-3-3h6" /></svg>
