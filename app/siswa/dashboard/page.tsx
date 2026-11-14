@@ -23,9 +23,9 @@ function semesterText(date: Date) {
   const start = ganjil ? year : year - 1;
   return "Semester " + (ganjil ? "Ganjil " : "Genap ") + start + "/" + (start + 1);
 }
-function dueClass(value?: string) {
+function dueClass(value: string | undefined, now: number) {
   if (!value) return "";
-  const remaining = new Date(value).getTime() - Date.now();
+  const remaining = new Date(value).getTime() - now;
   return remaining < 24 * 60 * 60 * 1000 ? styles.dueUrgent : "";
 }
 function fileIcon(value: string) {
@@ -40,6 +40,7 @@ export default function DashboardSiswaPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [downloading, setDownloading] = useState<number | null>(null);
+  const [now, setNow] = useState(0);
   const showToast = useToast();
 
   async function load() {
@@ -55,10 +56,27 @@ export default function DashboardSiswaPage() {
     }
   }
   useEffect(() => {
-    setName(getUser()?.nama || "Siswa");
-    setSemester(semesterText(new Date()));
-    void getProfilSiswa().then((profile) => setName(profile.nama)).catch(() => undefined);
-    void load();
+    let active = true;
+    const firstTick = window.setTimeout(() => {
+      if (active) setNow(Date.now());
+    }, 0);
+    const clock = window.setInterval(() => {
+      if (active) setNow(Date.now());
+    }, 30000);
+    void Promise.resolve().then(() => {
+      if (!active) return;
+      setName(getUser()?.nama || "Siswa");
+      setSemester(semesterText(new Date()));
+      void getProfilSiswa().then((profile) => {
+        if (active) setName(profile.nama);
+      }).catch(() => undefined);
+      void load();
+    });
+    return () => {
+      active = false;
+      window.clearTimeout(firstTick);
+      window.clearInterval(clock);
+    };
   }, []);
 
   async function download(id: number, title: string) {
@@ -94,10 +112,10 @@ export default function DashboardSiswaPage() {
       <section className={styles.section}>
         <div className={styles.sectionHeading}><h2>Tugas Terbaru</h2><Link href="/siswa/tugas">Lihat Semua</Link></div>
         <Card className={styles.listCard}>{data.tugas.length ? data.tugas.map((item) => {
-          const overdue = item.status === "terlambat" || (item.status === "belum" && !!item.tenggat && new Date(item.tenggat).getTime() < Date.now());
+          const overdue = item.status === "terlambat" || (item.status === "belum" && !!item.tenggat && new Date(item.tenggat).getTime() < now);
           const done = item.status === "dikumpulkan" || item.status === "dinilai" || item.status === "selesai";
           return <Link className={styles.row} href={"/siswa/tugas/" + item.id} key={item.id}>
-            <span className={styles.itemIcon + " " + styles.taskIcon}>✓</span><span className={styles.rowText}><strong>{item.judul}</strong><small className={dueClass(item.tenggat)}>Tenggat: {tanggal(item.tenggat)} · Progres {item.progres ?? (done ? 100 : 0)}%</small></span>
+            <span className={styles.itemIcon + " " + styles.taskIcon}>✓</span><span className={styles.rowText}><strong>{item.judul}</strong><small className={dueClass(item.tenggat, now)}>Tenggat: {tanggal(item.tenggat)} · Progres {item.progres ?? (done ? 100 : 0)}%</small></span>
             <Badge variant={overdue ? "danger" : done ? "success" : "info"}>{overdue ? "TERLAMBAT" : done ? "SELESAI" : "PROSES"}</Badge><span className={styles.chevron} aria-hidden="true">›</span>
           </Link>;
         }) : <EmptyState title="Belum ada tugas mendatang" description="Tugas dari guru akan muncul di sini."/>}</Card>
