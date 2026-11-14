@@ -184,7 +184,7 @@ export default function JurusanPage() {
       {canWrite && modalOpen && (
         <div className={styles.overlay} onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) setModalOpen(false); }}>
           <section className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="jurusan-modal-title">
-            <header className={styles.modalHeader}><div><h2 id="jurusan-modal-title">{editing ? "Edit Jurusan" : "Tambah Jurusan"}</h2><p>Lengkapi informasi program keahlian.</p></div><button type="button" className={styles.close} aria-label="Tutup" onClick={() => setModalOpen(false)}>×</button></header>
+            <header className={`${styles.modalHeader} form-modal-header form-modal-header-inset`}><div><h2 id="jurusan-modal-title">{editing ? "Edit Jurusan" : "Tambah Jurusan"}</h2><p>Lengkapi informasi program keahlian.</p></div><button type="button" className={styles.close} aria-label="Tutup" onClick={() => setModalOpen(false)}>×</button></header>
             <form onSubmit={submit}>
               <label className={styles.field}>Nama Jurusan<input autoFocus value={form.nama} onChange={(event) => setForm({ ...form, nama: event.target.value })} required placeholder="Pengembangan Perangkat Lunak dan Gim" /></label>
               <label className={styles.field}>Kode<input value={form.kode} onChange={(event) => setForm({ ...form, kode: event.target.value })} required maxLength={12} placeholder="PPLG" /></label>
