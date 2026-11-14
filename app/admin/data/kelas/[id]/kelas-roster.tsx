@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import type { SiswaAccount, KelasRecord } from "@/lib/api";
 import { getKelas, listSiswa, updateSiswa } from "@/lib/api";
 import { useRole } from "@/lib/role";
+import { printDataList } from "@/lib/print";
+import SearchableSelect from "@/components/SearchableSelect";
 import Image from "next/image";
 import styles from "./page.module.css";
 
@@ -41,7 +43,7 @@ export default function KelasRoster({ kelasId }: { kelasId: number }) {
     return () => { active = false; };
   }, [kelasId]);
 
-  function printList() { window.print(); }
+  function printList() { printDataList(); }
 
   async function assignStudent(studentId: number, targetClass: number | null) {
     setSaving(true); setError("");
@@ -59,11 +61,10 @@ export default function KelasRoster({ kelasId }: { kelasId: number }) {
 
   return (
     <div className={styles.page}>
-      <header className={styles.header}><div><h1 className={styles.title}>Kelas - {kelas?.nama ?? "..."}</h1><p className={styles.subtitle}>Daftar siswa yang terdaftar di kelas ini.</p></div><button type="button" className={styles.printButton} disabled={loading || students.length === 0} onClick={printList}><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z" /><path d="M17 11h.01" /></svg>Cetak</button></header>
+      <header className={styles.header}><div><h1 className={styles.title}>Kelas - {kelas?.nama ?? "..."}</h1><p className={styles.subtitle}>Daftar siswa yang terdaftar di kelas ini.</p></div><div className={styles.headerActions}><button type="button" className={`print-action-button ${styles.printButton}`} disabled={loading || students.length === 0} onClick={printList}><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z" /><path d="M17 11h.01" /></svg>Cetak</button>{canWrite && <button type="button" className={styles.addStudentButton} disabled={saving || loading} onClick={() => selectedStudent ? void assignStudent(Number(selectedStudent), kelasId) : document.getElementById("add-student-search")?.focus()}><span aria-hidden="true">+</span>{saving ? "Menyimpan..." : "Tambah Siswa"}</button>}</div></header>
       {error && <div className={styles.error} role="alert">{error}</div>}
       {canWrite && <div className={styles.assignmentTools}>
-        <label><span className={styles.visuallyHidden}>Pilih siswa untuk ditambahkan</span><select value={selectedStudent} onChange={(event) => setSelectedStudent(event.target.value)} disabled={saving || loading}><option value="">Pilih siswa untuk ditambahkan</option>{allStudents.filter((student) => student.kelas_id !== kelasId).map((student) => <option key={student.id} value={student.id}>{student.nama} ({student.nisn || student.email})</option>)}</select></label>
-        <button type="button" disabled={!selectedStudent || saving} onClick={() => void assignStudent(Number(selectedStudent), kelasId)}>{saving ? "Menyimpan..." : "Tambah Siswa"}</button>
+        <label><span className={styles.visuallyHidden}>Pilih siswa untuk ditambahkan</span><SearchableSelect id="add-student-search" value={selectedStudent} onChange={setSelectedStudent} disabled={saving || loading} ariaLabel="Cari siswa untuk ditambahkan" placeholder="Cari nama siswa..." options={allStudents.filter((student) => student.kelas_id !== kelasId).map((student) => ({ value: String(student.id), label: `${student.nama} (${student.nisn || student.email})` }))} /></label>
       </div>}
       <section className={styles.panel} aria-label="Daftar siswa di kelas">
         <div className={styles.tableScroll}><table className={styles.table}><thead><tr><th>Profil</th><th>NISN</th><th>Role</th><th>Status</th><th>Kelas</th>{canWrite && <th>Aksi</th>}</tr></thead><tbody>
@@ -71,7 +72,7 @@ export default function KelasRoster({ kelasId }: { kelasId: number }) {
         </tbody></table></div>
         <footer className={styles.footer}><span>Menampilkan {first} sampai {last} dari {students.length} data</span><div className={styles.pagination}><button type="button" disabled={currentPage <= 1} onClick={() => setPage((value) => Math.max(1, value - 1))}>Prev</button><span>{currentPage}</span><button type="button" disabled={currentPage >= pageCount} onClick={() => setPage((value) => Math.min(pageCount, value + 1))}>Next</button></div></footer>
       </section>
-      <section className={styles.printSheet} aria-hidden="true"><table><thead><tr><th>Profil</th><th>NISN</th><th>Role</th><th>Status</th><th>Kelas</th></tr></thead><tbody>{students.map((student) => <tr key={student.id}><td>{student.nama}</td><td>{student.nisn || "-"}</td><td>Siswa</td><td>{student.status === "nonaktif" ? "Inactive" : "Active"}</td><td>{kelas?.nama ?? student.nama_kelas ?? "-"}</td></tr>)}</tbody></table></section>
+      <section className={`${styles.printSheet} print-sheet`} aria-hidden="true"><h1>Daftar Siswa - {kelas?.nama ?? "Kelas"}</h1><table><thead><tr><th>Profil</th><th>NISN</th><th>Role</th><th>Status</th><th>Kelas</th></tr></thead><tbody>{students.map((student) => <tr key={student.id}><td>{student.nama}</td><td>{student.nisn || "-"}</td><td>Siswa</td><td>{student.status === "nonaktif" ? "Nonaktif" : "Aktif"}</td><td>{kelas?.nama ?? student.nama_kelas ?? "-"}</td></tr>)}</tbody></table></section>
     </div>
   );
 }
