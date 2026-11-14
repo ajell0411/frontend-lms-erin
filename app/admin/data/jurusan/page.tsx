@@ -19,6 +19,7 @@ export default function JurusanPage() {
   const { canWrite } = useRole();
   const { basePath } = useViewMode();
   const [items, setItems] = useState<JurusanRecord[]>([]);
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
   const [success, setSuccess] = useState("");
@@ -28,6 +29,9 @@ export default function JurusanPage() {
   const [form, setForm] = useState<JurusanInput>(FORM_EMPTY);
   const [formError, setFormError] = useState("");
   const [saving, setSaving] = useState(false);
+  const filteredItems = items.filter((item) =>
+    `${item.nama} ${item.kode} ${item.kepala_jurusan ?? ""}`.toLocaleLowerCase("id-ID").includes(search.trim().toLocaleLowerCase("id-ID")),
+  );
 
   async function reload() {
     setLoading(true);
@@ -132,14 +136,20 @@ export default function JurusanPage() {
       {loadError && <div className={styles.error} role="alert"><span>{loadError}</span><button type="button" onClick={() => void reload()}>Coba lagi</button></div>}
       {formError && !modalOpen && <p className={styles.error} role="alert">{formError}</p>}
 
-      <div className={styles.count}>{loading ? "Memuat data..." : `Menampilkan ${items.length} jurusan`}</div>
+      <label className={styles.searchField}>
+        <span className={styles.visuallyHidden}>Cari nama atau kode jurusan</span>
+        <input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Cari nama jurusan..." />
+      </label>
+      <div className={styles.count}>{loading ? "Memuat data..." : `Menampilkan ${filteredItems.length} dari ${items.length} jurusan`}</div>
       {loading ? (
         <div className={styles.state}>Memuat daftar jurusan...</div>
       ) : loadError ? null : items.length === 0 ? (
         <div className={styles.state}><strong>Belum ada jurusan</strong><span>Tambahkan jurusan untuk mulai mengelola kelas.</span></div>
+      ) : filteredItems.length === 0 ? (
+        <div className={styles.state}><strong>Jurusan tidak ditemukan</strong><span>Coba kata kunci pencarian yang lain.</span></div>
       ) : (
         <section className={styles.grid} aria-label="Daftar jurusan">
-          {items.map((item) => (
+          {filteredItems.map((item) => (
             <article key={item.id} className={styles.card}>
               <div className={styles.cardTop}>
                 <span className={styles.code}>{item.kode}</span>
