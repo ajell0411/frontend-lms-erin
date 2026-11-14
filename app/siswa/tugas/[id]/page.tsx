@@ -38,6 +38,7 @@ export default function DetailTugasSiswaPage() {
   const [editing, setEditing] = useState(false);
   const [sending, setSending] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [now, setNow] = useState(0);
 
   const load = useCallback(async () => {
     if (!Number.isSafeInteger(id) || id <= 0) { setError("ID tugas tidak valid."); setLoading(false); return; }
@@ -51,11 +52,19 @@ export default function DetailTugasSiswaPage() {
       setError(reason instanceof Error ? reason.message : "Detail tugas gagal dimuat.");
     } finally { setLoading(false); }
   }, [id]);
-  useEffect(() => { void load(); }, [load]);
+  useEffect(() => { void Promise.resolve().then(load); }, [load]);
+  useEffect(() => {
+    const firstTick = window.setTimeout(() => setNow(Date.now()), 0);
+    const clock = window.setInterval(() => setNow(Date.now()), 30000);
+    return () => {
+      window.clearTimeout(firstTick);
+      window.clearInterval(clock);
+    };
+  }, []);
 
   const dueDate = task?.tenggat ? new Date(task.tenggat).getTime() : 0;
   const hasSubmission = Boolean(task?.pengumpulan || ["dikumpulkan", "dinilai", "selesai"].includes(task?.status || ""));
-  const locked = hasSubmission && dueDate > 0 && dueDate <= Date.now();
+  const locked = hasSubmission && dueDate > 0 && dueDate <= now;
   const teacher = named(task?.guru);
   const classLabel = classNameOf(task?.kelas);
 
