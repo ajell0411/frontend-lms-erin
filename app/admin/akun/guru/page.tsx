@@ -6,6 +6,8 @@ import { createPortal } from "react-dom";
 import { createGuru, deleteGuru, listGuru, listPelajaran, updateGuru, uploadAdminPhoto } from "@/lib/api";
 import type { GuruAccount, GuruInput, JenisKelamin, PelajaranRecord } from "@/lib/api";
 import { useRole } from "@/lib/role";
+import { printDataList } from "@/lib/print";
+import SearchableSelect from "@/components/SearchableSelect";
 import styles from "./page.module.css";
 
 type FormData = Omit<GuruInput, "password"> & { password: string; pelajaran_id: number | null };
@@ -146,7 +148,7 @@ export default function GuruPage() {
     return <span className={styles.avatar} style={{ width: size, height: size, flexBasis: size }}>{value ? <Image src={value} alt="" width={size} height={size} unoptimized /> : initials(name) || "G"}</span>;
   }
 
-  function printList() { window.print(); }
+  function printList() { printDataList(); }
 
   const activeFilters = [
     search.trim() ? `Pencarian: ${search.trim()}` : "",
@@ -160,7 +162,7 @@ export default function GuruPage() {
       <header className={styles.pageHeader}>
         <div className={styles.titleBlock}><h1 className={styles.title}>Guru</h1><p className={styles.subtitle}>Kelola akun dan informasi guru.</p></div>
         <div className={styles.headerActions}>
-          <button type="button" className={styles.printButton} onClick={printList} disabled={loading || rows.length === 0}>
+          <button type="button" className={`print-action-button ${styles.printButton}`} onClick={printList} disabled={loading || rows.length === 0}>
             <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z"/><path d="M17 11h.01"/></svg>
             Cetak
           </button>
@@ -182,10 +184,10 @@ export default function GuruPage() {
         </div>
       </section>
 
-      <section className={styles.printSheet} aria-hidden="true">
+      <section className={`${styles.printSheet} print-sheet`} aria-hidden="true">
         <h1>Data Guru</h1>
         <p>{activeFilters.length ? activeFilters.join(" | ") : "Filter: Semua Data"}</p>
-        <p>Dicetak: {printedAt} Â· Jumlah data: {rows.length}</p>
+        <p>Dicetak: {printedAt} | Jumlah data: {rows.length}</p>
         <table><thead><tr><th>No</th><th>Nama</th><th>Username</th><th>Email</th><th>NIP</th><th>Mata Pelajaran</th><th>Telepon</th><th>Status</th></tr></thead>
           <tbody>{rows.map((item, index) => <tr key={item.id}><td>{index + 1}</td><td>{item.nama || "-"}</td><td>{item.username || "-"}</td><td>{item.email || "-"}</td><td>{item.nip || "-"}</td><td>{item.nama_pelajaran || "-"}</td><td>{item.telepon || "-"}</td><td>{item.status || "-"}</td></tr>)}</tbody>
         </table>
@@ -201,7 +203,7 @@ export default function GuruPage() {
 
       {(formOpen && canWrite || detail) && <div className={styles.overlay} onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) { setFormOpen(false); setDetail(null); } }}>
         <section className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby="guru-form-title">
-          <header className={styles.dialogHeader}><div className={styles.dialogHeading}><span className={styles.headerIcon}><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg></span><div><h2 id="guru-form-title">{detail ? "Detail Guru" : editing ? "Edit Akun Guru" : "Tambah Guru Baru"}</h2><p>{detail ? "Informasi lengkap akun ini." : editing ? "Perbarui informasi akun guru." : "Buat akun guru baru."}</p></div></div><button type="button" className={styles.closeButton} onClick={() => { setFormOpen(false); setDetail(null); }}>Ã—</button></header>
+          <header className={styles.dialogHeader}><div className={styles.dialogHeading}><span className={styles.headerIcon}><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg></span><div><h2 id="guru-form-title">{detail ? "Detail Guru" : editing ? "Edit Akun Guru" : "Tambah Guru Baru"}</h2><p>{detail ? "Informasi lengkap akun ini." : editing ? "Perbarui informasi akun guru." : "Buat akun guru baru."}</p></div></div><button type="button" className={styles.closeButton} aria-label="Tutup" onClick={() => { setFormOpen(false); setDetail(null); }}>×</button></header>
           <form className={styles.form} noValidate onSubmit={submit}>
             <section className={styles.formSection}><h3 className={styles.sectionTitle}>Informasi Akun</h3><div className={styles.accountGrid}>
               <Field label="Nama Lengkap" required error={!detail ? errors.nama : undefined}><input value={form.nama} readOnly={!!detail} onChange={(event) => setForm({ ...form, nama: event.target.value })} placeholder="Nama lengkap"/></Field>
@@ -209,7 +211,7 @@ export default function GuruPage() {
               {!detail && <Field label="Password" required={!editing} error={errors.password}><span className={styles.passwordWrap}><input type={showPassword ? "text" : "password"} value={form.password} onChange={(event) => setForm({ ...form, password: event.target.value })} placeholder={editing ? "Kosongkan jika tidak diubah" : "••••••••"}/><button type="button" onClick={() => setShowPassword(!showPassword)} aria-label={showPassword ? "Sembunyikan password" : "Tampilkan password"}><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{showPassword ? <><path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 5.2A10.8 10.8 0 0 1 12 5c6 0 9.5 7 9.5 7a15 15 0 0 1-3.2 4.1M6.2 6.2C3.8 7.8 2.5 12 2.5 12s3.5 7 9.5 7a10 10 0 0 0 3-.5"/></> : <><path d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7Z"/><circle cx="12" cy="12" r="2.5"/></>}</svg></button></span><small>{editing ? "Kosongkan jika tidak diubah." : "Minimal 8 karakter."}</small></Field>}
               {detail && <Field label="Password"><input value="••••••••" readOnly/></Field>}
               <Field label="Status" required><Select value={detail ? (detail.status || "-") : form.status} disabled={!!detail} onChange={(value) => setForm({ ...form, status: value as FormData["status"] })} options={detail && !detail.status ? [["-","-"]] : [["aktif","Aktif"],["nonaktif","Nonaktif"]]}/></Field>
-              <Field label="Mata Pelajaran" error={!detail ? pelajaranError : undefined}><Select value={detail ? (detail.pelajaran_id ? String(detail.pelajaran_id) : "") : String(form.pelajaran_id ?? "")} disabled={!!detail || pelajaran.length === 0} onChange={(value) => setForm({ ...form, pelajaran_id: value ? Number(value) : null })} options={detail ? (detail.pelajaran_id ? [[String(detail.pelajaran_id), detail.nama_pelajaran || "-"]] : [["","-"]]) : [["","Pilih mata pelajaran"], ...pelajaran.map((item) => [String(item.id), item.nama] as [string,string])]}/>{!detail && pelajaran.length === 0 && <small className={styles.fieldError}>{pelajaranError || "Belum ada mata pelajaran."}</small>}</Field>
+              <Field label="Mata Pelajaran" error={!detail ? pelajaranError : undefined}><SearchableSelect value={detail ? (detail.pelajaran_id ? String(detail.pelajaran_id) : "") : String(form.pelajaran_id ?? "")} disabled={!!detail || pelajaran.length === 0} onChange={(value) => setForm({ ...form, pelajaran_id: value ? Number(value) : null })} options={detail ? [{ value: detail.pelajaran_id ? String(detail.pelajaran_id) : "", label: detail.pelajaran_id ? detail.nama_pelajaran || "-" : "-" }] : [{ value: "", label: "Pilih mata pelajaran" }, ...pelajaran.map((item) => ({ value: String(item.id), label: item.nama }))]} placeholder="Cari mata pelajaran..." ariaLabel="Cari mata pelajaran" />{!detail && pelajaran.length === 0 && <small className={styles.fieldError}>{pelajaranError || "Belum ada mata pelajaran."}</small>}</Field>
             </div></section>
             <section className={styles.formSection}><h3 className={styles.sectionTitle}>Foto Profil</h3><div className={styles.photoPicker}>{photo(detail?.foto_url || preview, detail?.nama || form.nama, 66)}{!detail && <div className={styles.photoInfo}><span>Unggah foto (JPG, PNG)</span><small>Maks. 2 MB</small><label className={styles.fileLink}>Pilih File<input type="file" accept="image/jpeg,image/png" onChange={(event) => choosePhoto(event.target.files?.[0])}/></label></div>}</div>{errors.foto_url && <small className={styles.fieldError}>{errors.foto_url}</small>}</section>
             <section className={styles.formSection}><h3 className={styles.sectionTitle}>Data Pribadi</h3><div className={styles.personalGrid}>
