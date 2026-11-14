@@ -57,14 +57,19 @@ export default function NilaiPage() {
 
   useEffect(() => {
     if (!pilih) return;
-    setLoading(true);
-    getGuruNilai(Number(pilih))
-      .then((d) => {
+    let active = true;
+    void Promise.resolve().then(() => {
+      if (!active) return null;
+      setLoading(true);
+      return getGuruNilai(Number(pilih));
+    }).then((d) => {
+        if (!active || !d) return;
         setData(d);
         setError("");
       })
-      .catch((reason) => setError(pesanError(reason, "Rekap nilai gagal dimuat.")))
-      .finally(() => setLoading(false));
+      .catch((reason) => { if (active) setError(pesanError(reason, "Rekap nilai gagal dimuat.")); })
+      .finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
   }, [pilih]);
 
   const siswa = useMemo(() => {
