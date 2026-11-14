@@ -2,6 +2,13 @@
 .assignmentTools{display:flex;gap:8px;align-items:center;width:100%}.assignmentTools label{flex:1;min-width:0}.assignmentTools select{width:100%;height:34px;padding:0 10px;border:1px solid #d7dbea;border-radius:5px;background:#fff;color:#394154;font:inherit;font-size:11px}.assignmentTools button,.table td button{min-height:32px;padding:0 12px;border:1px solid #4147d5;border-radius:5px;background:#4147d5;color:#fff;font:inherit;font-size:10px;font-weight:600;cursor:pointer}.assignmentTools button:disabled,.table td button:disabled{opacity:.55;cursor:not-allowed}.visuallyHidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 /* sinkron-v2 */
 .primaryButton{background:linear-gradient(90deg,#4147d5,#0a8cff);border-color:transparent;color:#fff;border-radius:12px;font-weight:700;box-shadow:0 6px 16px rgb(65 71 213 / 26%);transition:transform 150ms ease,box-shadow 150ms ease,filter 150ms ease}
+.headerActions{display:flex;align-items:center;justify-content:flex-end;flex:0 0 auto;gap:8px;margin-left:12px}
+.addStudentButton{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:34px;padding:0 15px;border:0;border-radius:12px;background:linear-gradient(90deg,#4147d5,#0a8cff);color:#fff;font:inherit;font-size:12px;font-weight:700;white-space:nowrap;cursor:pointer;box-shadow:0 6px 16px rgb(65 71 213 / 26%);transition:transform 150ms ease,box-shadow 150ms ease,filter 150ms ease}
+.addStudentButton span{font-size:15px;line-height:1}
+.addStudentButton:hover:not(:disabled){filter:brightness(1.06);transform:translateY(-1px);box-shadow:0 9px 22px rgb(65 71 213 / 34%)}
+.addStudentButton:disabled{opacity:.55;cursor:not-allowed}
+@media(max-width:640px){.header{align-items:flex-start;flex-wrap:wrap}.headerActions{flex:0 0 auto;margin-left:auto}}
+@media print{:global(body.printing-list) .page>:not(.printSheet){display:none!important}}
 .primaryButton:hover:not(:disabled){background:linear-gradient(90deg,#4147d5,#0a8cff);filter:brightness(1.06);transform:translateY(-1px);box-shadow:0 9px 22px rgb(65 71 213 / 34%)}
 .secondaryButton{border-radius:12px;transition:transform 150ms ease,border-color 150ms ease,color 150ms ease}
 .secondaryButton:hover:not(:disabled){border-color:#4147d5;color:#4147d5}
