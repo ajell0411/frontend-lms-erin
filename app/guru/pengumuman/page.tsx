@@ -19,14 +19,19 @@ export default function PengumumanGuruPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    setLoading(true);
-    listGuruAktivitas({ jenis, limit: 50 })
-      .then((data) => {
+    let active = true;
+    void Promise.resolve().then(() => {
+      if (!active) return null;
+      setLoading(true);
+      return listGuruAktivitas({ jenis, limit: 50 });
+    }).then((data) => {
+        if (!active || !data) return;
         setItems(data);
         setError("");
       })
-      .catch((reason) => setError(pesanError(reason, "Aktivitas gagal dimuat.")))
-      .finally(() => setLoading(false));
+      .catch((reason) => { if (active) setError(pesanError(reason, "Aktivitas gagal dimuat.")); })
+      .finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
   }, [jenis]);
 
   return (
