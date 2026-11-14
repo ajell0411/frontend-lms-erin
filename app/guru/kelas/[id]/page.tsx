@@ -13,22 +13,23 @@ export default function DetailKelasPage() {
   const [data, setData] = useState<GuruKelasDetail | null>(null);
   const [error, setError] = useState("");
   const [q, setQ] = useState("");
+  const invalidId = !Number.isFinite(id) || id <= 0;
 
   useEffect(() => {
-    if (!Number.isFinite(id) || id <= 0) {
-      setError("Kelas tidak valid.");
-      return;
-    }
+    if (invalidId) return;
+    let active = true;
     getGuruKelas(id)
-      .then(setData)
-      .catch((reason) => setError(pesanError(reason, "Kelas gagal dimuat.")));
-  }, [id]);
+      .then((result) => { if (active) setData(result); })
+      .catch((reason) => { if (active) setError(pesanError(reason, "Kelas gagal dimuat.")); });
+    return () => { active = false; };
+  }, [id, invalidId]);
 
   const siswa = useMemo(() => {
     const kata = q.trim().toLowerCase();
     return (data?.siswa ?? []).filter((s) => !kata || s.nama.toLowerCase().includes(kata) || s.nisn.includes(kata));
   }, [data, q]);
 
+  if (invalidId) return <div className={`${ui.state} ${ui.stateError}`}>Kelas tidak valid.</div>;
   if (error) return <div className={`${ui.state} ${ui.stateError}`}>{error}</div>;
   if (!data) return <div className={ui.state}>Memuat kelas...</div>;
 
