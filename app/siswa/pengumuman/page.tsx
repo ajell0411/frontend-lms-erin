@@ -55,7 +55,7 @@ export default function PengumumanSiswaPage() {
     } finally { setLoading(false); }
   }, [filter]);
 
-  useEffect(() => { void loadFirst(); }, [loadFirst]);
+  useEffect(() => { void Promise.resolve().then(loadFirst); }, [loadFirst]);
 
   async function loadMore() {
     const next = page + 1;
