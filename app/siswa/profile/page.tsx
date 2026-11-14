@@ -38,7 +38,7 @@ export default function ProfilSiswaPage() {
     catch (reason) { setError(reason instanceof Error ? reason.message : "Profil gagal dimuat."); }
     finally { setLoading(false); }
   }, []);
-  useEffect(() => { void load(); }, [load]);
+  useEffect(() => { void Promise.resolve().then(load); }, [load]);
 
   if (loading) return <div className={styles.loading}><PageHeader title="Profil Saya" subtitle="Informasi pribadi dan data akademik Anda."/><div className={styles.columns}><Card><Skeleton/><Skeleton/><Skeleton/></Card><Card><Skeleton/><Skeleton/><Skeleton/></Card></div></div>;
   if (error) return <><PageHeader title="Profil Saya" subtitle="Informasi pribadi dan data akademik Anda."/><Card><ErrorState message={error} onRetry={() => void load()}/></Card></>;
