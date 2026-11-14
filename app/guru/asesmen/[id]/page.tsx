@@ -60,7 +60,7 @@ export default function DetailAsesmenPage() {
   }, [id]);
 
   useEffect(() => {
-    void muat();
+    void Promise.resolve().then(muat);
   }, [muat]);
 
   useEffect(() => {
