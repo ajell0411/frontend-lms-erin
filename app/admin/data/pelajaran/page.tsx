@@ -151,7 +151,7 @@ export default function PelajaranPage() {
         </section>
       )}
       {canWrite && modalOpen && <div className={styles.overlay} onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) setModalOpen(false); }}><section className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="pelajaran-modal-title">
-        <header className={styles.modalHeader}><div><h2 id="pelajaran-modal-title">{editing ? "Edit Pelajaran" : "Tambah Pelajaran"}</h2><p>{editing ? "Atur mata pelajaran dan guru pengampu." : "Lengkapi nama dan kode mata pelajaran."}</p></div><button type="button" className={styles.close} aria-label="Tutup" onClick={() => setModalOpen(false)}>×</button></header>
+        <header className={`${styles.modalHeader} form-modal-header form-modal-header-inset`}><div><h2 id="pelajaran-modal-title">{editing ? "Edit Pelajaran" : "Tambah Pelajaran"}</h2><p>{editing ? "Atur mata pelajaran dan guru pengampu." : "Lengkapi nama dan kode mata pelajaran."}</p></div><button type="button" className={styles.close} aria-label="Tutup" onClick={() => setModalOpen(false)}>×</button></header>
         <form onSubmit={submit}>
           <label className={styles.field}>Nama Pelajaran<input autoFocus value={form.nama} onChange={(event) => setForm({ ...form, nama: event.target.value })} required placeholder="Matematika" /></label>
           <label className={styles.field}>Kode<input value={form.kode} onChange={(event) => setForm({ ...form, kode: event.target.value })} required maxLength={12} placeholder="MTK" /></label>
