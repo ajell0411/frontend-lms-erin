@@ -45,7 +45,7 @@ export function NotifPopup() {
     }
   };
 
-  useEffect(() => { void load(); }, []);
+  useEffect(() => { void Promise.resolve().then(load); }, []);
 
   const sections: NotifSection[] = useMemo(() => groups.map((group) => ({
     key: group.type,
