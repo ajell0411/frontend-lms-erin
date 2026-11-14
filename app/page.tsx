@@ -3,14 +3,8 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Plus_Jakarta_Sans } from "next/font/google";
 import Reveal from "./components/Reveal";
 import styles from "./page.module.css";
-
-const font = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-});
 
 const fitur = [
   { icon: "\u{1F4DA}", title: "Materi Lengkap", desc: "Akses materi pembelajaran interaktif, slide presentasi, dokumen PDF, dan video pembelajaran kapan pun dibutuhkan." },
@@ -94,7 +88,7 @@ export default function LandingPage() {
   });
 
   return (
-    <div className={`${styles.page} ${font.className}`}>
+    <div className={styles.page}>
       {/* Garis progress scroll di paling atas */}
       <div ref={progressRef} className={styles.progress} aria-hidden="true" />
 
