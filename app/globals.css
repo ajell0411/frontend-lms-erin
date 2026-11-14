@@ -260,3 +260,29 @@ button[class*="printButton"]:disabled {
   --brand-navy: #08133f;
   --brand-grad: linear-gradient(90deg, #4147d5, #0a8cff);
 }
+header.form-modal-header {
+  border-bottom-color: #dbeafe;
+  background: linear-gradient(115deg, #eff6ff 0%, #f6faff 58%, #eaf3ff 100%);
+  color: #17365f;
+}
+
+header.form-modal-header h2 {
+  color: #17365f;
+}
+
+header.form-modal-header p {
+  color: #5e718b;
+}
+
+header.form-modal-header button:hover {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+header.form-modal-header-inset {
+  margin-right: -18px;
+  margin-left: -18px;
+  padding-right: 18px;
+  padding-left: 18px;
+  border-radius: 7px 7px 0 0;
+}
