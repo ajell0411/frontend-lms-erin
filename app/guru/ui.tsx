@@ -260,15 +260,25 @@ export function FilePreview({
     : /\.(png|jpe?g|gif|webp)$/.test(lower)
       ? "image"
       : "none";
-  const [url, setUrl] = useState("");
+  const [objectUrl, setObjectUrl] = useState<{ blob: Blob; url: string } | null>(null);
 
   useEffect(() => {
     if (kind === "none") return;
-    const typed = kind === "pdf" && blob.type !== "application/pdf" ? new Blob([blob], { type: "application/pdf" }) : blob;
-    const objectUrl = URL.createObjectURL(typed);
-    setUrl(objectUrl);
-    return () => URL.revokeObjectURL(objectUrl);
+    let active = true;
+    let url = "";
+    void Promise.resolve().then(() => {
+      if (!active) return;
+      const typed = kind === "pdf" && blob.type !== "application/pdf" ? new Blob([blob], { type: "application/pdf" }) : blob;
+      url = URL.createObjectURL(typed);
+      setObjectUrl({ blob, url });
+    });
+    return () => {
+      active = false;
+      if (url) URL.revokeObjectURL(url);
+    };
   }, [blob, kind]);
+
+  const url = objectUrl?.blob === blob ? objectUrl.url : "";
 
   return (
     <Modal
