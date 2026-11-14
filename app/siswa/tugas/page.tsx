@@ -35,6 +35,7 @@ export default function TugasSiswaPage() {
   const [loadingLessons, setLoadingLessons] = useState(true);
   const [error, setError] = useState("");
   const [lessonError, setLessonError] = useState("");
+  const [now, setNow] = useState(0);
 
   const loadLessons = useCallback(async () => {
     setLoadingLessons(true);
@@ -51,12 +52,20 @@ export default function TugasSiswaPage() {
     finally { setLoading(false); }
   }, [debouncedSearch, lessonId]);
 
-  useEffect(() => { void loadLessons(); }, [loadLessons]);
+  useEffect(() => { void Promise.resolve().then(loadLessons); }, [loadLessons]);
   useEffect(() => {
     const timer = window.setTimeout(() => setDebouncedSearch(search.trim()), 300);
     return () => window.clearTimeout(timer);
   }, [search]);
-  useEffect(() => { void loadTasks(); }, [loadTasks]);
+  useEffect(() => { void Promise.resolve().then(loadTasks); }, [loadTasks]);
+  useEffect(() => {
+    const firstTick = window.setTimeout(() => setNow(Date.now()), 0);
+    const clock = window.setInterval(() => setNow(Date.now()), 30000);
+    return () => {
+      window.clearTimeout(firstTick);
+      window.clearInterval(clock);
+    };
+  }, []);
 
   const options = [{ value: "", label: "Semua Pelajaran" }, ...lessons.map((lesson) => ({ value: String(lesson.id), label: lesson.nama }))];
 
@@ -65,7 +74,7 @@ export default function TugasSiswaPage() {
     <div className={styles.toolbar}><SearchInput value={search} onChange={setSearch} placeholder="Cari tugas..."/><Dropdown options={options} value={lessonId} onChange={setLessonId} placeholder="Pilih Pelajaran" label="Pilih pelajaran"/></div>
     {error || lessonError ? <Card><ErrorState message={[lessonError, error].filter(Boolean).join(" ")} onRetry={() => { void loadLessons(); void loadTasks(); }}/></Card> : loading || loadingLessons ? <div className={styles.grid}>{[0,1,2].map((key) => <Card className={styles.skeletonCard} key={key}><Skeleton/><Skeleton/><Skeleton/></Card>)}</div> : tasks.length === 0 ? <Card><EmptyState title="Belum ada tugas" description="Tugas dari guru akan muncul di sini."/></Card> : <div className={styles.grid}>{tasks.map((task, index) => {
       const isSubmitted = submitted(task);
-      const isOverdue = !isSubmitted && (task.status === "terlambat" || Boolean(task.tenggat && new Date(task.tenggat).getTime() < Date.now()));
+      const isOverdue = !isSubmitted && (task.status === "terlambat" || Boolean(task.tenggat && new Date(task.tenggat).getTime() < now));
       const score = task.pengumpulan?.nilai ?? task.nilai;
       const style = { "--siswa-subject-color": colorAt(index) } as CSSProperties;
       return <Card key={task.id} className={styles.taskCard} style={style}>
