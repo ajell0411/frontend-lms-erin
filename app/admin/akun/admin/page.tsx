@@ -14,6 +14,7 @@ import {
 } from "@/lib/api";
 import type { AdminAccount, AdminRole, UserData } from "@/lib/api";
 import { useRole } from "@/lib/role";
+import { printDataList } from "@/lib/print";
 import styles from "./page.module.css";
 
 type FormValues = {
@@ -328,7 +329,7 @@ export default function AdminAccountsPage() {
   }
 
   function cetakDaftar() {
-    window.print();
+    printDataList();
   }
 
   function tanggalDibuat(value: string | undefined): string {
@@ -352,7 +353,7 @@ export default function AdminAccountsPage() {
           <p className={styles.subtitle}>Kelola akun admin sekolah.</p>
         </div>
         <div className={styles.headerActions}>
-          <button type="button" className={styles.printButton} onClick={cetakDaftar}>
+          <button type="button" className={`print-action-button ${styles.printButton}`} onClick={cetakDaftar}>
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z" /><path d="M17 11h.01" /></svg>
             Cetak
           </button>
@@ -418,7 +419,7 @@ export default function AdminAccountsPage() {
           </span>
         </div>
 
-        <div className={styles.printTableWrapper}>
+        <div className={`${styles.printTableWrapper} print-sheet`}>
         <div className={styles.tableScroll}>
           <table className={styles.table}>
             <thead>
