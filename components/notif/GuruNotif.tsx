@@ -55,7 +55,7 @@ export function GuruNotif() {
         setSeenAt(0);
       }
     });
-    void load();
+    void Promise.resolve().then(() => load());
     const timer = window.setInterval(() => void load(true), 30000);
     return () => window.clearInterval(timer);
   }, []);
