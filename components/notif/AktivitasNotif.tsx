@@ -51,7 +51,7 @@ export function AktivitasNotif({ storageKey, href }: { storageKey: string; href:
         setSeenAt(0);
       }
     });
-    void load();
+    void Promise.resolve().then(() => load());
     const timer = window.setInterval(() => void load(true), 30000);
     return () => window.clearInterval(timer);
   }, [storageKey]);
