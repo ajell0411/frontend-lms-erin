@@ -69,7 +69,7 @@ export default function KerjakanAsesmenPage() {
     } finally { setLoading(false); }
   }, [id, storageKey]);
 
-  useEffect(() => { void load(); }, [load]);
+  useEffect(() => { void Promise.resolve().then(load); }, [load]);
 
   const submit = useCallback(async (automatic: boolean) => {
     if (submitting.current || submitted || alreadySubmitted) return;
@@ -95,7 +95,9 @@ export default function KerjakanAsesmenPage() {
     return () => window.clearInterval(timer);
   }, [deadline, submitted, alreadySubmitted]);
   useEffect(() => {
-    if (remaining?.seconds === 0 && !loading && !submitted && !alreadySubmitted) void submit(true);
+    if (remaining?.seconds === 0 && !loading && !submitted && !alreadySubmitted) {
+      void Promise.resolve().then(() => submit(true));
+    }
   }, [remaining, loading, submitted, alreadySubmitted, submit]);
 
   useEffect(() => {
