@@ -51,7 +51,7 @@ export default function AsesmenSiswaPage() {
       setItems([]);
     } finally { setLoading(false); }
   }, [debouncedSearch, lessonId, type]);
-  useEffect(() => { void load(); }, [load]);
+  useEffect(() => { void Promise.resolve().then(load); }, [load]);
 
   const lessonOptions = useMemo(() => [{ value: "", label: "Semua Pelajaran" }, ...lessons.map((item) => ({ value: String(item.id), label: item.nama }))], [lessons]);
   const typeOptions = [{ value: "", label: "Semua Asesmen" }, { value: "ujian_harian", label: "Ujian Harian" }, { value: "kuis", label: "Kuis" }];
