@@ -48,12 +48,12 @@ export default function MateriSiswaPage() {
     } finally { setLoadingMaterials(false); }
   }, [debouncedSearch, lessonId]);
 
-  useEffect(() => { void loadLessons(); }, [loadLessons]);
+  useEffect(() => { void Promise.resolve().then(loadLessons); }, [loadLessons]);
   useEffect(() => {
     const timer = window.setTimeout(() => setDebouncedSearch(search.trim()), 300);
     return () => window.clearTimeout(timer);
   }, [search]);
-  useEffect(() => { void loadMaterials(); }, [loadMaterials]);
+  useEffect(() => { void Promise.resolve().then(loadMaterials); }, [loadMaterials]);
 
   async function download(item: MateriSiswa) {
     setDownloadId(item.id);
