@@ -7,6 +7,7 @@ import { createKelas, deleteKelas, getJurusan, listGuru, listKelas, updateKelas 
 import type { GuruAccount, JurusanRecord, KelasInput, KelasRecord } from "@/lib/api";
 import { useRole } from "@/lib/role";
 import { useViewMode } from "@/lib/view-mode";
+import SearchableSelect from "@/components/SearchableSelect";
 import styles from "./page.module.css";
 
 type KelasForm = Omit<KelasInput, "wali_kelas_id"> & { wali_kelas_id: string };
@@ -20,6 +21,8 @@ export default function JurusanClasses({ jurusanId }: { jurusanId: number }) {
   const { basePath } = useViewMode();
   const [major, setMajor] = useState<JurusanRecord | null>(null);
   const [items, setItems] = useState<KelasRecord[]>([]);
+  const [search, setSearch] = useState("");
+  const [levelFilter, setLevelFilter] = useState("");
   const [teachers, setTeachers] = useState<GuruAccount[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
@@ -30,6 +33,10 @@ export default function JurusanClasses({ jurusanId }: { jurusanId: number }) {
   const [form, setForm] = useState<KelasForm>({ ...EMPTY, jurusan_id: jurusanId });
   const [formError, setFormError] = useState("");
   const [saving, setSaving] = useState(false);
+  const filteredItems = items.filter((item) =>
+    `${item.nama} ${item.tingkat} ${item.wali_kelas_nama ?? ""}`.toLocaleLowerCase("id-ID").includes(search.trim().toLocaleLowerCase("id-ID")) &&
+    (!levelFilter || item.tingkat.toUpperCase() === levelFilter),
+  );
 
   async function reload() {
     setLoading(true);
@@ -139,17 +146,32 @@ export default function JurusanClasses({ jurusanId }: { jurusanId: number }) {
       {success && <p className={styles.success} role="status">{success}</p>}
       {loadError && <div className={styles.error} role="alert"><span>{loadError}</span><button type="button" onClick={() => void reload()}>Coba lagi</button></div>}
       {formError && !modalOpen && <p className={styles.error} role="alert">{formError}</p>}
-      <div className={styles.count}>{loading ? "Memuat data..." : `Menampilkan ${items.length} kelas`}</div>
+      <div className={styles.searchControls}>
+        <label className={styles.searchField}>
+          <span className={styles.visuallyHidden}>Cari nama kelas</span>
+          <input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Cari nama kelas..." />
+        </label>
+        <label className={styles.levelFilter}>
+          <span className={styles.visuallyHidden}>Filter angkatan</span>
+          <select value={levelFilter} onChange={(event) => setLevelFilter(event.target.value)}>
+            <option value="">Semua Angkatan</option>
+            {LEVELS.map((level) => <option key={level} value={level}>{level}</option>)}
+          </select>
+        </label>
+      </div>
+      <div className={styles.count}>{loading ? "Memuat data..." : `Menampilkan ${filteredItems.length} dari ${items.length} kelas`}</div>
       {loading ? <div className={styles.state}>Memuat daftar kelas...</div> : loadError ? null : items.length === 0 ? (
         <div className={styles.state}><strong>Belum ada kelas</strong><span>Tambahkan kelas untuk jurusan {major?.kode ?? "ini"}.</span></div>
+      ) : filteredItems.length === 0 ? (
+        <div className={styles.state}><strong>Kelas tidak ditemukan</strong><span>Coba kata kunci pencarian yang lain.</span></div>
       ) : (
         <section className={styles.grid} aria-label="Daftar kelas">
-          {items.map((item) => (
+          {filteredItems.map((item) => (
             <article key={item.id} className={styles.card}>
-              <div className={styles.cardTop}>{canWrite && <div className={styles.cardTools}>
+              <div className={styles.cardTop}><span className={styles.level}>Tingkat {item.tingkat}</span>{canWrite && <div className={styles.cardTools}>
                 <button type="button" aria-label={`Edit ${item.nama}`} title="Edit kelas" onClick={() => openEdit(item)}><svg viewBox="0 0 24 24"><path d="m15 5 4 4M4 20l4.2-.8L19 8.4a2.1 2.1 0 0 0-3-3L5.2 16.2 4 20Z" /></svg></button>
                 <button type="button" aria-label={`Hapus ${item.nama}`} title="Hapus kelas" className={styles.deleteIcon} onClick={() => { setDeleting(item); setFormError(""); }}><svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6m4-6v6M5.5 7l1 14h11l1-14M9 7V4h6v3" /></svg></button>
-              </div>}<span className={styles.level}>Tingkat {item.tingkat}</span></div>
+              </div>}</div>
               <h2 className={styles.cardTitle}>{item.nama}</h2>
               <div className={styles.info}><span>Wali Kelas</span><strong>{item.wali_kelas_nama || "Belum ditentukan"}</strong></div>
               <div className={styles.info}><span>Jumlah Siswa</span><strong>{item.jumlah_siswa} Siswa</strong></div>
@@ -160,11 +182,11 @@ export default function JurusanClasses({ jurusanId }: { jurusanId: number }) {
       )}
       {canWrite && deleting && <div className={styles.overlay} onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) { setDeleting(null); setFormError(""); } }}><section className={`${styles.modal} ${styles.confirmModal}`} role="alertdialog" aria-modal="true" aria-labelledby="delete-kelas-title"><div className={styles.confirmIcon}>!</div><h2 id="delete-kelas-title">Hapus Kelas?</h2><p>Kelas <strong>{deleting.nama}</strong> akan dihapus. Tindakan ini tidak dapat dibatalkan.</p>{formError && <p className={styles.formError} role="alert">{formError}</p>}<footer className={styles.actions}><button type="button" className={styles.secondaryButton} disabled={saving} onClick={() => { setDeleting(null); setFormError(""); }}>Batal</button><button type="button" className={styles.confirmDelete} disabled={saving} onClick={() => void remove()}>{saving ? "Menghapus..." : "Ya, Hapus"}</button></footer></section></div>}
       {canWrite && modalOpen && <div className={styles.overlay} onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) setModalOpen(false); }}><section className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="kelas-modal-title">
-        <header className={styles.modalHeader}><div><h2 id="kelas-modal-title">{editing ? "Edit Kelas" : "Tambah Kelas"}</h2><p>Atur informasi kelas dan wali kelas.</p></div><button type="button" className={styles.close} aria-label="Tutup" onClick={() => setModalOpen(false)}>Ã—</button></header>
+        <header className={styles.modalHeader}><div><h2 id="kelas-modal-title">{editing ? "Edit Kelas" : "Tambah Kelas"}</h2><p>Atur informasi kelas dan wali kelas.</p></div><button type="button" className={styles.close} aria-label="Tutup" onClick={() => setModalOpen(false)}>×</button></header>
         <form onSubmit={submit}>
           <label className={styles.field}>Nama Kelas<input autoFocus value={form.nama} onChange={(event) => setForm({ ...form, nama: event.target.value })} required placeholder="XI PPLG 1" /></label>
           <label className={styles.field}>Tingkat<select value={form.tingkat} onChange={(event) => setForm({ ...form, tingkat: event.target.value as KelasForm["tingkat"] })}>{LEVELS.map((level) => <option key={level}>{level}</option>)}</select></label>
-          <label className={styles.field}>Wali Kelas <span>(opsional)</span><select value={form.wali_kelas_id} onChange={(event) => setForm({ ...form, wali_kelas_id: event.target.value })}><option value="">Belum ditentukan</option>{teachers.map((teacher) => <option key={teacher.id} value={teacher.id}>{teacher.nama}</option>)}</select></label>
+          <label className={styles.field}>Wali Kelas <span>(opsional)</span><SearchableSelect value={form.wali_kelas_id} options={[{ value: "", label: "Belum ditentukan" }, ...teachers.map((teacher) => ({ value: String(teacher.id), label: teacher.nama }))]} onChange={(value) => setForm({ ...form, wali_kelas_id: value })} placeholder="Cari nama guru..." ariaLabel="Cari wali kelas" /></label>
           {formError && <p className={styles.formError} role="alert">{formError}</p>}
           <footer className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={() => setModalOpen(false)}>Batal</button><button className={styles.primaryButton} disabled={saving}>{saving ? "Menyimpan..." : editing ? "Simpan Perubahan" : "Simpan Kelas"}</button></footer>
         </form>
