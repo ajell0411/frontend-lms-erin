@@ -45,7 +45,7 @@ export default function DetailTugasPage() {
   }, [id]);
 
   useEffect(() => {
-    void muat();
+    void Promise.resolve().then(muat);
   }, [muat]);
 
   async function bukaNilai(s: GuruTugasSiswa) {
