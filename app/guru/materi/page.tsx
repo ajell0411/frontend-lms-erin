@@ -12,6 +12,7 @@ import {
   type GuruKelasItem,
   type GuruMateri,
 } from "@/lib/guru";
+import SearchableSelect from "@/components/SearchableSelect";
 import {
   ConfirmDialog,
   EmptyState,
@@ -72,7 +73,7 @@ export default function MateriGuruPage() {
   }, []);
 
   useEffect(() => {
-    void muat();
+    void Promise.resolve().then(muat);
   }, [muat]);
 
   const tampil = useMemo(() => {
@@ -289,14 +290,7 @@ export default function MateriGuruPage() {
           </div>
           <div className={ui.field}>
             <label htmlFor="m-kelas">Pilih Kelas</label>
-            <select id="m-kelas" className={ui.select} value={form.guruKelasId} onChange={(e) => setForm({ ...form, guruKelasId: e.target.value })}>
-              <option value="">Pilih kelas yang dituju...</option>
-              {kelas.map((k) => (
-                <option key={k.id} value={k.id}>
-                  {k.kelas_nama} - {k.pelajaran_nama}
-                </option>
-              ))}
-            </select>
+            <SearchableSelect value={form.guruKelasId} onChange={(guruKelasId) => setForm({ ...form, guruKelasId })} options={kelas.map((k) => ({ value: String(k.id), label: `${k.kelas_nama} - ${k.pelajaran_nama}` }))} ariaLabel="Cari kelas untuk materi" placeholder="Cari kelas yang dituju..." disabled={kelas.length === 0} />
             {kelas.length === 0 && <span className={ui.hint}>Tambahkan kelas dulu di menu Kelas Saya.</span>}
           </div>
           <div className={ui.field}>
