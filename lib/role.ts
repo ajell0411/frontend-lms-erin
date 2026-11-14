@@ -21,8 +21,9 @@ export const WAVE = "\u{1F44B}";
 export function welcomeTitle(role: UserRole | null, nama?: string | null): string {
   switch (role) {
     case "admin":
-    case "super_admin":
       return `Selamat datang, Admin E-CLASS ${WAVE}`;
+    case "super_admin":
+      return `Selamat datang, Superadmin ${WAVE}`;
     case "admin_kurikulum":
       return `Selamat datang, Admin Kurikulum E-CLASS ${WAVE}`;
     case "kepala_sekolah":
