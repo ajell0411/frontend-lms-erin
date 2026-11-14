@@ -12,6 +12,7 @@ import {
   type GuruKelasItem,
   type GuruTugas,
 } from "@/lib/guru";
+import SearchableSelect from "@/components/SearchableSelect";
 import { ConfirmDialog, EmptyState, Icon, Modal, PageHead, formatWaktu, pesanError, toInputDateTime, useNotice } from "../ui";
 import ui from "../ui.module.css";
 import x from "../extra.module.css";
@@ -52,7 +53,7 @@ export default function TugasGuruPage() {
   }, []);
 
   useEffect(() => {
-    void muat();
+    void Promise.resolve().then(muat);
   }, [muat]);
 
   const tampil = useMemo(() => {
@@ -275,14 +276,7 @@ export default function TugasGuruPage() {
           <div className={ui.fieldRow}>
             <div className={ui.field}>
               <label htmlFor="t-kelas">Kelas</label>
-              <select id="t-kelas" className={ui.select} value={form.guruKelasId} onChange={(e) => setForm({ ...form, guruKelasId: e.target.value })}>
-                <option value="">Pilih kelas...</option>
-                {kelas.map((k) => (
-                  <option key={k.id} value={k.id}>
-                    {k.kelas_nama} - {k.pelajaran_nama}
-                  </option>
-                ))}
-              </select>
+              <SearchableSelect value={form.guruKelasId} onChange={(guruKelasId) => setForm({ ...form, guruKelasId })} options={kelas.map((k) => ({ value: String(k.id), label: `${k.kelas_nama} - ${k.pelajaran_nama}` }))} ariaLabel="Cari kelas untuk tugas" placeholder="Cari kelas..." disabled={kelas.length === 0} />
               {kelas.length === 0 && <span className={ui.hint}>Tambahkan kelas dulu di menu Kelas Saya.</span>}
             </div>
             <div className={ui.field}>
