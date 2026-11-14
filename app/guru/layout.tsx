@@ -180,20 +180,27 @@ export default function GuruLayout({ children }: { children: ReactNode }) {
   const accountMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const token = getToken();
-    const sessionUser = getUser();
-    if (!token || !sessionUser) {
-      clearSession();
-      router.replace("/login");
-      return;
-    }
-    if (sessionUser.role !== "guru") {
-      router.replace(dashboardPath(sessionUser.role));
-      return;
-    }
-    setUser(sessionUser);
-    setReady(true);
-    void getProfile().then(setProfile).catch(() => undefined);
+    let active = true;
+    void Promise.resolve().then(() => {
+      if (!active) return;
+      const token = getToken();
+      const sessionUser = getUser();
+      if (!token || !sessionUser) {
+        clearSession();
+        router.replace("/login");
+        return;
+      }
+      if (sessionUser.role !== "guru") {
+        router.replace(dashboardPath(sessionUser.role));
+        return;
+      }
+      setUser(sessionUser);
+      setReady(true);
+      void getProfile().then((nextProfile) => {
+        if (active) setProfile(nextProfile);
+      }).catch(() => undefined);
+    });
+    return () => { active = false; };
   }, [router]);
 
   const closeDrawer = useCallback(() => setDrawerOpen(false), []);
@@ -211,8 +218,13 @@ export default function GuruLayout({ children }: { children: ReactNode }) {
   }, [drawerOpen, confirmOut]);
 
   useEffect(() => {
-    setDrawerOpen(false);
-    setAccountMenuOpen(false);
+    let active = true;
+    void Promise.resolve().then(() => {
+      if (!active) return;
+      setDrawerOpen(false);
+      setAccountMenuOpen(false);
+    });
+    return () => { active = false; };
   }, [pathname]);
 
   useEffect(() => {
