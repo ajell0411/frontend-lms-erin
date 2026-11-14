@@ -12,6 +12,7 @@ import {
   type GuruKelasItem,
   type Hari,
 } from "@/lib/guru";
+import SearchableSelect from "@/components/SearchableSelect";
 import { ConfirmDialog, Icon, Modal, PageHead, pesanError, useNotice } from "../ui";
 import ui from "../ui.module.css";
 
@@ -49,7 +50,7 @@ export default function JadwalPage() {
   }, []);
 
   useEffect(() => {
-    void muat();
+    void Promise.resolve().then(muat);
   }, [muat]);
 
   function bukaTambah() {
@@ -201,14 +202,7 @@ export default function JadwalPage() {
         >
           <div className={ui.field}>
             <label htmlFor="j-kelas">Kelas dan Pelajaran</label>
-            <select id="j-kelas" className={ui.select} value={form.guruKelasId} onChange={(e) => setForm({ ...form, guruKelasId: e.target.value })}>
-              <option value="">Pilih kelas...</option>
-              {kelas.map((k) => (
-                <option key={k.id} value={k.id}>
-                  {k.kelas_nama} - {k.pelajaran_nama}
-                </option>
-              ))}
-            </select>
+            <SearchableSelect value={form.guruKelasId} onChange={(guruKelasId) => setForm({ ...form, guruKelasId })} options={kelas.map((k) => ({ value: String(k.id), label: `${k.kelas_nama} - ${k.pelajaran_nama}` }))} ariaLabel="Cari kelas untuk jadwal" placeholder="Cari kelas..." disabled={kelas.length === 0} />
             {kelas.length === 0 && <span className={ui.hint}>Tambahkan kelas dulu di menu Kelas Saya.</span>}
           </div>
           <div className={ui.field}>
