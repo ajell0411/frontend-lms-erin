@@ -90,3 +90,5 @@
 .titleBlock.titleBlock{position:relative;padding-left:14px}
 .titleBlock.titleBlock::before{content:"";position:absolute;left:0;top:2px;bottom:2px;width:4px;border-radius:4px;background:linear-gradient(180deg,#1d4ed8,#0a8cff)}
 .eyebrow{display:none}
+.headerActions{flex:1;justify-content:space-between}
+@media(max-width:640px){.pageHeader{flex-wrap:wrap}.headerActions{flex:1 0 100%;flex-wrap:nowrap;justify-content:space-between}}
