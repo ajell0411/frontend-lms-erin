@@ -3,13 +3,15 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --font-sans: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
 }
 
 html {
@@ -19,8 +21,235 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
 }
+
+#site-content {
+  flex: 1 0 auto;
+}
+
+.site-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 0;
+  padding: 18px 24px;
+  border-top: 1px solid rgb(255 255 255 / 10%);
+  background:
+    radial-gradient(circle at 85% 0%, rgb(10 140 255 / 30%), transparent 40%),
+    linear-gradient(180deg, #0a1a55 0%, #15348f 50%, #1d4ed8 100%);
+  color: #bfdbfe;
+  font-size: 13px;
+  text-align: center;
+}
+
+.site-footer strong {
+  font-weight: 800;
+}
+
+.searchable-select {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+
+.searchable-select > input {
+  width: 100%;
+  min-width: 0;
+  height: 36px;
+  padding: 0 34px 0 10px;
+  border: 1px solid #d9deeb;
+  border-radius: 6px;
+  outline: 0;
+  background: #fff;
+  color: #20283b;
+  font: inherit;
+  font-size: 12px;
+}
+
+.searchable-select > input:focus {
+  border-color: #626be0;
+  box-shadow: 0 0 0 3px rgb(98 107 224 / 12%);
+}
+
+.searchable-select > input:disabled {
+  background: #f1f2f5;
+  color: #596174;
+  cursor: default;
+}
+
+.searchable-select-clear {
+  position: absolute;
+  top: 50%;
+  right: 7px;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #687187;
+  font: inherit;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.searchable-select-options {
+  position: absolute;
+  z-index: 100;
+  top: calc(100% + 4px);
+  right: 0;
+  left: 0;
+  max-height: 220px;
+  overflow: auto;
+  padding: 4px;
+  border: 1px solid #d9deeb;
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: 0 8px 22px rgb(15 23 42 / 14%);
+}
+
+.searchable-select-option {
+  padding: 8px 9px;
+  border-radius: 4px;
+  color: #30384b;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.searchable-select-option:hover,
+.searchable-select-option[data-active="true"] {
+  background: #eef4ff;
+  color: #4147d5;
+}
+
+.searchable-select-empty {
+  padding: 9px;
+  color: #778096;
+  font-size: 12px;
+}
+
+.print-action-button,
+button[class*="printButton"] {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 0 13px;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: linear-gradient(90deg, #4147d5, #0a8cff) !important;
+  color: #fff !important;
+  font: inherit;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  cursor: pointer;
+}
+
+.print-action-button:disabled,
+button[class*="printButton"]:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .site-footer {
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    font-size: 10px;
+  }
+}
+
+@media print {
+  @page {
+    margin: 15mm;
+  }
+
+  body.printing-list * {
+    visibility: hidden !important;
+  }
+
+  body.printing-list .print-sheet,
+  body.printing-list .print-sheet * {
+    visibility: visible !important;
+  }
+
+  body {
+    background: #fff !important;
+    color: #111 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+  }
+
+  .site-footer,
+  .print-action-button,
+  button[class*="printButton"] {
+    display: none !important;
+  }
+
+  .print-sheet,
+  [class*="printSheet"] {
+    display: block !important;
+    position: static !important;
+    inset: auto !important;
+    width: 100% !important;
+    padding: 0 !important;
+    background: #fff !important;
+    color: #111 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+  }
+
+  .print-sheet h1,
+  [class*="printSheet"] h1 {
+    margin: 0 0 10px !important;
+    color: #111 !important;
+    font-size: 16pt !important;
+    font-weight: 700 !important;
+  }
+
+  .print-sheet p,
+  [class*="printSheet"] p {
+    margin: 3px 0 !important;
+    color: #111 !important;
+    font-size: 9pt !important;
+  }
+
+  .print-sheet table,
+  [class*="printSheet"] table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 9pt !important;
+  }
+
+  .print-sheet th,
+  .print-sheet td,
+  [class*="printSheet"] th,
+  [class*="printSheet"] td {
+    padding: 6px 8px !important;
+    border: 1px solid #555 !important;
+    color: #111 !important;
+    text-align: left !important;
+    vertical-align: top !important;
+  }
+
+  .print-sheet th,
+  [class*="printSheet"] th {
+    background: #eef2f8 !important;
+    font-weight: 700 !important;
+    print-color-adjust: exact;
+  }
+
+  .print-sheet tr,
+  [class*="printSheet"] tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
 /* eclass-brand: palet sama dengan landing page dan login */
 :root {
   --brand: #4147d5;
