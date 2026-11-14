@@ -6,6 +6,8 @@ import { createPortal } from "react-dom";
 import { createSiswa, deleteSiswa, listJurusan, listKelas, listSiswa, updateSiswa, uploadAdminPhoto } from "@/lib/api";
 import type { JenisKelamin, JurusanRecord, KelasRecord, SiswaAccount, SiswaInput } from "@/lib/api";
 import { useRole } from "@/lib/role";
+import { printDataList } from "@/lib/print";
+import SearchableSelect from "@/components/SearchableSelect";
 import styles from "./page.module.css";
 
 type FormData = Omit<SiswaInput, "password"> & { password: string; jurusan_id: number | null };
@@ -176,7 +178,7 @@ export default function SiswaPage() {
 
   function changeMajor(value: string) { const jurusan_id = value ? Number(value) : null; setForm((current) => ({ ...current, jurusan_id, kelas_id: null })); setFormKelas([]); }
   function photo(url: string, name: string, size: number) { return <span className={styles.avatar} style={{ width: size, height: size, flexBasis: size }}>{url ? <Image src={url} alt="" width={size} height={size} unoptimized /> : initials(name) || "S"}</span>; }
-  function printList() { window.print(); }
+  function printList() { printDataList(); }
 
   const activeFilters = [
     search.trim() ? `Pencarian: ${search.trim()}` : "",
@@ -188,7 +190,7 @@ export default function SiswaPage() {
 
   return (
     <div className={styles.page}>
-      <header className={styles.pageHeader}><div className={styles.titleBlock}><h1 className={styles.title}>Siswa</h1><p className={styles.subtitle}>Kelola akun dan informasi siswa.</p></div><div className={styles.headerActions}><button type="button" className={styles.printButton} onClick={printList} disabled={loading || rows.length === 0}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z"/><path d="M17 11h.01"/></svg>Cetak</button>{canWrite && <button type="button" className={styles.addButton} onClick={openCreate}><span aria-hidden="true">+</span>Tambah Siswa</button>}</div></header>
+      <header className={styles.pageHeader}><div className={styles.titleBlock}><h1 className={styles.title}>Siswa</h1><p className={styles.subtitle}>Kelola akun dan informasi siswa.</p></div><div className={styles.headerActions}><button type="button" className={`print-action-button ${styles.printButton}`} onClick={printList} disabled={loading || rows.length === 0}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z"/><path d="M17 11h.01"/></svg>Cetak</button>{canWrite && <button type="button" className={styles.addButton} onClick={openCreate}><span aria-hidden="true">+</span>Tambah Siswa</button>}</div></header>
       {success && <p className={styles.successMessage} role="status">{success}</p>}
       {loadError && <div className={styles.errorMessage} role="alert"><span>{loadError}</span><button className={styles.retryButton} onClick={() => void reload()}>Coba lagi</button></div>}
       <section className={styles.panel} aria-label="Daftar siswa">
@@ -205,10 +207,10 @@ export default function SiswaPage() {
         </tbody></table></div><footer className={styles.tableFooter}>Menampilkan {loading ? "-" : rows.length} siswa</footer></div>
       </section>
 
-      <section className={styles.printSheet} aria-hidden="true">
+      <section className={`${styles.printSheet} print-sheet`} aria-hidden="true">
         <h1>Data Siswa</h1>
         <p>{activeFilters.length ? activeFilters.join(" | ") : "Filter: Semua Data"}</p>
-        <p>Dicetak: {printedAt} Â· Jumlah data: {rows.length}</p>
+        <p>Dicetak: {printedAt} | Jumlah data: {rows.length}</p>
         <table><thead><tr><th>No</th><th>Nama</th><th>NISN</th><th>Kelas</th><th>Jurusan</th><th>Jenis Kelamin</th><th>Telepon</th><th>Status</th></tr></thead><tbody>
           {rows.map((item, index) => <tr key={item.id}><td>{index + 1}</td><td>{item.nama || "-"}</td><td>{item.nisn || "-"}</td><td>{item.nama_kelas || "-"}</td><td title={item.nama_jurusan || "-"}>{item.nama_jurusan || "-"}</td><td>{item.jenis_kelamin === "L" ? "Laki-laki" : item.jenis_kelamin === "P" ? "Perempuan" : "-"}</td><td>{item.telepon || "-"}</td><td>{item.status || "-"}</td></tr>)}
         </tbody></table>
@@ -217,7 +219,7 @@ export default function SiswaPage() {
       {menu && createPortal(<div ref={menuRef} className={styles.actionMenu} role="menu" style={{ top: menu.top, left: menu.left }}><button type="button" role="menuitem" onClick={() => { openDetail(menu.item); setMenu(null); }}><svg viewBox="0 0 24 24"><path d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7Z"/><circle cx="12" cy="12" r="2.5"/></svg>Lihat Detail</button>{canWrite && <><button type="button" role="menuitem" onClick={() => { openEdit(menu.item); setMenu(null); }}><svg viewBox="0 0 24 24"><path d="m15 5 4 4M4 20l4.2-.8L19 8.4a2.1 2.1 0 0 0-3-3L5.2 16.2 4 20Z"/></svg>Edit</button><button type="button" role="menuitem" className={styles.menuDelete} onClick={() => { setDeleting(menu.item); setMenu(null); setErrors({}); }}><svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6m4-6v6M5.5 7l1 14h11l1-14M9 7V4h6v3"/></svg>Hapus</button></>}</div>, document.body)}
 
       {(formOpen && canWrite || detail) && <div className={styles.overlay} onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) { setFormOpen(false); setDetail(null); } }}><section className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby="siswa-form-title">
-        <header className={styles.dialogHeader}><div className={styles.dialogHeading}><span className={styles.headerIcon}><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg></span><div><h2 id="siswa-form-title">{detail ? "Detail Siswa" : editing ? "Edit Akun Siswa" : "Tambah Siswa Baru"}</h2><p>{detail ? "Informasi lengkap akun ini." : editing ? "Perbarui informasi akun siswa." : "Buat akun siswa baru."}</p></div></div><button className={styles.closeButton} type="button" aria-label="Tutup" onClick={() => { setFormOpen(false); setDetail(null); }}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></header>
+        <header className={styles.dialogHeader}><div className={styles.dialogHeading}><span className={styles.headerIcon}><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg></span><div><h2 id="siswa-form-title">{detail ? "Detail Siswa" : editing ? "Edit Akun Siswa" : "Tambah Siswa Baru"}</h2><p>{detail ? "Informasi lengkap akun ini." : editing ? "Perbarui informasi akun siswa." : "Buat akun siswa baru."}</p></div></div><button className={styles.closeButton} type="button" aria-label="Tutup" onClick={() => { setFormOpen(false); setDetail(null); }}>×</button></header>
         <form className={styles.form} noValidate onSubmit={submit}>
           <section className={styles.formSection}><h3 className={styles.sectionTitle}>Informasi Akun</h3><div className={styles.accountGrid}>
             <Field label="Nama Lengkap" required error={!detail ? errors.nama : undefined}><input value={form.nama || (detail ? "-" : "")} readOnly={!!detail} onChange={(event) => setForm({ ...form, nama: event.target.value })}/></Field>
@@ -237,8 +239,8 @@ export default function SiswaPage() {
             <Field label="Nama Wali"><input value={form.nama_wali || (detail ? "-" : "")} readOnly={!!detail} onChange={(event) => setForm({ ...form, nama_wali: event.target.value })}/></Field>
             <Field label="Telepon Wali"><span className={styles.phoneWrap}><span>+62</span><input value={form.telepon_wali || (detail ? "-" : "")} readOnly={!!detail} inputMode="numeric" pattern="[0-9]*" onChange={(event) => setForm({ ...form, telepon_wali: event.target.value.replace(/\D/g, "") })}/></span></Field>
             <Field label="Tahun Masuk"><input type="number" value={form.tahun_masuk ?? ""} readOnly={!!detail} onChange={(event) => setForm({ ...form, tahun_masuk: event.target.value ? Number(event.target.value) : null })} placeholder={detail ? "-" : "2025"}/></Field>
-            <Field label="Jurusan" required error={!detail ? errors.jurusan_id || masterError : undefined} full><Select value={detail ? (detail.jurusan_id ? String(detail.jurusan_id) : "") : String(form.jurusan_id ?? "")} disabled={!!detail || jurusan.length === 0} onChange={changeMajor} options={detail && !detail.jurusan_id ? [["","-"]] : [["","Pilih jurusan..."],...jurusan.map((item) => [String(item.id),item.nama] as [string,string])]}/>{!detail && jurusan.length === 0 && <small className={styles.fieldError}>{masterError || "Belum ada data jurusan."}</small>}</Field>
-            <Field label="Kelas" required error={!detail ? errors.kelas_id || masterError : undefined}><Select value={detail ? (detail.kelas_id ? String(detail.kelas_id) : "") : String(form.kelas_id ?? "")} disabled={!!detail || !form.jurusan_id || formKelas.length === 0} onChange={(value) => setForm({ ...form, kelas_id: value ? Number(value) : null })} options={detail && !detail.kelas_id ? [["","-"]] : [["","Pilih kelas..."],...formKelas.map((item) => [String(item.id),`${item.nama} (${item.tingkat})`] as [string,string])]}/>{!detail && form.jurusan_id && formKelas.length === 0 && <small className={styles.fieldError}>{masterError || "Belum ada kelas untuk jurusan ini."}</small>}</Field>
+            <Field label="Jurusan" required error={!detail ? errors.jurusan_id || masterError : undefined} full><SearchableSelect value={detail ? (detail.jurusan_id ? String(detail.jurusan_id) : "") : String(form.jurusan_id ?? "")} disabled={!!detail || jurusan.length === 0} onChange={changeMajor} options={detail ? [{ value: detail.jurusan_id ? String(detail.jurusan_id) : "", label: detail.jurusan_id ? detail.nama_jurusan || "-" : "-" }] : [{ value: "", label: "Pilih jurusan..." }, ...jurusan.map((item) => ({ value: String(item.id), label: item.nama }))]} placeholder="Cari jurusan..." ariaLabel="Cari jurusan" />{!detail && jurusan.length === 0 && <small className={styles.fieldError}>{masterError || "Belum ada data jurusan."}</small>}</Field>
+            <Field label="Kelas" required error={!detail ? errors.kelas_id || masterError : undefined}><SearchableSelect value={detail ? (detail.kelas_id ? String(detail.kelas_id) : "") : String(form.kelas_id ?? "")} disabled={!!detail || !form.jurusan_id || formKelas.length === 0} onChange={(value) => setForm({ ...form, kelas_id: value ? Number(value) : null })} options={detail ? [{ value: detail.kelas_id ? String(detail.kelas_id) : "", label: detail.kelas_id ? detail.nama_kelas || "-" : "-" }] : [{ value: "", label: "Pilih kelas..." }, ...formKelas.map((item) => ({ value: String(item.id), label: `${item.nama} (${item.tingkat})` }))]} placeholder="Cari kelas..." ariaLabel="Cari kelas" />{!detail && form.jurusan_id && formKelas.length === 0 && <small className={styles.fieldError}>{masterError || "Belum ada kelas untuk jurusan ini."}</small>}</Field>
             <Field label="Alamat" full><input value={form.alamat || (detail ? "-" : "")} readOnly={!!detail} onChange={(event) => setForm({ ...form, alamat: event.target.value })}/></Field>
             {detail && <Field label="Dibuat pada" full><input value={dateLabel(detail.created_at)} readOnly/></Field>}
           </div></section>
