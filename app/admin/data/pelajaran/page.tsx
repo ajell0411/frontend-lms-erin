@@ -16,6 +16,7 @@ export default function PelajaranPage() {
   const { canWrite } = useRole();
   const { basePath } = useViewMode();
   const [items, setItems] = useState<PelajaranRecord[]>([]);
+  const [search, setSearch] = useState("");
   const [teachers, setTeachers] = useState<GuruAccount[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
@@ -27,6 +28,13 @@ export default function PelajaranPage() {
   const [form, setForm] = useState<PelajaranInput>(EMPTY);
   const [formError, setFormError] = useState("");
   const [saving, setSaving] = useState(false);
+  const [teacherSearch, setTeacherSearch] = useState("");
+  const filteredItems = items.filter((item) =>
+    `${item.nama} ${item.kode}`.toLocaleLowerCase("id-ID").includes(search.trim().toLocaleLowerCase("id-ID")),
+  );
+  const filteredTeachers = teachers.filter((teacher) =>
+    `${teacher.nama} ${teacher.email}`.toLocaleLowerCase("id-ID").includes(teacherSearch.trim().toLocaleLowerCase("id-ID")),
+  );
 
   async function reload() {
     setLoading(true);
@@ -59,6 +67,7 @@ export default function PelajaranPage() {
     setForm(EMPTY);
     setFormError("");
     setSuccess("");
+    setTeacherSearch("");
     setModalOpen(true);
   }
 
@@ -68,6 +77,7 @@ export default function PelajaranPage() {
     setForm({ nama: item.nama, kode: item.kode, guru_ids: item.guru_ids ?? item.guru.map((teacher) => teacher.id) });
     setFormError("");
     setSuccess("");
+    setTeacherSearch("");
     setModalOpen(true);
   }
 
@@ -118,12 +128,18 @@ export default function PelajaranPage() {
       {success && <p className={styles.success} role="status">{success}</p>}
       {loadError && <div className={styles.error} role="alert"><span>{loadError}</span><button type="button" onClick={() => void reload()}>Coba lagi</button></div>}
       {formError && !modalOpen && <p className={styles.error} role="alert">{formError}</p>}
-      <div className={styles.count}>{loading ? "Memuat data..." : `Menampilkan ${items.length} pelajaran`}</div>
+      <label className={styles.searchField}>
+        <span className={styles.visuallyHidden}>Cari nama atau kode pelajaran</span>
+        <input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Cari nama pelajaran..." />
+      </label>
+      <div className={styles.count}>{loading ? "Memuat data..." : `Menampilkan ${filteredItems.length} dari ${items.length} pelajaran`}</div>
       {loading ? <div className={styles.state}>Memuat daftar pelajaran...</div> : loadError ? null : items.length === 0 ? (
         <div className={styles.state}><strong>Belum ada pelajaran</strong><span>Tambahkan mata pelajaran untuk mengelola guru pengampu.</span></div>
+      ) : filteredItems.length === 0 ? (
+        <div className={styles.state}><strong>Pelajaran tidak ditemukan</strong><span>Coba kata kunci pencarian yang lain.</span></div>
       ) : (
         <section className={styles.grid} aria-label="Daftar pelajaran">
-          {items.map((item) => <article className={styles.card} key={item.id}>
+          {filteredItems.map((item) => <article className={styles.card} key={item.id}>
             <div className={styles.cardTop}><span className={styles.code}>{item.kode}</span>{canWrite && <div className={styles.tools}>
               <button type="button" title="Edit pelajaran" aria-label={`Edit ${item.nama}`} onClick={() => openEdit(item)}><svg viewBox="0 0 24 24"><path d="m15 5 4 4M4 20l4.2-.8L19 8.4a2.1 2.1 0 0 0-3-3L5.2 16.2 4 20Z" /></svg></button>
               <button type="button" title="Hapus pelajaran" aria-label={`Hapus ${item.nama}`} className={styles.deleteIcon} onClick={() => { setDeleting(item); setFormError(""); }}><svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6m4-6v6M5.5 7l1 14h11l1-14M9 7V4h6v3" /></svg></button>
@@ -139,7 +155,7 @@ export default function PelajaranPage() {
         <form onSubmit={submit}>
           <label className={styles.field}>Nama Pelajaran<input autoFocus value={form.nama} onChange={(event) => setForm({ ...form, nama: event.target.value })} required placeholder="Matematika" /></label>
           <label className={styles.field}>Kode<input value={form.kode} onChange={(event) => setForm({ ...form, kode: event.target.value })} required maxLength={12} placeholder="MTK" /></label>
-          {editing && <fieldset className={styles.teacherPicker}><legend>Guru Pengampu</legend>{teacherError ? <p className={styles.formError}>{teacherError}</p> : teachers.length === 0 ? <p className={styles.hint}>Belum ada data guru.</p> : <div className={styles.teacherOptions}>{teachers.map((teacher) => <label key={teacher.id}><input type="checkbox" checked={form.guru_ids.includes(teacher.id)} onChange={() => toggleTeacher(teacher.id)} /><span><strong>{teacher.nama}</strong><small>{teacher.email}</small></span></label>)}</div>}</fieldset>}
+          {editing && <fieldset className={styles.teacherPicker}><legend>Guru Pengampu</legend>{teacherError ? <p className={styles.formError}>{teacherError}</p> : teachers.length === 0 ? <p className={styles.hint}>Belum ada data guru.</p> : <><label className={styles.teacherSearch}><span className={styles.visuallyHidden}>Cari guru berdasarkan nama</span><input type="search" value={teacherSearch} onChange={(event) => setTeacherSearch(event.target.value)} placeholder="Cari nama guru..." /></label><div className={styles.teacherOptions}>{filteredTeachers.length ? filteredTeachers.map((teacher) => <label key={teacher.id}><input type="checkbox" checked={form.guru_ids.includes(teacher.id)} onChange={() => toggleTeacher(teacher.id)} /><span><strong>{teacher.nama}</strong><small>{teacher.email}</small></span></label>) : <p className={styles.hint}>Guru tidak ditemukan.</p>}</div></>}</fieldset>}
           {formError && <p className={styles.formError} role="alert">{formError}</p>}
           <footer className={styles.actions}><button type="button" className={styles.secondaryButton} onClick={() => setModalOpen(false)}>Batal</button><button className={styles.primaryButton} disabled={saving}>{saving ? "Menyimpan..." : editing ? "Simpan Perubahan" : "Simpan Pelajaran"}</button></footer>
         </form>
