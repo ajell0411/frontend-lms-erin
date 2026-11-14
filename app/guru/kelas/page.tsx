@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { getUser, listKelas, listPelajaran, type KelasRecord, type PelajaranRecord } from "@/lib/api";
 import { hapusGuruKelas, listGuruKelas, tambahGuruKelas, ubahGuruKelas, type GuruKelasItem } from "@/lib/guru";
+import SearchableSelect from "@/components/SearchableSelect";
 import { Avatar, ConfirmDialog, EmptyState, Icon, Modal, PageHead, pesanError, useNotice } from "../ui";
 import ui from "../ui.module.css";
 
@@ -34,7 +35,7 @@ export default function KelasSayaPage() {
   }, []);
 
   useEffect(() => {
-    void muat();
+    void Promise.resolve().then(muat);
   }, [muat]);
 
   async function siapkanMaster() {
@@ -173,25 +174,11 @@ export default function KelasSayaPage() {
         >
           <div className={ui.field}>
             <label htmlFor="kelas-pilih">Kelas</label>
-            <select id="kelas-pilih" className={ui.select} value={kelasId} onChange={(e) => setKelasId(e.target.value)}>
-              <option value="">Pilih kelas...</option>
-              {kelasOpts.map((k) => (
-                <option key={k.id} value={k.id}>
-                  {k.nama}
-                </option>
-              ))}
-            </select>
+            <SearchableSelect value={kelasId} onChange={setKelasId} options={kelasOpts.map((k) => ({ value: String(k.id), label: k.nama }))} ariaLabel="Cari kelas" placeholder="Cari kelas..." disabled={kelasOpts.length === 0} />
           </div>
           <div className={ui.field}>
             <label htmlFor="pel-pilih">Mata Pelajaran</label>
-            <select id="pel-pilih" className={ui.select} value={pelId} onChange={(e) => setPelId(e.target.value)}>
-              <option value="">Pilih pelajaran...</option>
-              {pelOpts.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.nama}
-                </option>
-              ))}
-            </select>
+            <SearchableSelect value={pelId} onChange={setPelId} options={pelOpts.map((p) => ({ value: String(p.id), label: p.nama }))} ariaLabel="Cari mata pelajaran" placeholder="Cari pelajaran..." disabled={pelOpts.length === 0} />
           </div>
         </Modal>
       )}
