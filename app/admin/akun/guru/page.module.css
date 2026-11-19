@@ -103,3 +103,4 @@
 .eyebrow{display:none}
 .printButton{border:1px solid transparent;background:linear-gradient(90deg,#4147d5,#0a8cff);color:#fff;border-radius:12px;font-weight:700;transition:transform 150ms ease,filter 150ms ease}
 .printButton:hover:not(:disabled){border-color:transparent;background:linear-gradient(90deg,#4147d5,#0a8cff);color:#fff;filter:brightness(1.06);transform:translateY(-1px)}
+.subjectList{display:flex;flex-direction:column;gap:3px;line-height:1.35}
