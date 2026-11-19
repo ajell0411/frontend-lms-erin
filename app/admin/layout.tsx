@@ -29,6 +29,7 @@ const MENU: MenuItem[] = [
     children: [
       { label: "Pelajaran", href: "/admin/data/pelajaran" },
       { label: "Jurusan & Kelas", href: "/admin/data/jurusan" },
+      { label: "Jadwal Mengajar", href: "/admin/jadwal" },
     ],
   },
   {
@@ -38,6 +39,7 @@ const MENU: MenuItem[] = [
       { label: "Admin", href: "/admin/akun/admin" },
       { label: "Guru", href: "/admin/akun/guru" },
       { label: "Siswa", href: "/admin/akun/siswa" },
+      { label: "Reset Kata Sandi", href: "/admin/reset-password" },
     ],
   },
   { label: "Pengumuman", icon: "megaphone", href: "/admin/pengumuman" },
