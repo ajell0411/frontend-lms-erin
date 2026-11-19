@@ -8,6 +8,7 @@ import {
   getGuruAsesmenHasil,
   getGuruAsesmenMurid,
   hapusGuruSoal,
+  simpanNilaiEsaiGuruAsesmen,
   tambahGuruSoal,
   ubahGuruSoal,
   type GuruAsesmenDetail,
@@ -22,8 +23,8 @@ import x from "../../extra.module.css";
 
 const KODE = ["A", "B", "C", "D", "E"];
 
-type SoalForm = { teks: string; poin: string; opsi: string[]; kunci: number; pembahasan: string };
-const SOAL_KOSONG: SoalForm = { teks: "", poin: "1", opsi: ["", "", "", ""], kunci: 0, pembahasan: "" };
+type SoalForm = { teks: string; jenis: "pilihan_ganda" | "esai"; poin: string; opsi: string[]; kunci: number; pembahasan: string };
+const SOAL_KOSONG: SoalForm = { teks: "", jenis: "pilihan_ganda", poin: "1", opsi: ["", "", "", ""], kunci: 0, pembahasan: "" };
 
 function labelJenis(j: string) {
   return j === "ujian_harian" ? "Ujian Harian" : "Kuis";
@@ -42,6 +43,7 @@ export default function DetailAsesmenPage() {
   const [soalForm, setSoalForm] = useState<SoalForm>(SOAL_KOSONG);
   const [hapusSoal, setHapusSoal] = useState<GuruSoalItem | null>(null);
   const [hasil, setHasil] = useState<GuruAsesmenHasil | null>(null);
+  const [nilaiEsai, setNilaiEsai] = useState<Record<string, string>>({});
   const [bukaId, setBukaId] = useState<number | null>(null);
   const [busy, setBusy] = useState(false);
   const { show, node } = useNotice();
@@ -82,8 +84,9 @@ export default function DetailAsesmenPage() {
     const idx = s.opsi.findIndex((o) => o.kode === s.kunci);
     setSoalForm({
       teks: s.teks,
+      jenis: s.jenis || "pilihan_ganda",
       poin: String(s.poin ?? 1),
-      opsi: s.opsi.map((o) => o.teks),
+      opsi: s.opsi.length ? s.opsi.map((o) => o.teks) : ["", "", "", ""],
       kunci: idx >= 0 ? idx : 0,
       pembahasan: s.pembahasan || "",
     });
@@ -115,20 +118,21 @@ export default function DetailAsesmenPage() {
       show("Teks soal wajib diisi.", true);
       return;
     }
-    if (soalForm.opsi.some((o) => !o.trim())) {
+    if (soalForm.jenis === "pilihan_ganda" && soalForm.opsi.some((o) => !o.trim())) {
       show("Semua pilihan jawaban harus diisi.", true);
       return;
     }
     const poin = Number(soalForm.poin);
-    if (!Number.isFinite(poin) || poin <= 0) {
+    if (!Number.isInteger(poin) || poin <= 0) {
       show("Poin harus lebih dari 0.", true);
       return;
     }
     const input: GuruSoalInput = {
       teks: soalForm.teks.trim(),
+      jenis: soalForm.jenis,
       poin,
-      opsi: soalForm.opsi.map((o) => ({ teks: o.trim() })),
-      kunci: KODE[soalForm.kunci],
+      opsi: soalForm.jenis === "pilihan_ganda" ? soalForm.opsi.map((o) => ({ teks: o.trim() })) : [],
+      kunci: soalForm.jenis === "pilihan_ganda" ? KODE[soalForm.kunci] : "",
       pembahasan: soalForm.pembahasan.trim(),
     };
     setBusy(true);
@@ -162,11 +166,45 @@ export default function DetailAsesmenPage() {
   async function bukaHasil(m: GuruAsesmenMurid) {
     setBukaId(m.siswa_id);
     try {
-      setHasil(await getGuruAsesmenHasil(id, m.siswa_id));
+      const next = await getGuruAsesmenHasil(id, m.siswa_id);
+      setHasil(next);
+      setNilaiEsai(Object.fromEntries(next.detail.filter((item) => item.jenis === "esai" && item.nilai_diberikan !== null).map((item) => [String(item.id), String(item.nilai_diberikan)])));
     } catch (reason) {
       show(pesanError(reason, "Hasil gagal dibuka."), true);
     } finally {
       setBukaId(null);
+    }
+  }
+
+  async function simpanPenilaianEsai() {
+    if (!hasil) return;
+    const scores: Record<string, number> = {};
+    for (const question of hasil.detail.filter((item) => item.jenis === "esai")) {
+      const raw = nilaiEsai[String(question.id)];
+      if (raw === undefined || raw.trim() === "") continue;
+      const score = Number(raw);
+      if (!Number.isInteger(score) || score < 0 || score > question.poin) {
+        show(`Nilai soal esai ${question.nomor} harus berupa bilangan bulat 0 sampai ${question.poin}.`, true);
+        return;
+      }
+      scores[String(question.id)] = score;
+    }
+    if (Object.keys(scores).length === 0 && hasil.perlu_dinilai) {
+      show("Masukkan nilai untuk setidaknya satu soal esai.", true);
+      return;
+    }
+    setBusy(true);
+    try {
+      const result = await simpanNilaiEsaiGuruAsesmen(id, hasil.siswa_id, scores);
+      const next = await getGuruAsesmenHasil(id, hasil.siswa_id);
+      setHasil(next);
+      const updated = await getGuruAsesmenMurid(id);
+      setMurid(updated.murid);
+      show(result.perlu_dinilai ? "Nilai tersimpan. Masih ada esai yang belum dinilai." : "Penilaian esai berhasil disimpan.");
+    } catch (reason) {
+      show(pesanError(reason, "Nilai esai gagal disimpan."), true);
+    } finally {
+      setBusy(false);
     }
   }
 
@@ -217,7 +255,7 @@ export default function DetailAsesmenPage() {
       {tab === "soal" && (
         <div>
           <div className={ui.toolbar} style={{ justifyContent: "space-between" }}>
-            <span className={ui.muted}>Pilihan ganda. Kunci jawaban ditandai hijau.</span>
+            <span className={ui.muted}>Buat soal pilihan ganda maupun esai.</span>
             <button type="button" className={`${ui.btn} ${ui.btnPrimary} ${ui.btnSm}`} onClick={bukaTambahSoal}>
               <Icon name="plus" />
               Tambah Soal
@@ -240,15 +278,16 @@ export default function DetailAsesmenPage() {
                       </button>
                     </span>
                   </div>
+                  <div className={x.soalHead}><span className={ui.badge}>{s.jenis === "esai" ? "Esai" : "Pilihan Ganda"}</span><span className={ui.muted}>{s.poin ?? 1} poin</span></div>
                   <p className={x.soalTeks}>{s.teks}</p>
-                  <div className={x.opsiList}>
+                  {s.jenis !== "esai" && <div className={x.opsiList}>
                     {s.opsi.map((o) => (
                       <div key={o.kode} className={[x.opsi, o.kode === s.kunci ? x.opsiBenar : ""].join(" ")}>
                         <b>{o.kode}.</b>
                         <span>{o.teks}</span>
                       </div>
                     ))}
-                  </div>
+                  </div>}
                   {s.pembahasan && <p className={x.pembahasan}>Pembahasan: {s.pembahasan}</p>}
                 </article>
               ))}
@@ -301,7 +340,7 @@ export default function DetailAsesmenPage() {
                       </td>
                       <td>{formatWaktu(m.waktu_kumpul)}</td>
                       <td className={ui.center}>
-                        <span className={nilaiTone(m.nilai)}>{m.nilai ?? "-"}</span>
+                        <span className={m.perlu_dinilai ? ui.muted : nilaiTone(m.nilai)}>{m.perlu_dinilai ? "Perlu dinilai" : m.nilai ?? "-"}</span>
                       </td>
                       <td>
                         <div className={x.rowActions}>
@@ -344,6 +383,13 @@ export default function DetailAsesmenPage() {
             <textarea id="s-teks" className={ui.textarea} value={soalForm.teks} onChange={(e) => setSoalForm({ ...soalForm, teks: e.target.value })} />
           </div>
           <div className={ui.field}>
+            <label htmlFor="s-jenis">Jenis Soal</label>
+            <select id="s-jenis" className={ui.select} value={soalForm.jenis} onChange={(e) => setSoalForm({ ...soalForm, jenis: e.target.value as SoalForm["jenis"] })}>
+              <option value="pilihan_ganda">Pilihan Ganda</option>
+              <option value="esai">Esai</option>
+            </select>
+          </div>
+          {soalForm.jenis === "pilihan_ganda" && <div className={ui.field}>
             <label>Pilihan Jawaban (pilih bulatan untuk kunci jawaban)</label>
             {soalForm.opsi.map((o, i) => (
               <div key={i} className={x.opsiRow}>
@@ -361,7 +407,7 @@ export default function DetailAsesmenPage() {
                 Tambah Pilihan
               </button>
             )}
-          </div>
+          </div>}
           <div className={ui.fieldRow}>
             <div className={ui.field}>
               <label htmlFor="s-poin">Poin</label>
@@ -392,15 +438,16 @@ export default function DetailAsesmenPage() {
           size="lg"
           onClose={() => setHasil(null)}
           footer={
-            <button type="button" className={`${ui.btn} ${ui.btnPrimary}`} onClick={() => setHasil(null)}>
-              Tutup
-            </button>
+            <>
+              {hasil.detail.some((item) => item.jenis === "esai") && <button type="button" className={`${ui.btn} ${ui.btnPrimary}`} disabled={busy} onClick={() => void simpanPenilaianEsai()}>{busy ? "Menyimpan..." : "Simpan Nilai Esai"}</button>}
+              <button type="button" className={`${ui.btn} ${ui.btnGhost}`} onClick={() => setHasil(null)}>Tutup</button>
+            </>
           }
         >
           <div className={x.hasilTop}>
             <div className={x.stat}>
-              <strong>{hasil.nilai ?? "-"}</strong>
-              <span>Nilai (maks {hasil.nilai_maks})</span>
+              <strong>{hasil.nilai ?? (hasil.perlu_dinilai ? "Perlu dinilai" : "-")}</strong>
+              <span>{hasil.perlu_dinilai ? "Nilai sementara" : `Nilai (maks ${hasil.nilai_maks})`}</span>
             </div>
             <div className={x.stat}>
               <strong>
@@ -409,8 +456,8 @@ export default function DetailAsesmenPage() {
               <span>Jawaban benar</span>
             </div>
             <div className={x.stat}>
-              <strong>{hasil.lulus ? "Lulus" : "Belum Lulus"}</strong>
-              <span>KKM {hasil.kkm}</span>
+              <strong>{hasil.perlu_dinilai ? "Menunggu" : hasil.lulus ? "Lulus" : "Belum Lulus"}</strong>
+              <span>{hasil.perlu_dinilai ? "Esai belum selesai dinilai" : `KKM ${hasil.kkm}`}</span>
             </div>
           </div>
           <p className={ui.muted} style={{ marginBottom: 14 }}>
@@ -422,10 +469,18 @@ export default function DetailAsesmenPage() {
               <article key={d.nomor} className={x.soalCard}>
                 <div className={x.soalHead}>
                   <span className={ui.badge}>Soal {d.nomor}</span>
-                  <span className={`${ui.badge} ${d.benar ? ui.badgeGreen : ui.badgeRed}`}>{d.benar ? `Benar (+${d.poin})` : "Salah"}</span>
+                  <span className={ui.badge}>{d.jenis === "esai" ? "Esai" : d.benar ? `Benar (+${d.poin})` : "Salah"}</span>
                 </div>
                 <p className={x.soalTeks}>{d.teks}</p>
-                <div className={x.opsiList}>
+                {d.jenis === "esai" ? <>
+                  <p className={ui.muted}>Jawaban siswa:</p>
+                  <p className={x.soalTeks}>{d.jawaban || "Siswa tidak menjawab soal ini."}</p>
+                  <div className={ui.field}>
+                    <label htmlFor={`nilai-esai-${d.id}`}>Nilai (0-{d.poin} poin)</label>
+                    <input id={`nilai-esai-${d.id}`} className={ui.input} type="number" min={0} max={d.poin} step={1} value={nilaiEsai[String(d.id)] ?? ""} onChange={(event) => setNilaiEsai((current) => ({ ...current, [String(d.id)]: event.target.value }))} />
+                  </div>
+                  {d.nilai_diberikan !== null && <span className={ui.muted}>Nilai tersimpan: {d.nilai_diberikan}/{d.poin}</span>}
+                </> : <div className={x.opsiList}>
                   {d.opsi.map((o) => (
                     <div key={o.kode} className={[x.opsi, o.kode === d.kunci ? x.opsiBenar : o.kode === d.jawaban ? x.opsiSalah : ""].join(" ")}>
                       <b>{o.kode}.</b>
@@ -435,8 +490,8 @@ export default function DetailAsesmenPage() {
                       </span>
                     </div>
                   ))}
-                </div>
-                {!d.jawaban && <p className={x.pembahasan}>Siswa tidak menjawab soal ini.</p>}
+                </div>}
+                {!d.jawaban && d.jenis !== "esai" && <p className={x.pembahasan}>Siswa tidak menjawab soal ini.</p>}
                 {d.pembahasan && <p className={x.pembahasan}>Pembahasan: {d.pembahasan}</p>}
               </article>
             ))}
