@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
+import { updateProfilePassword } from "@/lib/api";
 import { getProfilSiswa, type ProfilSiswa } from "@/lib/siswa";
 import { Badge, Card, EmptyState, ErrorState, PageHeader, Skeleton } from "../components";
 import styles from "./page.module.css";
@@ -30,6 +31,12 @@ export default function ProfilSiswaPage() {
   const [profile, setProfile] = useState<ProfilSiswa | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordSuccess, setPasswordSuccess] = useState("");
+  const [passwordSaving, setPasswordSaving] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -39,6 +46,36 @@ export default function ProfilSiswaPage() {
     finally { setLoading(false); }
   }, []);
   useEffect(() => { void Promise.resolve().then(load); }, [load]);
+
+  async function submitPassword(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setPasswordError("");
+    setPasswordSuccess("");
+    if (!currentPassword) {
+      setPasswordError("Masukkan kata sandi saat ini.");
+      return;
+    }
+    if (!/^[A-Za-z0-9]{8,}$/.test(password)) {
+      setPasswordError("Kata sandi minimal 8 karakter dan hanya boleh berisi huruf dan angka.");
+      return;
+    }
+    if (password !== passwordConfirmation) {
+      setPasswordError("Konfirmasi kata sandi tidak sama.");
+      return;
+    }
+    setPasswordSaving(true);
+    try {
+      await updateProfilePassword(currentPassword, password);
+      setCurrentPassword("");
+      setPassword("");
+      setPasswordConfirmation("");
+      setPasswordSuccess("Kata sandi berhasil diperbarui.");
+    } catch (reason) {
+      setPasswordError(reason instanceof Error ? reason.message : "Kata sandi gagal diperbarui.");
+    } finally {
+      setPasswordSaving(false);
+    }
+  }
 
   if (loading) return <div className={styles.loading}><PageHeader title="Profil Saya" subtitle="Informasi pribadi dan data akademik Anda."/><div className={styles.columns}><Card><Skeleton/><Skeleton/><Skeleton/></Card><Card><Skeleton/><Skeleton/><Skeleton/></Card></div></div>;
   if (error) return <><PageHeader title="Profil Saya" subtitle="Informasi pribadi dan data akademik Anda."/><Card><ErrorState message={error} onRetry={() => void load()}/></Card></>;
@@ -51,6 +88,7 @@ export default function ProfilSiswaPage() {
   const sections: { title: string; icon: string; rows: Row[] }[] = [
     { title: "Data Akademik", icon: "\u25A6", rows: [
       { label: "Nama Lengkap", value: valueOrDash(profile.nama) },
+      { label: "Username", value: valueOrDash(profile.username) },
       { label: "NISN", value: valueOrDash(profile.nisn) },
       { label: "Kelas", value: className },
       { label: "Jurusan", value: jurusan },
@@ -89,6 +127,27 @@ export default function ProfilSiswaPage() {
             {section.rows.map((row) => <label key={row.label} style={row.full ? { gridColumn: "1 / -1" } : undefined}><span>{row.label}</span><input readOnly value={row.value}/></label>)}
           </div>
         </Card>)}
+        <Card className={styles.dataCard}>
+          <h2><span aria-hidden="true">{"\u26BF"}</span>Keamanan Akun</h2>
+          <p className={styles.passwordHint}>Atur kata sandi sendiri. Nama dan username hanya dapat diubah oleh admin.</p>
+          <form className={styles.form} onSubmit={submitPassword}>
+            <label className={styles.formField}>
+              Kata sandi saat ini
+              <input type="password" autoComplete="current-password" value={currentPassword} onChange={(event) => setCurrentPassword(event.target.value)} required disabled={passwordSaving} />
+            </label>
+            <label className={styles.formField}>
+              Kata sandi baru
+              <input type="password" autoComplete="new-password" value={password} onChange={(event) => setPassword(event.target.value)} minLength={8} required disabled={passwordSaving} />
+            </label>
+            <label className={styles.formField}>
+              Konfirmasi kata sandi baru
+              <input type="password" autoComplete="new-password" value={passwordConfirmation} onChange={(event) => setPasswordConfirmation(event.target.value)} minLength={8} required disabled={passwordSaving} />
+            </label>
+            {passwordError && <p className={styles.formError} role="alert">{passwordError}</p>}
+            {passwordSuccess && <p className={styles.formSuccess} role="status">{passwordSuccess}</p>}
+            <button type="submit" className={styles.save} disabled={passwordSaving}>{passwordSaving ? "Menyimpan..." : "Simpan Kata Sandi"}</button>
+          </form>
+        </Card>
       </div>
     </div>
   </div>;
