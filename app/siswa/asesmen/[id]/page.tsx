@@ -151,7 +151,8 @@ export default function KerjakanAsesmenPage() {
   if (alreadySubmitted || submitted) return <div className={styles.resultPage}>
     <Card className={styles.resultCard}><span className={styles.resultIcon} aria-hidden="true">{submitted ? "✓" : "!"}</span><h1>{submitted ? "Asesmen berhasil dikirim" : "Anda sudah mengerjakan asesmen ini"}</h1>
       {error && <p className={styles.resultNote}>{error}</p>}
-      {submitted && result?.nilai !== undefined && <p className={styles.resultScore}>Nilai Anda: <strong>{result.nilai}</strong>/{result.nilai_maks ?? assessment.nilai_maks ?? 100}</p>}
+      {submitted && result?.perlu_dinilai && <p>Jawaban esai Anda menunggu penilaian guru.</p>}
+      {submitted && result?.nilai != null && <p className={styles.resultScore}>Nilai Anda: <strong>{result.nilai}</strong>/{result.nilai_maks ?? assessment.nilai_maks ?? 100}</p>}
       <p>{assessment.judul}</p><Link className={styles.returnButton} href="/siswa/asesmen">Kembali ke Asesmen</Link>
     </Card>
   </div>;
@@ -163,11 +164,11 @@ export default function KerjakanAsesmenPage() {
     {error && <p className={styles.inlineError} role="alert">{error}</p>}
     <div className={styles.examGrid}>
       <Card className={styles.questionCard}>
-        <div className={styles.questionMeta}><strong>Soal No. {current.nomor || index + 1}</strong><Badge variant="info">PILIHAN GANDA</Badge></div>
+        <div className={styles.questionMeta}><strong>Soal No. {current.nomor || index + 1}</strong><Badge variant="info">{current.jenis === "esai" ? "ESAI" : "PILIHAN GANDA"}</Badge></div>
         <div className={styles.questionText}>{mathText(current.teks)}</div>
-        <div className={styles.options}>{current.opsi.map((option) => <button type="button" className={answers[key] === option.kode ? styles.optionSelected : styles.option} aria-pressed={answers[key] === option.kode} key={option.kode} onClick={() => choose(current, option.kode)}>
+        {current.jenis === "esai" ? <textarea className={styles.essayAnswer} value={answers[key] ?? ""} onChange={(event) => choose(current, event.target.value)} placeholder="Tulis jawaban esai..." aria-label={`Jawaban soal ${current.nomor}`} /> : <div className={styles.options}>{current.opsi.map((option) => <button type="button" className={answers[key] === option.kode ? styles.optionSelected : styles.option} aria-pressed={answers[key] === option.kode} key={option.kode} onClick={() => choose(current, option.kode)}>
           <span className={styles.optionCode}>{option.kode}.</span><span>{option.teks}</span>
-        </button>)}</div>
+        </button>)}</div>}
         <div className={styles.questionActions}><button type="button" className={styles.doubtButton} aria-pressed={doubtful.includes(current.id)} onClick={() => toggleDoubtful(current.id)}>{doubtful.includes(current.id) ? "★ Ditandai Ragu-ragu" : "☆ Tandai Ragu-ragu"}</button>
           <div className={styles.stepActions}><button type="button" className={styles.previous} disabled={index === 0} onClick={() => setIndex((value) => Math.max(0, value - 1))}>← Soal Sebelumnya</button><button type="button" className={styles.next} onClick={() => setIndex((value) => Math.min(questions.length - 1, value + 1))}>{index === questions.length - 1 ? "Simpan" : "Simpan & Lanjut"} →</button></div>
         </div>
