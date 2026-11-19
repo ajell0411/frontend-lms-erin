@@ -1339,3 +1339,5 @@
 .titleBlock.titleBlock{position:relative;padding-left:14px}
 .titleBlock.titleBlock::before{content:"";position:absolute;left:0;top:2px;bottom:2px;width:4px;border-radius:4px;background:linear-gradient(180deg,#1d4ed8,#0a8cff)}
 .eyebrow{display:none}
+.printButton{border:1px solid transparent;background:linear-gradient(90deg,#4147d5,#0a8cff);color:#fff;border-radius:12px;font-weight:700;transition:transform 150ms ease,filter 150ms ease}
+.printButton:hover:not(:disabled){border-color:transparent;background:linear-gradient(90deg,#4147d5,#0a8cff);color:#fff;filter:brightness(1.06);transform:translateY(-1px)}
