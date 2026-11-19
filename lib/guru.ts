@@ -76,17 +76,6 @@ export type GuruKelasDetail = {
   siswa: GuruKelasSiswa[];
 };
 
-export type GuruKelasInput = { kelas_id?: number; pelajaran_id?: number };
-
-export type GuruJadwalInput = {
-  kelas_id: number;
-  pelajaran_id: number;
-  hari: Hari;
-  jam_mulai: string;
-  jam_selesai: string;
-  ruangan: string;
-};
-
 type Wrapped<T> = { success: boolean; data: T; message?: string };
 
 async function ambil<T>(path: string, options?: RequestInit): Promise<T> {
@@ -106,32 +95,8 @@ export function getGuruKelas(id: number): Promise<GuruKelasDetail> {
   return ambil<GuruKelasDetail>(`/guru/kelas/${id}`);
 }
 
-export function tambahGuruKelas(input: Required<GuruKelasInput>): Promise<GuruKelasItem> {
-  return ambil<GuruKelasItem>("/guru/kelas", { method: "POST", body: JSON.stringify(input) });
-}
-
-export function ubahGuruKelas(id: number, input: GuruKelasInput): Promise<GuruKelasItem> {
-  return ambil<GuruKelasItem>(`/guru/kelas/${id}`, { method: "PUT", body: JSON.stringify(input) });
-}
-
-export async function hapusGuruKelas(id: number): Promise<void> {
-  await apiFetch<Wrapped<null>>(`/guru/kelas/${id}`, { method: "DELETE" });
-}
-
 export function listGuruJadwal(hari?: Hari): Promise<GuruJadwal[]> {
   return ambil<GuruJadwal[]>(`/guru/jadwal${hari ? `?hari=${hari}` : ""}`);
-}
-
-export function tambahGuruJadwal(input: GuruJadwalInput): Promise<GuruJadwal> {
-  return ambil<GuruJadwal>("/guru/jadwal", { method: "POST", body: JSON.stringify(input) });
-}
-
-export function ubahGuruJadwal(id: number, input: GuruJadwalInput): Promise<GuruJadwal> {
-  return ambil<GuruJadwal>(`/guru/jadwal/${id}`, { method: "PUT", body: JSON.stringify(input) });
-}
-
-export async function hapusGuruJadwal(id: number): Promise<void> {
-  await apiFetch<Wrapped<null>>(`/guru/jadwal/${id}`, { method: "DELETE" });
 }
 
 function qs(values: Record<string, string | number | undefined>): string {
@@ -263,6 +228,7 @@ export type GuruSoalItem = {
   id: number;
   nomor: number;
   teks: string;
+  jenis: "pilihan_ganda" | "esai";
   opsi: GuruSoalOpsi[];
   kunci: string;
   poin?: number;
@@ -296,6 +262,7 @@ export type GuruAsesmenInput = {
 };
 export type GuruSoalInput = {
   teks: string;
+  jenis: "pilihan_ganda" | "esai";
   poin: number;
   opsi: { teks: string }[];
   kunci: string;
@@ -308,6 +275,7 @@ export type GuruAsesmenMurid = {
   foto_url: string;
   kelas_nama: string;
   status: "belum" | "mengerjakan" | "selesai";
+  perlu_dinilai?: boolean;
   waktu_kumpul: string | null;
   terlambat: boolean;
   nilai: number | null;
@@ -326,16 +294,20 @@ export type GuruAsesmenHasil = {
   kkm: number;
   jumlah_benar: number;
   jumlah_soal: number;
+  perlu_dinilai: boolean;
   waktu_kumpul: string | null;
   sudah_dikirim: boolean;
   detail: {
+    id: number;
     nomor: number;
     teks: string;
+    jenis: "pilihan_ganda" | "esai";
     opsi: GuruSoalOpsi[];
     kunci: string;
     jawaban: string;
     benar: boolean;
     poin: number;
+    nilai_diberikan: number | null;
     pembahasan: string;
   }[];
 };
@@ -369,6 +341,12 @@ export function getGuruAsesmenMurid(id: number): Promise<{ asesmen: GuruAsesmen;
 }
 export function getGuruAsesmenHasil(id: number, siswaId: number): Promise<GuruAsesmenHasil> {
   return ambil<GuruAsesmenHasil>(`/guru/asesmen/${id}/hasil/${siswaId}`);
+}
+export function simpanNilaiEsaiGuruAsesmen(id: number, siswaId: number, nilaiEssay: Record<string, number>): Promise<{ nilai: number | null; perlu_dinilai: boolean }> {
+  return ambil<{ nilai: number | null; perlu_dinilai: boolean }>(`/guru/asesmen/${id}/hasil/${siswaId}/nilai`, {
+    method: "PUT",
+    body: JSON.stringify({ nilai_essay: nilaiEssay }),
+  });
 }
 
 // ===== Nilai =====
