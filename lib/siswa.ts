@@ -44,6 +44,7 @@ export type AsesmenSiswa = {
   jadwal_selesai?: string;
   status: "aktif" | "selesai" | "terkunci" | "berakhir";
   nilai?: number;
+  perlu_dinilai?: boolean;
   nilai_maks?: number;
 };
 
@@ -94,7 +95,7 @@ export type ProfilSiswa = {
 };
 
 export type OpsiSoalSiswa = { kode: "A" | "B" | "C" | "D"; teks: string };
-export type SoalSiswa = { id: number; nomor: number; teks: string; opsi: OpsiSoalSiswa[] };
+export type SoalSiswa = { id: number; nomor: number; teks: string; jenis: "pilihan_ganda" | "esai"; opsi: OpsiSoalSiswa[] };
 export type DetailAsesmenSiswa = AsesmenSiswa & {
   soal: SoalSiswa[];
   waktu_selesai?: string;
@@ -102,7 +103,7 @@ export type DetailAsesmenSiswa = AsesmenSiswa & {
   nilai?: number;
 };
 export type StatusMulaiAsesmen = { waktu_selesai: string; sudah_dikirim?: boolean };
-export type HasilKirimAsesmen = { sudah_dikirim: boolean; nilai?: number; nilai_maks?: number; message?: string };
+export type HasilKirimAsesmen = { sudah_dikirim: boolean; nilai?: number | null; nilai_maks?: number; perlu_dinilai?: boolean; message?: string };
 export type DetailTugasSiswa = TugasSiswa & {
   guru?: string | { id?: number; nama?: string };
   kelas?: string | { nama?: string };
