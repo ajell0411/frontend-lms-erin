@@ -11,7 +11,7 @@ import styles from "./layout.module.css";
 import BackButton from "./BackButton";
 import { AktivitasNotif } from "@/components/notif/AktivitasNotif";
 
-type IconName = "grid" | "users" | "database" | "megaphone" | "user" | "logout" | "bell";
+type IconName = "grid" | "users" | "database" | "megaphone" | "user" | "logout" | "bell" | "calendar" | "key";
 type MenuChild = { label: string; href: string };
 type MenuItem = {
   label: string;
@@ -23,13 +23,13 @@ type MenuItem = {
 // Ubah href di sini kalau nama route halamanmu berbeda
 const MENU: MenuItem[] = [
   { label: "Dashboard", icon: "grid", href: "/admin/dashboard" },
+  { label: "Jadwal Mengajar", icon: "calendar", href: "/admin/jadwal" },
   {
     label: "Manajemen Data",
     icon: "database",
     children: [
       { label: "Pelajaran", href: "/admin/data/pelajaran" },
       { label: "Jurusan & Kelas", href: "/admin/data/jurusan" },
-      { label: "Jadwal Mengajar", href: "/admin/jadwal" },
     ],
   },
   {
@@ -39,9 +39,9 @@ const MENU: MenuItem[] = [
       { label: "Admin", href: "/admin/akun/admin" },
       { label: "Guru", href: "/admin/akun/guru" },
       { label: "Siswa", href: "/admin/akun/siswa" },
-      { label: "Reset Kata Sandi", href: "/admin/reset-password" },
     ],
   },
+  { label: "Reset Kata Sandi", icon: "key", href: "/admin/reset-password" },
   { label: "Pengumuman", icon: "megaphone", href: "/admin/pengumuman" },
   { label: "Profile", icon: "user", href: "/admin/profile" },
 ];
@@ -114,6 +114,20 @@ function Icon({ name }: { name: IconName }) {
         <svg {...p}>
           <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
           <path d="M13.7 21a2 2 0 0 1-3.4 0" />
+        </svg>
+      );
+    case "calendar":
+      return (
+        <svg {...p}>
+          <rect x="3" y="5" width="18" height="16" rx="2" />
+          <path d="M16 3v4M8 3v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 17h.01M12 17h.01" />
+        </svg>
+      );
+    case "key":
+      return (
+        <svg {...p}>
+          <circle cx="8" cy="15" r="5" />
+          <path d="m11.5 11.5 8-8L22 6l-2 2 2 2-3 3-2-2-4 4" />
         </svg>
       );
   }
