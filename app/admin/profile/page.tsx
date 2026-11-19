@@ -17,6 +17,7 @@ export default function AdminProfilePage() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [passwordLama, setPasswordLama] = useState("");
   const [passwordBaru, setPasswordBaru] = useState("");
   const [passwordKonfirmasi, setPasswordKonfirmasi] = useState("");
 
@@ -41,12 +42,13 @@ export default function AdminProfilePage() {
 
   async function savePassword(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setError(""); setMessage("");
+    if (!passwordLama) { setError("Password saat ini wajib diisi."); return; }
     if (passwordBaru.length < 8) { setError("Password baru minimal 8 karakter."); return; }
     if (passwordBaru !== passwordKonfirmasi) { setError("Konfirmasi password baru tidak sama."); return; }
     setSaving(true);
     try {
-      const result = await updateProfilePassword(passwordBaru);
-      setPasswordBaru(""); setPasswordKonfirmasi(""); setMessage(result.message);
+      const result = await updateProfilePassword(passwordLama, passwordBaru);
+      setPasswordLama(""); setPasswordBaru(""); setPasswordKonfirmasi(""); setMessage(result.message);
     } catch (reason) { setError(errorMessage(reason)); }
     finally { setSaving(false); }
   }
@@ -94,6 +96,7 @@ export default function AdminProfilePage() {
         </form>
         <form id="credentials" className={styles.formCard} onSubmit={savePassword}>
           <h2>Ubah Password</h2><div className={styles.formGrid}>
+            <label>Password Saat Ini<input required type="password" autoComplete="current-password" value={passwordLama} onChange={(event) => setPasswordLama(event.target.value)}/></label>
             <label>Password Baru<input required minLength={8} type="password" value={passwordBaru} onChange={(event) => setPasswordBaru(event.target.value)}/></label>
             <label>Konfirmasi Password Baru<input required type="password" value={passwordKonfirmasi} onChange={(event) => setPasswordKonfirmasi(event.target.value)}/></label>
           </div><button type="submit" disabled={saving}>{saving ? "Menyimpan..." : "Simpan Password"}</button>
