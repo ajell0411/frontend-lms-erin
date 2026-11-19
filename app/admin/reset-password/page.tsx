@@ -20,7 +20,7 @@ function errorMessage(error: unknown) {
 }
 
 export default function ResetPasswordPage() {
-  const { canWrite, isSuperAdmin } = useRole();
+  const { canWrite } = useRole();
   const [accounts, setAccounts] = useState<AccountForPasswordReset[]>([]);
   const [role, setRole] = useState<UserRole | "">("");
   const [accountId, setAccountId] = useState("");
@@ -74,16 +74,6 @@ export default function ResetPasswordPage() {
       <header className={styles.header}>
         <div><h1>Reset Kata Sandi</h1><p>Atur kata sandi baru untuk akun di sekolah.</p></div>
       </header>
-      <section className={styles.info} aria-label="Panduan reset kata sandi">
-        <h2>Cara mereset kata sandi</h2>
-        <ol>
-          <li>Pilih role akun, lalu cari dan pilih nama akun.</li>
-          <li>Masukkan kata sandi baru minimal 8 karakter (huruf dan angka), lalu konfirmasi.</li>
-          <li>Pilih <strong>Reset Kata Sandi</strong>. Berikan kata sandi baru tersebut kepada pemilik akun melalui jalur yang aman.</li>
-        </ol>
-        <p>{isSuperAdmin ? "Super Admin dapat mereset kata sandi semua role, termasuk akun Super Admin lain." : "Admin dapat mereset akun Admin, Admin Kurikulum, Kepala Sekolah, Guru, dan Siswa. Akun Super Admin hanya dapat direset oleh Super Admin."}</p>
-        <p>Kata sandi lama tidak ditampilkan dan tidak dapat dipulihkan.</p>
-      </section>
 
       {error && <p className={styles.error} role="alert">{error}</p>}
       {success && <p className={styles.success} role="status">{success}</p>}
