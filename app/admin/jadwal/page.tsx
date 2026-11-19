@@ -47,6 +47,7 @@ export default function AdminJadwalPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [teacherSearch, setTeacherSearch] = useState("");
 
   const load = useCallback(async () => {
     setError("");
@@ -151,6 +152,9 @@ export default function AdminJadwalPage() {
     (item) => item.pelajaran_id,
     (item) => item.pelajaran_nama,
   );
+  const filteredSchedule = schedule.filter((item) =>
+    item.guru_nama.toLocaleLowerCase("id-ID").includes(teacherSearch.trim().toLocaleLowerCase("id-ID")),
+  );
 
   return (
     <div className={styles.page}>
@@ -192,9 +196,14 @@ export default function AdminJadwalPage() {
         </div>
       </form>
 
-      {loading ? <p className={styles.state}>Memuat jadwal...</p> : schedule.length === 0 ? <p className={styles.state}>Belum ada jadwal mengajar.</p> : <div className={styles.days}>
+      <label className={`${styles.field} ${styles.searchField}`}>
+        <span>Cari nama guru pada jadwal</span>
+        <input type="search" value={teacherSearch} onChange={(event) => setTeacherSearch(event.target.value)} placeholder="Ketik nama guru..." />
+      </label>
+
+      {loading ? <p className={styles.state}>Memuat jadwal...</p> : schedule.length === 0 ? <p className={styles.state}>Belum ada jadwal mengajar.</p> : filteredSchedule.length === 0 ? <p className={styles.state}>Tidak ada jadwal untuk nama guru tersebut.</p> : <div className={styles.days}>
         {DAYS.map((day) => {
-          const rows = schedule.filter((item) => item.hari === day).sort((a, b) => a.jam_mulai.localeCompare(b.jam_mulai));
+          const rows = filteredSchedule.filter((item) => item.hari === day).sort((a, b) => a.jam_mulai.localeCompare(b.jam_mulai));
           if (!rows.length) return null;
           return <section className={styles.day} key={day}>
             <h2>{dayName(day)}</h2>
