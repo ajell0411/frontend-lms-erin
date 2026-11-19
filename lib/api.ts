@@ -25,6 +25,38 @@ export type LoginResult = {
 };
 
 export type AdminRole = "admin" | "admin_kurikulum" | "kepala_sekolah";
+export type AccountForPasswordReset = { id: number; nama: string; username?: string | null; email: string; role: UserRole };
+export type GuruKelasAssignment = {
+  id: number;
+  guru_id: number;
+  guru_nama: string;
+  kelas_id: number;
+  kelas_nama: string;
+  tingkat: string;
+  pelajaran_id: number;
+  pelajaran_nama: string;
+};
+export type AdminJadwal = {
+  id: number;
+  guru_kelas_id: number;
+  guru_id: number;
+  guru_nama: string;
+  kelas_id: number;
+  kelas_nama: string;
+  pelajaran_id: number;
+  pelajaran_nama: string;
+  hari: string;
+  jam_mulai: string;
+  jam_selesai: string;
+  ruangan: string;
+};
+export type AdminJadwalInput = {
+  guru_kelas_id: number;
+  hari: string;
+  jam_mulai: string;
+  jam_selesai: string;
+  ruangan: string;
+};
 
 export type AdminAccount = {
   id: number | string;
@@ -97,6 +129,7 @@ export type SiswaAccount = {
   nama_wali: string;
   telepon_wali: string;
   tahun_masuk: number | null;
+  tahun_lulus: number | null;
   status: AccountStatus;
   foto_url: string;
   kelas_id: number | null;
@@ -134,6 +167,7 @@ export type SiswaInput = {
   nama_wali: string;
   telepon_wali: string;
   tahun_masuk: number | null;
+  tahun_lulus: number | null;
   status: AccountStatus;
   foto_url: string;
   kelas_id: number | null;
@@ -287,6 +321,50 @@ function adminRequest<T>(path: string, options: Omit<RequestInit, "headers"> = {
     ...options,
     headers: { Authorization: `Bearer ${getToken() ?? ""}` },
   });
+}
+
+function adminData<T>(path: string, options: Omit<RequestInit, "headers"> = {}): Promise<T> {
+  return adminRequest<{ data: T }>(path, options).then((response) => response.data);
+}
+
+export function listAccountsForPasswordReset(): Promise<AccountForPasswordReset[]> {
+  return adminData<AccountForPasswordReset[]>("/admin/accounts");
+}
+
+export async function resetAccountPassword(role: UserRole, id: number, password: string): Promise<void> {
+  await adminRequest<unknown>(`/admin/accounts/${encodeURIComponent(role)}/${encodeURIComponent(String(id))}/password`, {
+    method: "PUT",
+    body: JSON.stringify({ password }),
+  });
+}
+
+export function listAdminGuruKelas(kelasId?: number): Promise<GuruKelasAssignment[]> {
+  const query = kelasId ? `?kelas_id=${encodeURIComponent(String(kelasId))}` : "";
+  return adminData<GuruKelasAssignment[]>(`/admin/guru-kelas${query}`);
+}
+
+export function tambahAdminGuruKelas(input: Pick<GuruKelasAssignment, "guru_id" | "kelas_id" | "pelajaran_id">): Promise<GuruKelasAssignment> {
+  return adminData<GuruKelasAssignment>("/admin/guru-kelas", { method: "POST", body: JSON.stringify(input) });
+}
+
+export async function hapusAdminGuruKelas(id: number): Promise<void> {
+  await adminRequest<unknown>(`/admin/guru-kelas/${encodeURIComponent(String(id))}`, { method: "DELETE" });
+}
+
+export function listAdminJadwal(): Promise<AdminJadwal[]> {
+  return adminData<AdminJadwal[]>("/admin/jadwal");
+}
+
+export function tambahAdminJadwal(input: AdminJadwalInput): Promise<AdminJadwal> {
+  return adminData<AdminJadwal>("/admin/jadwal", { method: "POST", body: JSON.stringify(input) });
+}
+
+export function ubahAdminJadwal(id: number, input: AdminJadwalInput): Promise<AdminJadwal> {
+  return adminData<AdminJadwal>(`/admin/jadwal/${encodeURIComponent(String(id))}`, { method: "PUT", body: JSON.stringify(input) });
+}
+
+export async function hapusAdminJadwal(id: number): Promise<void> {
+  await adminRequest<unknown>(`/admin/jadwal/${encodeURIComponent(String(id))}`, { method: "DELETE" });
 }
 
 const ADMIN_ENDPOINT: Record<AdminRole, string> = {
