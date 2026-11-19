@@ -4,10 +4,9 @@ import type { PemantauStatistik } from "@/lib/pemantau";
 import { SectionTitle } from "./StatCard";
 import styles from "./page.module.css";
 
-const JURUSAN = ["PPLG", "DKV", "MPLB", "TKJT", "BDR", "Perhotelan"];
 const WARNA = ["#0057d9", "#06b6d4", "#8b5cf6", "#f59e0b", "#10b981", "#ef4444"];
 
-type DataJur = { nama: string; siswa: number; kelas: number | null; color: string };
+type DataJur = { key: string; nama: string; siswa: number; kelas: number | null; color: string };
 
 function DonutJurusan({ data, total }: { data: DataJur[]; total: number }) {
   const r = 62;
@@ -26,7 +25,7 @@ function DonutJurusan({ data, total }: { data: DataJur[]; total: number }) {
             acc += len;
             const dash = Math.max(len - gap, 0.5);
             return (
-              <circle key={x.nama} cx="80" cy="80" r={r} fill="none" stroke={x.color} strokeWidth="20"
+              <circle key={x.key} cx="80" cy="80" r={r} fill="none" stroke={x.color} strokeWidth="20"
                 strokeDasharray={`${dash} ${c - dash}`} strokeDashoffset={-off} transform="rotate(-90 80 80)" />
             );
           })}
@@ -41,10 +40,13 @@ function DonutJurusan({ data, total }: { data: DataJur[]; total: number }) {
 
 export default function JurusanStat({ stats }: { stats: PemantauStatistik | null }) {
   const n = (v?: number) => v ?? 0;
-  const dataJur: DataJur[] = JURUSAN.map((j, i) => {
-    const item = stats?.jurusan?.find((x) => String(x.kode ?? x.nama ?? "").toUpperCase() === j.toUpperCase());
-    return { nama: j, siswa: n(item?.total_siswa), kelas: item?.total_kelas ?? null, color: WARNA[i % WARNA.length] };
-  });
+  const dataJur: DataJur[] = (stats?.jurusan ?? []).map((item, i) => ({
+    key: `${item.kode ?? ""}-${item.nama ?? i}`,
+    nama: item.nama || item.kode || "Jurusan",
+    siswa: n(item.total_siswa),
+    kelas: item.total_kelas ?? null,
+    color: WARNA[i % WARNA.length],
+  }));
   const totalJur = dataJur.reduce((s, x) => s + x.siswa, 0);
   const maxJur = Math.max(...dataJur.map((x) => x.siswa), 1);
   return (
@@ -54,7 +56,7 @@ export default function JurusanStat({ stats }: { stats: PemantauStatistik | null
         <DonutJurusan data={dataJur} total={totalJur} />
         <div className={styles.jurList2}>
           {dataJur.map((x) => (
-            <div key={x.nama} className={styles.jurItem}>
+            <div key={x.key} className={styles.jurItem}>
               <div className={styles.jurTop}>
                 <span className={styles.jurName2}>
                   <span className={styles.jurDot} style={{ background: x.color }} />
