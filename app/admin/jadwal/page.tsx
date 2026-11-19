@@ -16,11 +16,21 @@ import styles from "./page.module.css";
 
 const DAYS = ["senin", "selasa", "rabu", "kamis", "jumat", "sabtu", "minggu"] as const;
 type Day = typeof DAYS[number];
-type Form = Omit<AdminJadwalInput, "guru_kelas_id" | "hari"> & { guru_kelas_id: string; hari: Day };
-const EMPTY: Form = { guru_kelas_id: "", hari: "senin", jam_mulai: "", jam_selesai: "", ruangan: "" };
+type Form = { guru_id: string; kelas_id: string; pelajaran_id: string; hari: Day; jam_mulai: string; jam_selesai: string };
+const EMPTY: Form = { guru_id: "", kelas_id: "", pelajaran_id: "", hari: "senin", jam_mulai: "", jam_selesai: "" };
 
 function message(error: unknown) {
   return error instanceof Error ? error.message : "Terjadi kesalahan. Silakan coba lagi.";
+}
+
+function uniqueOptions(
+  rows: GuruKelasAssignment[],
+  getValue: (row: GuruKelasAssignment) => number,
+  getLabel: (row: GuruKelasAssignment) => string,
+) {
+  const options = new Map<number, string>();
+  rows.forEach((row) => options.set(getValue(row), getLabel(row)));
+  return Array.from(options, ([value, label]) => ({ value: String(value), label }));
 }
 
 function dayName(day: string) {
@@ -56,11 +66,12 @@ export default function AdminJadwalPage() {
   function edit(item: AdminJadwal) {
     setEditing(item);
     setForm({
-      guru_kelas_id: String(item.guru_kelas_id),
+      guru_id: String(item.guru_id),
+      kelas_id: String(item.kelas_id),
+      pelajaran_id: String(item.pelajaran_id),
       hari: item.hari as Day,
       jam_mulai: item.jam_mulai,
       jam_selesai: item.jam_selesai,
-      ruangan: item.ruangan,
     });
     setError("");
     setSuccess("");
@@ -75,17 +86,31 @@ export default function AdminJadwalPage() {
     event.preventDefault();
     setError("");
     setSuccess("");
-    if (!form.guru_kelas_id || !form.jam_mulai || !form.jam_selesai) {
-      setError("Pilih penugasan guru dan lengkapi jam mulai serta jam selesai.");
+    if (!form.guru_id || !form.kelas_id || !form.pelajaran_id || !form.jam_mulai || !form.jam_selesai) {
+      setError("Pilih guru, kelas, mata pelajaran, dan lengkapi jam mulai serta jam selesai.");
       return;
     }
     if (form.jam_selesai <= form.jam_mulai) {
       setError("Jam selesai harus setelah jam mulai.");
       return;
     }
+    const assignment = assignments.find((item) =>
+      item.guru_id === Number(form.guru_id) &&
+      item.kelas_id === Number(form.kelas_id) &&
+      item.pelajaran_id === Number(form.pelajaran_id),
+    );
+    if (!assignment) {
+      setError("Penugasan guru, kelas, dan mata pelajaran tidak ditemukan. Periksa kembali penugasan guru.");
+      return;
+    }
     setSaving(true);
     try {
-      const input: AdminJadwalInput = { ...form, guru_kelas_id: Number(form.guru_kelas_id) };
+      const input: AdminJadwalInput = {
+        guru_kelas_id: assignment.id,
+        hari: form.hari,
+        jam_mulai: form.jam_mulai,
+        jam_selesai: form.jam_selesai,
+      };
       if (editing) {
         await ubahAdminJadwal(editing.id, input);
         setSuccess("Jadwal berhasil diperbarui.");
@@ -118,10 +143,14 @@ export default function AdminJadwalPage() {
     }
   }
 
-  const options = assignments.map((item) => ({
-    value: String(item.id),
-    label: `${item.guru_nama} - ${item.kelas_nama} - ${item.pelajaran_nama}`,
-  }));
+  const teacherOptions = uniqueOptions(assignments, (item) => item.guru_id, (item) => item.guru_nama);
+  const teacherAssignments = assignments.filter((item) => String(item.guru_id) === form.guru_id);
+  const classOptions = uniqueOptions(teacherAssignments, (item) => item.kelas_id, (item) => item.kelas_nama);
+  const subjectOptions = uniqueOptions(
+    teacherAssignments.filter((item) => String(item.kelas_id) === form.kelas_id),
+    (item) => item.pelajaran_id,
+    (item) => item.pelajaran_nama,
+  );
 
   return (
     <div className={styles.page}>
@@ -131,9 +160,17 @@ export default function AdminJadwalPage() {
       <form className={styles.form} onSubmit={submit}>
         <h2>{editing ? "Edit Jadwal" : "Tambah Jadwal"}</h2>
         <label className={styles.field}>
-          <span>Guru, kelas, dan mata pelajaran</span>
-          <SearchableSelect value={form.guru_kelas_id} onChange={(value) => setForm({ ...form, guru_kelas_id: value })} options={options} placeholder="Cari guru, kelas, atau pelajaran..." ariaLabel="Cari penugasan guru untuk jadwal" disabled={saving || options.length === 0} />
-          {options.length === 0 && <small>Tetapkan guru di halaman detail kelas terlebih dahulu.</small>}
+          <span>Guru</span>
+          <SearchableSelect value={form.guru_id} onChange={(value) => setForm({ ...form, guru_id: value, kelas_id: "", pelajaran_id: "" })} options={teacherOptions} placeholder="Cari nama guru..." ariaLabel="Cari guru untuk jadwal" disabled={saving || teacherOptions.length === 0} />
+          {teacherOptions.length === 0 && <small>Tetapkan guru di halaman detail kelas terlebih dahulu.</small>}
+        </label>
+        <label className={styles.field}>
+          <span>Kelas</span>
+          <SearchableSelect value={form.kelas_id} onChange={(value) => setForm({ ...form, kelas_id: value, pelajaran_id: "" })} options={classOptions} placeholder={form.guru_id ? "Cari kelas..." : "Pilih guru terlebih dahulu..."} ariaLabel="Cari kelas untuk jadwal" disabled={saving || !form.guru_id} />
+        </label>
+        <label className={styles.field}>
+          <span>Mata pelajaran</span>
+          <SearchableSelect value={form.pelajaran_id} onChange={(value) => setForm({ ...form, pelajaran_id: value })} options={subjectOptions} placeholder={form.kelas_id ? "Cari mata pelajaran..." : "Pilih kelas terlebih dahulu..."} ariaLabel="Cari mata pelajaran untuk jadwal" disabled={saving || !form.kelas_id} />
         </label>
         <label className={styles.field}>
           <span>Hari</span>
@@ -149,13 +186,9 @@ export default function AdminJadwalPage() {
           <span>Jam selesai</span>
           <input type="time" value={form.jam_selesai} onChange={(event) => setForm({ ...form, jam_selesai: event.target.value })} disabled={saving} />
         </label>
-        <label className={styles.field}>
-          <span>Ruangan (opsional)</span>
-          <input value={form.ruangan} onChange={(event) => setForm({ ...form, ruangan: event.target.value })} placeholder="Contoh: Lab Komputer" disabled={saving} />
-        </label>
         <div className={styles.actions}>
           {editing && <button type="button" className={styles.cancel} onClick={cancelEdit} disabled={saving}>Batal</button>}
-          <button type="submit" className={styles.submit} disabled={saving || loading || options.length === 0}>{saving ? "Menyimpan..." : editing ? "Simpan Perubahan" : "Tambah Jadwal"}</button>
+          <button type="submit" className={styles.submit} disabled={saving || loading || teacherOptions.length === 0}>{saving ? "Menyimpan..." : editing ? "Simpan Perubahan" : "Tambah Jadwal"}</button>
         </div>
       </form>
 
@@ -166,7 +199,7 @@ export default function AdminJadwalPage() {
           return <section className={styles.day} key={day}>
             <h2>{dayName(day)}</h2>
             {rows.map((item) => <article className={styles.schedule} key={item.id}>
-              <div><strong>{item.jam_mulai} - {item.jam_selesai}</strong><b>{item.guru_nama}</b><span>{item.kelas_nama} - {item.pelajaran_nama}{item.ruangan ? ` | ${item.ruangan}` : ""}</span></div>
+              <div><strong>{item.jam_mulai} - {item.jam_selesai}</strong><b>{item.guru_nama}</b><span>{item.kelas_nama} - {item.pelajaran_nama}</span></div>
               <div className={styles.actions}><button type="button" className={styles.cancel} onClick={() => edit(item)}>Edit</button><button type="button" className={styles.delete} onClick={() => setDeleting(item)}>Hapus</button></div>
             </article>)}
           </section>;
