@@ -13,7 +13,7 @@ import styles from "./page.module.css";
 type FormData = Omit<SiswaInput, "password"> & { password: string; jurusan_id: number | null };
 type Errors = Partial<Record<keyof FormData | "foto_url" | "server", string>>;
 type Menu = { item: SiswaAccount; top: number; left: number };
-const EMPTY: FormData = { nama: "", username: "", email: "", password: "", nisn: "", jenis_kelamin: "", tempat_lahir: "", tanggal_lahir: "", alamat: "", telepon: "", nama_wali: "", telepon_wali: "", tahun_masuk: null, status: "aktif", foto_url: "", kelas_id: null, jurusan_id: null };
+const EMPTY: FormData = { nama: "", username: "", email: "", password: "", nisn: "", jenis_kelamin: "", tempat_lahir: "", tanggal_lahir: "", alamat: "", telepon: "", nama_wali: "", telepon_wali: "", tahun_masuk: null, tahun_lulus: null, status: "aktif", foto_url: "", kelas_id: null, jurusan_id: null };
 
 function initials(name: string) { return name.trim().split(/\s+/).slice(0, 2).map((part) => part[0] ?? "").join("").toUpperCase(); }
 function message(error: unknown) { return error instanceof Error ? error.message : "Terjadi kesalahan. Silakan coba lagi."; }
@@ -109,13 +109,13 @@ export default function SiswaPage() {
     setDetail(null);
     setEditing(item);
     const selectedMajor = item.jurusan_id ?? null;
-    setForm({ nama: item.nama, username: item.username, email: item.email, password: "", nisn: item.nisn ?? "", jenis_kelamin: item.jenis_kelamin ?? "", tempat_lahir: item.tempat_lahir ?? "", tanggal_lahir: item.tanggal_lahir ?? "", alamat: item.alamat ?? "", telepon: item.telepon ?? "", nama_wali: item.nama_wali ?? "", telepon_wali: item.telepon_wali ?? "", tahun_masuk: item.tahun_masuk, status: item.status, foto_url: item.foto_url ?? "", kelas_id: item.kelas_id, jurusan_id: selectedMajor });
+    setForm({ nama: item.nama, username: item.username, email: item.email, password: "", nisn: item.nisn ?? "", jenis_kelamin: item.jenis_kelamin ?? "", tempat_lahir: item.tempat_lahir ?? "", tanggal_lahir: item.tanggal_lahir ?? "", alamat: item.alamat ?? "", telepon: item.telepon ?? "", nama_wali: item.nama_wali ?? "", telepon_wali: item.telepon_wali ?? "", tahun_masuk: item.tahun_masuk, tahun_lulus: item.tahun_lulus ?? null, status: item.status, foto_url: item.foto_url ?? "", kelas_id: item.kelas_id, jurusan_id: selectedMajor });
     setErrors({}); setFile(null); setPreview(item.foto_url ?? ""); setShowPassword(false); setFormOpen(true); setSuccess("");
   }
 
   function openDetail(item: SiswaAccount) {
     setEditing(null);
-    setForm({ nama: item.nama, username: item.username ?? "", email: item.email, password: "", nisn: item.nisn ?? "", jenis_kelamin: item.jenis_kelamin ?? "", tempat_lahir: item.tempat_lahir ?? "", tanggal_lahir: item.tanggal_lahir ?? "", alamat: item.alamat ?? "", telepon: item.telepon ?? "", nama_wali: item.nama_wali ?? "", telepon_wali: item.telepon_wali ?? "", tahun_masuk: item.tahun_masuk, status: item.status ?? "aktif", foto_url: item.foto_url ?? "", kelas_id: item.kelas_id, jurusan_id: item.jurusan_id });
+    setForm({ nama: item.nama, username: item.username ?? "", email: item.email, password: "", nisn: item.nisn ?? "", jenis_kelamin: item.jenis_kelamin ?? "", tempat_lahir: item.tempat_lahir ?? "", tanggal_lahir: item.tanggal_lahir ?? "", alamat: item.alamat ?? "", telepon: item.telepon ?? "", nama_wali: item.nama_wali ?? "", telepon_wali: item.telepon_wali ?? "", tahun_masuk: item.tahun_masuk, tahun_lulus: item.tahun_lulus ?? null, status: item.status ?? "aktif", foto_url: item.foto_url ?? "", kelas_id: item.kelas_id, jurusan_id: item.jurusan_id });
     setDetail(item); setFormOpen(false); setErrors({}); setFile(null); setPreview(item.foto_url ?? "");
     if (item.jurusan_id) { void listKelas(item.jurusan_id).then(setFormKelas).catch((error: unknown) => setMasterError(`Data kelas gagal dimuat: ${message(error)}`)); }
     else setFormKelas([]);
@@ -135,6 +135,7 @@ export default function SiswaPage() {
     if (!form.jurusan_id) next.jurusan_id = "Jurusan wajib dipilih.";
     if (!form.kelas_id) next.kelas_id = "Kelas wajib dipilih.";
     if (form.nisn && !/^\d+$/.test(form.nisn)) next.nisn = "NISN hanya boleh berisi angka.";
+    if (form.tahun_masuk !== null && form.tahun_lulus !== null && form.tahun_lulus < form.tahun_masuk) next.tahun_lulus = "Tahun lulus tidak boleh sebelum tahun masuk.";
     if (Object.keys(next).length) {
       setErrors({ ...next, server: "Periksa isian yang diberi tanda merah sebelum menyimpan." });
       return;
@@ -239,6 +240,7 @@ export default function SiswaPage() {
             <Field label="Nama Wali"><input value={form.nama_wali || (detail ? "-" : "")} readOnly={!!detail} onChange={(event) => setForm({ ...form, nama_wali: event.target.value })}/></Field>
             <Field label="Telepon Wali"><span className={styles.phoneWrap}><span>+62</span><input value={form.telepon_wali || (detail ? "-" : "")} readOnly={!!detail} inputMode="numeric" pattern="[0-9]*" onChange={(event) => setForm({ ...form, telepon_wali: event.target.value.replace(/\D/g, "") })}/></span></Field>
             <Field label="Tahun Masuk"><input type="number" value={form.tahun_masuk ?? ""} readOnly={!!detail} onChange={(event) => setForm({ ...form, tahun_masuk: event.target.value ? Number(event.target.value) : null })} placeholder={detail ? "-" : "2025"}/></Field>
+            <Field label="Tahun Lulus" error={!detail ? errors.tahun_lulus : undefined}><input type="number" value={form.tahun_lulus ?? ""} readOnly={!!detail} onChange={(event) => setForm({ ...form, tahun_lulus: event.target.value ? Number(event.target.value) : null })} placeholder={detail ? "-" : "2028"}/></Field>
             <Field label="Jurusan" required error={!detail ? errors.jurusan_id || masterError : undefined} full><SearchableSelect value={detail ? (detail.jurusan_id ? String(detail.jurusan_id) : "") : String(form.jurusan_id ?? "")} disabled={!!detail || jurusan.length === 0} onChange={changeMajor} options={detail ? [{ value: detail.jurusan_id ? String(detail.jurusan_id) : "", label: detail.jurusan_id ? detail.nama_jurusan || "-" : "-" }] : [{ value: "", label: "Pilih jurusan..." }, ...jurusan.map((item) => ({ value: String(item.id), label: item.nama }))]} placeholder="Cari jurusan..." ariaLabel="Cari jurusan" />{!detail && jurusan.length === 0 && <small className={styles.fieldError}>{masterError || "Belum ada data jurusan."}</small>}</Field>
             <Field label="Kelas" required error={!detail ? errors.kelas_id || masterError : undefined}><SearchableSelect value={detail ? (detail.kelas_id ? String(detail.kelas_id) : "") : String(form.kelas_id ?? "")} disabled={!!detail || !form.jurusan_id || formKelas.length === 0} onChange={(value) => setForm({ ...form, kelas_id: value ? Number(value) : null })} options={detail ? [{ value: detail.kelas_id ? String(detail.kelas_id) : "", label: detail.kelas_id ? detail.nama_kelas || "-" : "-" }] : [{ value: "", label: "Pilih kelas..." }, ...formKelas.map((item) => ({ value: String(item.id), label: `${item.nama} (${item.tingkat})` }))]} placeholder="Cari kelas..." ariaLabel="Cari kelas" />{!detail && form.jurusan_id && formKelas.length === 0 && <small className={styles.fieldError}>{masterError || "Belum ada kelas untuk jurusan ini."}</small>}</Field>
             <Field label="Alamat" full><input value={form.alamat || (detail ? "-" : "")} readOnly={!!detail} onChange={(event) => setForm({ ...form, alamat: event.target.value })}/></Field>
