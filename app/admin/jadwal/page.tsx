@@ -6,11 +6,18 @@ import {
   hapusAdminJadwal,
   listAdminGuruKelas,
   listAdminJadwal,
+  listGuru,
+  listKelas,
+  listPelajaran,
   tambahAdminJadwal,
+  tambahAdminGuruKelas,
   ubahAdminJadwal,
   type AdminJadwal,
   type AdminJadwalInput,
+  type GuruAccount,
   type GuruKelasAssignment,
+  type KelasRecord,
+  type PelajaranRecord,
 } from "@/lib/api";
 import styles from "./page.module.css";
 
@@ -23,16 +30,6 @@ function message(error: unknown) {
   return error instanceof Error ? error.message : "Terjadi kesalahan. Silakan coba lagi.";
 }
 
-function uniqueOptions(
-  rows: GuruKelasAssignment[],
-  getValue: (row: GuruKelasAssignment) => number,
-  getLabel: (row: GuruKelasAssignment) => string,
-) {
-  const options = new Map<number, string>();
-  rows.forEach((row) => options.set(getValue(row), getLabel(row)));
-  return Array.from(options, ([value, label]) => ({ value: String(value), label }));
-}
-
 function dayName(day: string) {
   return day.charAt(0).toUpperCase() + day.slice(1);
 }
@@ -40,6 +37,9 @@ function dayName(day: string) {
 export default function AdminJadwalPage() {
   const [schedule, setSchedule] = useState<AdminJadwal[]>([]);
   const [assignments, setAssignments] = useState<GuruKelasAssignment[]>([]);
+  const [teachers, setTeachers] = useState<GuruAccount[]>([]);
+  const [classes, setClasses] = useState<KelasRecord[]>([]);
+  const [subjects, setSubjects] = useState<PelajaranRecord[]>([]);
   const [form, setForm] = useState<Form>(EMPTY);
   const [editing, setEditing] = useState<AdminJadwal | null>(null);
   const [deleting, setDeleting] = useState<AdminJadwal | null>(null);
@@ -52,9 +52,18 @@ export default function AdminJadwalPage() {
   const load = useCallback(async () => {
     setError("");
     try {
-      const [rows, teacherAssignments] = await Promise.all([listAdminJadwal(), listAdminGuruKelas()]);
+      const [rows, teacherAssignments, teacherRows, classRows, subjectRows] = await Promise.all([
+        listAdminJadwal(),
+        listAdminGuruKelas(),
+        listGuru(),
+        listKelas(),
+        listPelajaran(),
+      ]);
       setSchedule(rows);
       setAssignments(teacherAssignments);
+      setTeachers(teacherRows);
+      setClasses(classRows);
+      setSubjects(subjectRows);
     } catch (reason) {
       setError(message(reason));
     } finally {
@@ -95,17 +104,22 @@ export default function AdminJadwalPage() {
       setError("Jam selesai harus setelah jam mulai.");
       return;
     }
-    const assignment = assignments.find((item) =>
+    let assignment = assignments.find((item) =>
       item.guru_id === Number(form.guru_id) &&
       item.kelas_id === Number(form.kelas_id) &&
       item.pelajaran_id === Number(form.pelajaran_id),
     );
-    if (!assignment) {
-      setError("Penugasan guru, kelas, dan mata pelajaran tidak ditemukan. Periksa kembali penugasan guru.");
-      return;
-    }
     setSaving(true);
     try {
+      if (!assignment) {
+        const newAssignment = await tambahAdminGuruKelas({
+          guru_id: Number(form.guru_id),
+          kelas_id: Number(form.kelas_id),
+          pelajaran_id: Number(form.pelajaran_id),
+        });
+        assignment = newAssignment;
+        setAssignments((current) => current.some((item) => item.id === newAssignment.id) ? current : [...current, newAssignment]);
+      }
       const input: AdminJadwalInput = {
         guru_kelas_id: assignment.id,
         hari: form.hari,
@@ -144,21 +158,23 @@ export default function AdminJadwalPage() {
     }
   }
 
-  const teacherOptions = uniqueOptions(assignments, (item) => item.guru_id, (item) => item.guru_nama);
-  const teacherAssignments = assignments.filter((item) => String(item.guru_id) === form.guru_id);
-  const classOptions = uniqueOptions(teacherAssignments, (item) => item.kelas_id, (item) => item.kelas_nama);
-  const subjectOptions = uniqueOptions(
-    teacherAssignments.filter((item) => String(item.kelas_id) === form.kelas_id),
-    (item) => item.pelajaran_id,
-    (item) => item.pelajaran_nama,
-  );
+  const teacherOptions = teachers.map((item) => ({ value: String(item.id), label: item.nama }));
+  const selectedTeacher = teachers.find((item) => String(item.id) === form.guru_id);
+  const selectedTeacherAssignments = assignments.filter((item) => String(item.guru_id) === form.guru_id);
+  const teacherSubjectIDs = new Set([
+    ...(selectedTeacher?.pelajaran_ids ?? []),
+    ...(selectedTeacher?.pelajaran_id ? [selectedTeacher.pelajaran_id] : []),
+    ...selectedTeacherAssignments.map((item) => item.pelajaran_id),
+  ]);
+  const classOptions = classes.map((item) => ({ value: String(item.id), label: `${item.nama} (${item.tingkat})` }));
+  const subjectOptions = subjects.filter((item) => teacherSubjectIDs.has(item.id)).map((item) => ({ value: String(item.id), label: item.nama }));
   const filteredSchedule = schedule.filter((item) =>
     item.guru_nama.toLocaleLowerCase("id-ID").includes(teacherSearch.trim().toLocaleLowerCase("id-ID")),
   );
 
   return (
     <div className={styles.page}>
-      <header className={styles.header}><div><h1>Jadwal Mengajar</h1><p>Atur jadwal guru berdasarkan kelas dan mata pelajaran yang sudah ditetapkan.</p></div></header>
+      <header className={styles.header}><div><h1>Jadwal Mengajar</h1><p>Guru, termasuk wali kelas, dapat dijadwalkan mengajar di kelas mana pun.</p></div></header>
       {error && <p className={styles.error} role="alert">{error}</p>}
       {success && <p className={styles.success} role="status">{success}</p>}
       <form className={styles.form} onSubmit={submit}>
@@ -166,15 +182,16 @@ export default function AdminJadwalPage() {
         <label className={styles.field}>
           <span>Guru</span>
           <SearchableSelect value={form.guru_id} onChange={(value) => setForm({ ...form, guru_id: value, kelas_id: "", pelajaran_id: "" })} options={teacherOptions} placeholder="Cari nama guru..." ariaLabel="Cari guru untuk jadwal" disabled={saving || teacherOptions.length === 0} />
-          {teacherOptions.length === 0 && <small>Tetapkan guru di halaman detail kelas terlebih dahulu.</small>}
+          {teacherOptions.length === 0 && <small>Tambahkan akun guru terlebih dahulu.</small>}
         </label>
         <label className={styles.field}>
           <span>Kelas</span>
-          <SearchableSelect value={form.kelas_id} onChange={(value) => setForm({ ...form, kelas_id: value, pelajaran_id: "" })} options={classOptions} placeholder={form.guru_id ? "Cari kelas..." : "Pilih guru terlebih dahulu..."} ariaLabel="Cari kelas untuk jadwal" disabled={saving || !form.guru_id} />
+          <SearchableSelect value={form.kelas_id} onChange={(value) => setForm({ ...form, kelas_id: value, pelajaran_id: "" })} options={classOptions} placeholder={form.guru_id ? "Cari kelas..." : "Pilih guru terlebih dahulu..."} ariaLabel="Cari kelas untuk jadwal" disabled={saving || !form.guru_id || classOptions.length === 0} />
         </label>
         <label className={styles.field}>
           <span>Mata pelajaran</span>
-          <SearchableSelect value={form.pelajaran_id} onChange={(value) => setForm({ ...form, pelajaran_id: value })} options={subjectOptions} placeholder={form.kelas_id ? "Cari mata pelajaran..." : "Pilih kelas terlebih dahulu..."} ariaLabel="Cari mata pelajaran untuk jadwal" disabled={saving || !form.kelas_id} />
+          <SearchableSelect value={form.pelajaran_id} onChange={(value) => setForm({ ...form, pelajaran_id: value })} options={subjectOptions} placeholder={form.guru_id ? "Cari mata pelajaran..." : "Pilih guru terlebih dahulu..."} ariaLabel="Cari mata pelajaran untuk jadwal" disabled={saving || !form.guru_id || subjectOptions.length === 0} />
+          {form.guru_id && subjectOptions.length === 0 && <small>Atur mata pelajaran guru di menu akun guru terlebih dahulu.</small>}
         </label>
         <label className={styles.field}>
           <span>Hari</span>
