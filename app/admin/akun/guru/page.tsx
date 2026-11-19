@@ -10,10 +10,10 @@ import { printDataList } from "@/lib/print";
 import SearchableSelect from "@/components/SearchableSelect";
 import styles from "./page.module.css";
 
-type FormData = Omit<GuruInput, "password"> & { password: string; pelajaran_id: number | null };
+type FormData = Omit<GuruInput, "password" | "pelajaran_id" | "pelajaran_ids"> & { password: string; pelajaran_ids: number[] };
 type Errors = Partial<Record<keyof FormData | "foto_url" | "server", string>>;
 type Menu = { item: GuruAccount; top: number; left: number };
-const EMPTY: FormData = { nama: "", username: "", email: "", password: "", nip: "", jenis_kelamin: "", telepon: "", alamat: "", status: "aktif", foto_url: "", pelajaran_id: null };
+const EMPTY: FormData = { nama: "", username: "", email: "", password: "", nip: "", jenis_kelamin: "", telepon: "", alamat: "", status: "aktif", foto_url: "", pelajaran_ids: [] };
 
 function initials(name: string) { return name.trim().split(/\s+/).slice(0, 2).map((part) => part[0] ?? "").join("").toUpperCase(); }
 function message(error: unknown) { return error instanceof Error ? error.message : "Terjadi kesalahan. Silakan coba lagi."; }
@@ -83,19 +83,34 @@ export default function GuruPage() {
   }, [detail]);
 
   const rows = useMemo(() => items, [items]);
+  const detailLessonIDs = detail?.pelajaran_ids ?? (detail?.pelajaran_id ? [detail.pelajaran_id] : []);
 
   function openCreate() { if (!canWrite) return; setEditing(null); setForm(EMPTY); setErrors({}); setFile(null); setPreview(""); setShowPassword(false); setFormOpen(true); setSuccess(""); }
   function openEdit(item: GuruAccount) {
     if (!canWrite) return;
     setDetail(null);
     setEditing(item);
-    setForm({ nama: item.nama, username: item.username, email: item.email, password: "", nip: item.nip ?? "", jenis_kelamin: item.jenis_kelamin ?? "", telepon: item.telepon ?? "", alamat: item.alamat ?? "", status: item.status, foto_url: item.foto_url ?? "", pelajaran_id: item.pelajaran_id ?? null });
+    setForm({ nama: item.nama, username: item.username, email: item.email, password: "", nip: item.nip ?? "", jenis_kelamin: item.jenis_kelamin ?? "", telepon: item.telepon ?? "", alamat: item.alamat ?? "", status: item.status, foto_url: item.foto_url ?? "", pelajaran_ids: item.pelajaran_ids ?? (item.pelajaran_id ? [item.pelajaran_id] : []) });
     setErrors({}); setFile(null); setPreview(item.foto_url ?? ""); setShowPassword(false); setFormOpen(true); setSuccess("");
   }
 
   function openDetail(item: GuruAccount) {
-    setForm({ nama: item.nama, username: item.username ?? "", email: item.email, password: "", nip: item.nip ?? "", jenis_kelamin: item.jenis_kelamin ?? "", telepon: item.telepon ?? "", alamat: item.alamat ?? "", status: item.status ?? "aktif", foto_url: item.foto_url ?? "", pelajaran_id: item.pelajaran_id ?? null });
+    setForm({ nama: item.nama, username: item.username ?? "", email: item.email, password: "", nip: item.nip ?? "", jenis_kelamin: item.jenis_kelamin ?? "", telepon: item.telepon ?? "", alamat: item.alamat ?? "", status: item.status ?? "aktif", foto_url: item.foto_url ?? "", pelajaran_ids: item.pelajaran_ids ?? (item.pelajaran_id ? [item.pelajaran_id] : []) });
     setDetail(item); setFormOpen(false); setErrors({}); setPreview(item.foto_url ?? "");
+  }
+
+  function changePelajaran(index: number, value: string) {
+    setForm((current) => {
+      const pelajaran_ids = [...current.pelajaran_ids];
+      if (!value) {
+        if (index === 0) return { ...current, pelajaran_ids: [] };
+        pelajaran_ids.splice(index, 1);
+      } else {
+        pelajaran_ids[index] = Number(value);
+      }
+      return { ...current, pelajaran_ids: pelajaran_ids.filter((id) => id > 0) };
+    });
+    setErrors((current) => ({ ...current, pelajaran_ids: undefined }));
   }
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
@@ -110,11 +125,13 @@ export default function GuruPage() {
     if (editing && form.password && form.password.length < 8) next.password = "Password minimal 8 karakter.";
     if (!form.status) next.status = "Status wajib dipilih.";
     if (form.nip && !/^\d+$/.test(form.nip)) next.nip = "NIP hanya boleh berisi angka.";
+    if (form.pelajaran_ids.length === 0) next.pelajaran_ids = "Pilih minimal satu mata pelajaran.";
+    if (form.pelajaran_ids.length > 2) next.pelajaran_ids = "Guru hanya dapat memiliki maksimal 2 mata pelajaran.";
     if (Object.keys(next).length) { setErrors(next); return; }
     setSaving(true); setErrors({});
     try {
       const foto_url = file ? await uploadAdminPhoto(file) : form.foto_url;
-      const payload: GuruInput = { ...form, nama: form.nama.trim(), username: form.username.trim(), email: form.email.trim(), nip: form.nip.trim(), telepon: form.telepon.trim(), foto_url };
+      const payload: GuruInput = { ...form, nama: form.nama.trim(), username: form.username.trim(), email: form.email.trim(), nip: form.nip.trim(), telepon: form.telepon.trim(), foto_url, pelajaran_ids: form.pelajaran_ids };
       if (editing) await updateGuru(editing.id, payload);
       else await createGuru(payload);
       setFormOpen(false); setSuccess(editing ? "Data guru berhasil diperbarui." : "Guru berhasil ditambahkan."); await reload();
@@ -211,7 +228,8 @@ export default function GuruPage() {
               {!detail && <Field label="Password" required={!editing} error={errors.password}><span className={styles.passwordWrap}><input type={showPassword ? "text" : "password"} value={form.password} onChange={(event) => setForm({ ...form, password: event.target.value })} placeholder={editing ? "Kosongkan jika tidak diubah" : "••••••••"}/><button type="button" onClick={() => setShowPassword(!showPassword)} aria-label={showPassword ? "Sembunyikan password" : "Tampilkan password"}><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{showPassword ? <><path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 5.2A10.8 10.8 0 0 1 12 5c6 0 9.5 7 9.5 7a15 15 0 0 1-3.2 4.1M6.2 6.2C3.8 7.8 2.5 12 2.5 12s3.5 7 9.5 7a10 10 0 0 0 3-.5"/></> : <><path d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7Z"/><circle cx="12" cy="12" r="2.5"/></>}</svg></button></span><small>{editing ? "Kosongkan jika tidak diubah." : "Minimal 8 karakter."}</small></Field>}
               {detail && <Field label="Password"><input value="••••••••" readOnly/></Field>}
               <Field label="Status" required><Select value={detail ? (detail.status || "-") : form.status} disabled={!!detail} onChange={(value) => setForm({ ...form, status: value as FormData["status"] })} options={detail && !detail.status ? [["-","-"]] : [["aktif","Aktif"],["nonaktif","Nonaktif"]]}/></Field>
-              <Field label="Mata Pelajaran" error={!detail ? pelajaranError : undefined}><SearchableSelect value={detail ? (detail.pelajaran_id ? String(detail.pelajaran_id) : "") : String(form.pelajaran_id ?? "")} disabled={!!detail || pelajaran.length === 0} onChange={(value) => setForm({ ...form, pelajaran_id: value ? Number(value) : null })} options={detail ? [{ value: detail.pelajaran_id ? String(detail.pelajaran_id) : "", label: detail.pelajaran_id ? detail.nama_pelajaran || "-" : "-" }] : [{ value: "", label: "Pilih mata pelajaran" }, ...pelajaran.map((item) => ({ value: String(item.id), label: item.nama }))]} placeholder="Cari mata pelajaran..." ariaLabel="Cari mata pelajaran" />{!detail && pelajaran.length === 0 && <small className={styles.fieldError}>{pelajaranError || "Belum ada mata pelajaran."}</small>}</Field>
+              {detail ? <Field label="Mata Pelajaran 1"><input value={detailLessonIDs[0] ? pelajaran.find((item) => item.id === detailLessonIDs[0])?.nama ?? (detail.nama_pelajaran || "-") : "-"} readOnly /></Field> : <Field label="Mata Pelajaran 1" required error={errors.pelajaran_ids || pelajaranError}><SearchableSelect value={String(form.pelajaran_ids[0] ?? "")} disabled={pelajaran.length === 0} onChange={(value) => changePelajaran(0, value)} options={[{ value: "", label: "Pilih mata pelajaran" }, ...pelajaran.filter((item) => item.id !== form.pelajaran_ids[1]).map((item) => ({ value: String(item.id), label: item.nama }))]} placeholder="Cari mata pelajaran..." ariaLabel="Cari mata pelajaran pertama" />{pelajaran.length === 0 && <small className={styles.fieldError}>{pelajaranError || "Belum ada mata pelajaran."}</small>}</Field>}
+              {detail ? <Field label="Mata Pelajaran 2"><input value={detailLessonIDs[1] ? pelajaran.find((item) => item.id === detailLessonIDs[1])?.nama ?? "-" : "-"} readOnly /></Field> : <Field label="Mata Pelajaran 2 (Opsional)"><SearchableSelect value={String(form.pelajaran_ids[1] ?? "")} disabled={pelajaran.length === 0 || !form.pelajaran_ids[0]} onChange={(value) => changePelajaran(1, value)} options={[{ value: "", label: "Tidak ada" }, ...pelajaran.filter((item) => item.id !== form.pelajaran_ids[0]).map((item) => ({ value: String(item.id), label: item.nama }))]} placeholder="Cari mata pelajaran..." ariaLabel="Cari mata pelajaran kedua" /></Field>}
             </div></section>
             <section className={styles.formSection}><h3 className={styles.sectionTitle}>Foto Profil</h3><div className={styles.photoPicker}>{photo(detail?.foto_url || preview, detail?.nama || form.nama, 66)}{!detail && <div className={styles.photoInfo}><span>Unggah foto (JPG, PNG)</span><small>Maks. 2 MB</small><label className={styles.fileLink}>Pilih File<input type="file" accept="image/jpeg,image/png" onChange={(event) => choosePhoto(event.target.files?.[0])}/></label></div>}</div>{errors.foto_url && <small className={styles.fieldError}>{errors.foto_url}</small>}</section>
             <section className={styles.formSection}><h3 className={styles.sectionTitle}>Data Pribadi</h3><div className={styles.personalGrid}>
