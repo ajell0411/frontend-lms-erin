@@ -98,7 +98,7 @@ export default function KelasRoster({ kelasId }: { kelasId: number }) {
         <label><span className={styles.visuallyHidden}>Pilih siswa untuk ditambahkan</span><SearchableSelect id="add-student-search" value={selectedStudent} onChange={setSelectedStudent} disabled={saving || loading} ariaLabel="Cari siswa untuk ditambahkan" placeholder="Cari nama siswa..." options={allStudents.filter((student) => student.kelas_id !== kelasId).map((student) => ({ value: String(student.id), label: `${student.nama} (${student.nisn || student.email})` }))} /></label>
       </div>}
       {canWrite && <section className={styles.teacherPanel} aria-label="Guru pengajar">
-        <div className={styles.teacherHeading}><div><h2>Guru Pengajar</h2><p>Guru yang sama dapat ditugaskan ke beberapa kelas dan mata pelajaran.</p></div></div>
+        <div className={styles.teacherHeading}><div><h2>Guru Pengajar</h2><p>Guru dapat ditugaskan ke beberapa kelas dan maksimal dua mata pelajaran.</p></div></div>
         <div className={styles.teacherForm}>
           <label><span className={styles.visuallyHidden}>Pilih guru</span><SearchableSelect value={selectedTeacher} onChange={setSelectedTeacher} disabled={saving || loading} ariaLabel="Cari guru" placeholder="Cari nama guru..." options={teachers.map((teacher) => ({ value: String(teacher.id), label: `${teacher.nama} (${teacher.email})` }))} /></label>
           <label><span className={styles.visuallyHidden}>Pilih mata pelajaran</span><SearchableSelect value={selectedSubject} onChange={setSelectedSubject} disabled={saving || loading} ariaLabel="Cari mata pelajaran" placeholder="Cari mata pelajaran..." options={subjects.map((subject) => ({ value: String(subject.id), label: subject.nama }))} /></label>
