@@ -18,6 +18,11 @@ const EMPTY: FormData = { nama: "", username: "", email: "", password: "", nip: 
 function initials(name: string) { return name.trim().split(/\s+/).slice(0, 2).map((part) => part[0] ?? "").join("").toUpperCase(); }
 function message(error: unknown) { return error instanceof Error ? error.message : "Terjadi kesalahan. Silakan coba lagi."; }
 function dateLabel(value: string) { const date = new Date(value); return Number.isNaN(date.getTime()) ? "-" : new Intl.DateTimeFormat("id-ID", { dateStyle: "long", timeStyle: "short" }).format(date); }
+function subjectNames(item: GuruAccount, subjects: PelajaranRecord[]) {
+  const ids = item.pelajaran_ids ?? (item.pelajaran_id ? [item.pelajaran_id] : []);
+  const names = (item.nama_pelajaran ?? "").split(",").map((name) => name.trim());
+  return ids.length ? ids.map((id, index) => subjects.find((subject) => subject.id === id)?.nama ?? names[index] ?? "").filter(Boolean) : names.filter(Boolean);
+}
 
 export default function GuruPage() {
   const { canWrite } = useRole();
@@ -196,7 +201,7 @@ export default function GuruPage() {
           <span className={styles.resultCount}>{loading ? "Memuat data..." : `${rows.length} guru`}</span>
         </div>
         <div className={styles.printTableWrapper}><div className={styles.tableScroll}><table className={styles.table}><thead><tr><th>Profil</th><th>Nama</th><th>Username</th><th>Email</th><th>NIP</th><th>Mata Pelajaran</th><th>Status</th><th className={styles.actionsHeading}>Aksi</th></tr></thead>
-          <tbody>{loading ? <tr><td colSpan={8} className={styles.stateCell}><span className={styles.spinner}/>Memuat daftar guru...</td></tr> : loadError ? <tr><td colSpan={8} className={styles.stateCell}>Daftar guru belum dapat dimuat.</td></tr> : rows.length === 0 ? <tr><td colSpan={8} className={styles.emptyCell}><span className={styles.emptyMark}>G</span><strong>Belum ada data guru</strong><span>Tambahkan akun guru untuk mulai mengelola data.</span></td></tr> : rows.map((item) => <tr key={item.id}><td>{photo(item.foto_url, item.nama, 32)}</td><td><span className={styles.adminName}>{item.nama}</span></td><td>{item.username || "-"}</td><td className={styles.emailCell}>{item.email}</td><td>{item.nip || "-"}</td><td>{item.nama_pelajaran || "-"}</td><td><span className={item.status === "nonaktif" ? styles.inactiveBadge : styles.activeBadge}>{item.status || "-"}</span></td><td><div className={styles.rowActions}><button type="button" className={styles.actionTrigger} aria-label={`Aksi ${item.nama}`} onClick={(event) => toggleMenu(item, event.currentTarget)}><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></button></div></td></tr>)}</tbody>
+          <tbody>{loading ? <tr><td colSpan={8} className={styles.stateCell}><span className={styles.spinner}/>Memuat daftar guru...</td></tr> : loadError ? <tr><td colSpan={8} className={styles.stateCell}>Daftar guru belum dapat dimuat.</td></tr> : rows.length === 0 ? <tr><td colSpan={8} className={styles.emptyCell}><span className={styles.emptyMark}>G</span><strong>Belum ada data guru</strong><span>Tambahkan akun guru untuk mulai mengelola data.</span></td></tr> : rows.map((item) => <tr key={item.id}><td>{photo(item.foto_url, item.nama, 32)}</td><td><span className={styles.adminName}>{item.nama}</span></td><td>{item.username || "-"}</td><td className={styles.emailCell}>{item.email}</td><td>{item.nip || "-"}</td><td><span className={styles.subjectList}>{subjectNames(item, pelajaran).length ? subjectNames(item, pelajaran).map((name, index) => <span key={`${item.id}-${index}`}>{name}</span>) : "-"}</span></td><td><span className={item.status === "nonaktif" ? styles.inactiveBadge : styles.activeBadge}>{item.status || "-"}</span></td><td><div className={styles.rowActions}><button type="button" className={styles.actionTrigger} aria-label={`Aksi ${item.nama}`} onClick={(event) => toggleMenu(item, event.currentTarget)}><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></button></div></td></tr>)}</tbody>
         </table></div><footer className={styles.tableFooter}>Menampilkan {loading ? "-" : rows.length} guru</footer>
         </div>
       </section>
@@ -206,7 +211,7 @@ export default function GuruPage() {
         <p>{activeFilters.length ? activeFilters.join(" | ") : "Filter: Semua Data"}</p>
         <p>Dicetak: {printedAt} | Jumlah data: {rows.length}</p>
         <table><thead><tr><th>No</th><th>Nama</th><th>Username</th><th>Email</th><th>NIP</th><th>Mata Pelajaran</th><th>Telepon</th><th>Status</th></tr></thead>
-          <tbody>{rows.map((item, index) => <tr key={item.id}><td>{index + 1}</td><td>{item.nama || "-"}</td><td>{item.username || "-"}</td><td>{item.email || "-"}</td><td>{item.nip || "-"}</td><td>{item.nama_pelajaran || "-"}</td><td>{item.telepon || "-"}</td><td>{item.status || "-"}</td></tr>)}</tbody>
+          <tbody>{rows.map((item, index) => <tr key={item.id}><td>{index + 1}</td><td>{item.nama || "-"}</td><td>{item.username || "-"}</td><td>{item.email || "-"}</td><td>{item.nip || "-"}</td><td>{subjectNames(item, pelajaran).join(", ") || "-"}</td><td>{item.telepon || "-"}</td><td>{item.status || "-"}</td></tr>)}</tbody>
         </table>
       </section>
 
