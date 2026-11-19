@@ -109,6 +109,7 @@ export type GuruAccount = {
   status: AccountStatus;
   foto_url: string;
   pelajaran_id: number | null;
+  pelajaran_ids?: number[];
   nama_pelajaran: string;
   created_at: string;
 };
@@ -150,6 +151,7 @@ export type GuruInput = {
   status: AccountStatus;
   foto_url: string;
   pelajaran_id?: number | null;
+  pelajaran_ids?: number[];
 };
 
 export type SiswaInput = {
