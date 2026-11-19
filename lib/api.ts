@@ -55,7 +55,6 @@ export type AdminJadwalInput = {
   hari: string;
   jam_mulai: string;
   jam_selesai: string;
-  ruangan: string;
 };
 
 export type AdminAccount = {
