@@ -17,6 +17,25 @@ export type PemantauStatistik = {
   jurusan?: { kode?: string; nama?: string; total_siswa?: number; total_kelas?: number }[];
 };
 
+export type PemantauanNilaiItem = {
+  id: string;
+  siswa_id: number;
+  siswa_nama: string;
+  nisn: string;
+  kelas_id: number;
+  kelas_nama: string;
+  jurusan_nama: string;
+  pelajaran_id: number;
+  pelajaran_nama: string;
+  guru_nama: string;
+  jenis: "Tugas" | "Kuis" | "Ujian";
+  judul: string;
+  nilai: number | null;
+  nilai_maks: number;
+  status: string;
+  waktu: string;
+};
+
 export type AktivitasGuruItem = {
   id: number;
   jenis: JenisAktivitas;
@@ -72,6 +91,11 @@ function qs(values: Record<string, string | number | undefined>): string {
 export async function getPemantauStatistik(): Promise<PemantauStatistik> {
   const result = await apiFetch<Wrapped<PemantauStatistik>>("/pemantauan/statistik");
   return result.data;
+}
+
+export async function listPemantauanNilai(): Promise<PemantauanNilaiItem[]> {
+  const result = await apiFetch<Wrapped<PemantauanNilaiItem[]>>("/pemantauan/nilai");
+  return Array.isArray(result.data) ? result.data : [];
 }
 
 export async function listAktivitasGuru(filter: AktivitasGuruFilter = {}): Promise<AktivitasGuruItem[]> {

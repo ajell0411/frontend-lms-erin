@@ -88,7 +88,7 @@ export default function LandingPage() {
   });
 
   return (
-    <div className={styles.page}>
+    <div className={`${styles.page} landing-page`}>
       {/* Garis progress scroll di paling atas */}
       <div ref={progressRef} className={styles.progress} aria-hidden="true" />
 

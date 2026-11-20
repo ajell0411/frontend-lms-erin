@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
+import PasswordInput from "@/components/PasswordInput";
 import { updateProfilePassword } from "@/lib/api";
 import { getProfilSiswa, type ProfilSiswa } from "@/lib/siswa";
 import { Badge, Card, EmptyState, ErrorState, PageHeader, Skeleton } from "../components";
@@ -133,15 +134,15 @@ export default function ProfilSiswaPage() {
           <form className={styles.form} onSubmit={submitPassword}>
             <label className={styles.formField}>
               Kata sandi saat ini
-              <input type="password" autoComplete="current-password" value={currentPassword} onChange={(event) => setCurrentPassword(event.target.value)} required disabled={passwordSaving} />
+              <PasswordInput autoComplete="current-password" value={currentPassword} onChange={(event) => setCurrentPassword(event.target.value)} required disabled={passwordSaving} />
             </label>
             <label className={styles.formField}>
               Kata sandi baru
-              <input type="password" autoComplete="new-password" value={password} onChange={(event) => setPassword(event.target.value)} minLength={8} required disabled={passwordSaving} />
+              <PasswordInput autoComplete="new-password" value={password} onChange={(event) => setPassword(event.target.value)} minLength={8} required disabled={passwordSaving} />
             </label>
             <label className={styles.formField}>
               Konfirmasi kata sandi baru
-              <input type="password" autoComplete="new-password" value={passwordConfirmation} onChange={(event) => setPasswordConfirmation(event.target.value)} minLength={8} required disabled={passwordSaving} />
+              <PasswordInput autoComplete="new-password" value={passwordConfirmation} onChange={(event) => setPasswordConfirmation(event.target.value)} minLength={8} required disabled={passwordSaving} />
             </label>
             {passwordError && <p className={styles.formError} role="alert">{passwordError}</p>}
             {passwordSuccess && <p className={styles.formSuccess} role="status">{passwordSuccess}</p>}

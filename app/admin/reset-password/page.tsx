@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import PasswordInput from "@/components/PasswordInput";
 import SearchableSelect from "@/components/SearchableSelect";
 import { listAccountsForPasswordReset, resetAccountPassword, type AccountForPasswordReset, type UserRole } from "@/lib/api";
 import { useRole } from "@/lib/role";
@@ -89,12 +90,12 @@ export default function ResetPasswordPage() {
         </label>
         <label className={styles.field}>
           <span>Kata sandi baru</span>
-          <input type="password" autoComplete="new-password" value={password} onChange={(event) => setPassword(event.target.value)} minLength={8} disabled={!canWrite} />
+          <PasswordInput autoComplete="new-password" value={password} onChange={(event) => setPassword(event.target.value)} minLength={8} disabled={!canWrite} />
           <small>Minimal 8 karakter, hanya huruf dan angka.</small>
         </label>
         <label className={styles.field}>
           <span>Konfirmasi kata sandi</span>
-          <input type="password" autoComplete="new-password" value={confirmation} onChange={(event) => setConfirmation(event.target.value)} minLength={8} disabled={!canWrite} />
+          <PasswordInput autoComplete="new-password" value={confirmation} onChange={(event) => setConfirmation(event.target.value)} minLength={8} disabled={!canWrite} />
         </label>
         <button type="submit" className={styles.submit} disabled={loading || saving || !canWrite}>
           {saving ? "Menyimpan..." : "Reset Kata Sandi"}

@@ -18,6 +18,8 @@ type MenuItem = { label: string; icon: IconName; href?: string; children?: MenuC
 
 const MENU: MenuItem[] = [
   { label: "Dashboard", icon: "grid", href: "/pemantau/dashboard" },
+  { label: "Monitoring Guru", icon: "activity", href: "/pemantau/aktivitas-guru" },
+  { label: "Monitoring Akademik", icon: "grid", href: "/pemantau/monitoring-akademik" },
   {
     label: "Manajemen Data",
     icon: "database",
@@ -35,7 +37,6 @@ const MENU: MenuItem[] = [
       { label: "Siswa", href: "/pemantau/akun/siswa" },
     ],
   },
-  { label: "Pengumuman", icon: "activity", href: "/pemantau/aktivitas-guru" },
   { label: "Profile", icon: "user", href: "/pemantau/profile" },
 ];
 

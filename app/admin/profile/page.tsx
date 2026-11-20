@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type FormEvent } from "react";
 import Image from "next/image";
+import PasswordInput from "@/components/PasswordInput";
 import { getProfile, getToken, getUser, saveSession, updateProfile, updateProfilePassword, type ProfileRecord } from "@/lib/api";
 import { roleLabel, useRole } from "@/lib/role";
 import styles from "./page.module.css";
@@ -96,9 +97,9 @@ export default function AdminProfilePage() {
         </form>
         <form id="credentials" className={styles.formCard} onSubmit={savePassword}>
           <h2>Ubah Password</h2><div className={styles.formGrid}>
-            <label>Password Saat Ini<input required type="password" autoComplete="current-password" value={passwordLama} onChange={(event) => setPasswordLama(event.target.value)}/></label>
-            <label>Password Baru<input required minLength={8} type="password" value={passwordBaru} onChange={(event) => setPasswordBaru(event.target.value)}/></label>
-            <label>Konfirmasi Password Baru<input required type="password" value={passwordKonfirmasi} onChange={(event) => setPasswordKonfirmasi(event.target.value)}/></label>
+            <label>Password Saat Ini<PasswordInput required autoComplete="current-password" value={passwordLama} onChange={(event) => setPasswordLama(event.target.value)}/></label>
+            <label>Password Baru<PasswordInput required minLength={8} autoComplete="new-password" value={passwordBaru} onChange={(event) => setPasswordBaru(event.target.value)}/></label>
+            <label>Konfirmasi Password Baru<PasswordInput required autoComplete="new-password" value={passwordKonfirmasi} onChange={(event) => setPasswordKonfirmasi(event.target.value)}/></label>
           </div><button type="submit" disabled={saving}>{saving ? "Menyimpan..." : "Simpan Password"}</button>
         </form>
       </>}

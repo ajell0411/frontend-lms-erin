@@ -352,7 +352,7 @@
 }
 
 .inputPassword {
-  padding-right: 112px;
+  padding-right: 48px;
 }
 
 .input::placeholder {
@@ -369,18 +369,32 @@
   position: absolute;
   top: 50%;
   right: 12px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
   transform: translateY(-50%);
-  padding: 4px 6px;
   border: none;
+  border-radius: 6px;
   background: transparent;
-  color: var(--primary);
-  font-size: 13px;
-  font-weight: 600;
+  color: #64748b;
   cursor: pointer;
 }
 
 .togglePassword:hover {
-  text-decoration: underline;
+  background: #eef4ff;
+  color: var(--primary);
+}
+
+.togglePassword svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .errorText {

@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type FormEvent } from "react";
 import Image from "next/image";
+import PasswordInput from "@/components/PasswordInput";
 import { getProfile, updateProfilePassword, type ProfileRecord } from "@/lib/api";
 import { roleLabel, useRole } from "@/lib/role";
 import styles from "@/app/admin/profile/page.module.css";
@@ -88,9 +89,9 @@ export default function PemantauProfilePage() {
         <form className={styles.formCard} onSubmit={savePassword}>
           <h2>Ubah Kata Sandi</h2>
           <div className={styles.formGrid}>
-            <label>Password Saat Ini<input required type="password" autoComplete="current-password" value={passwordLama} onChange={(event) => setPasswordLama(event.target.value)} disabled={passwordSaving} /></label>
-            <label>Password Baru<input required minLength={8} type="password" autoComplete="new-password" value={passwordBaru} onChange={(event) => setPasswordBaru(event.target.value)} disabled={passwordSaving} /></label>
-            <label>Konfirmasi Password Baru<input required minLength={8} type="password" autoComplete="new-password" value={passwordKonfirmasi} onChange={(event) => setPasswordKonfirmasi(event.target.value)} disabled={passwordSaving} /></label>
+            <label>Password Saat Ini<PasswordInput required autoComplete="current-password" value={passwordLama} onChange={(event) => setPasswordLama(event.target.value)} disabled={passwordSaving} /></label>
+            <label>Password Baru<PasswordInput required minLength={8} autoComplete="new-password" value={passwordBaru} onChange={(event) => setPasswordBaru(event.target.value)} disabled={passwordSaving} /></label>
+            <label>Konfirmasi Password Baru<PasswordInput required minLength={8} autoComplete="new-password" value={passwordKonfirmasi} onChange={(event) => setPasswordKonfirmasi(event.target.value)} disabled={passwordSaving} /></label>
           </div>
           <button type="submit" disabled={passwordSaving}>{passwordSaving ? "Menyimpan..." : "Simpan Kata Sandi"}</button>
         </form>

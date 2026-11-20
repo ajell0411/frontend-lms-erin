@@ -48,6 +48,7 @@ export type GuruKelasItem = {
   kelas_id: number;
   kelas_nama: string;
   tingkat: string;
+  jurusan_nama: string;
   pelajaran_id: number;
   pelajaran_nama: string;
   jumlah_siswa: number;
