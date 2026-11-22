@@ -170,6 +170,7 @@ export default function LandingPage() {
                   alt="Ilustrasi siswa belajar menggunakan E-CLASS"
                   fill
                   priority
+                  unoptimized
                   style={{ objectFit: "contain", objectPosition: "center" }}
                 />
                 <span className={`${styles.chip} ${styles.chip1}`}>{"\u{1F4DA} Materi"}</span>
@@ -273,6 +274,7 @@ export default function LandingPage() {
                     src="/bareng.png"
                     alt="Siswa dan guru berdiskusi menggunakan laptop"
                     fill
+                    unoptimized
                     style={{ objectFit: "contain", borderRadius: "30px" }}
                   />
                 </span>
