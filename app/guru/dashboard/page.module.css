@@ -42,7 +42,7 @@
 .jadwalGrid{gap:18px}
 .activityItem{padding:16px 20px}
 /* banner-v3 */
-.banner{padding:28px 32px;min-height:112px;border-radius:16px;background:linear-gradient(90deg,#667253,#667253);box-shadow:0 8px 24px rgb(0 87 217 / 22%)}
+.banner{padding:28px 32px;min-height:112px;border-radius:16px;background:linear-gradient(90deg,#6d7958,#6d7958);box-shadow:0 8px 24px rgb(0 87 217 / 22%)}
 .banner h1{font-size:24px}
 .banner p{font-size:14px;opacity:.95}
 .bannerDate{flex:0 0 auto;display:grid;justify-items:center;gap:1px;min-width:112px;padding:10px 20px;border:1px solid rgb(255 255 255 / 45%);border-radius:14px;background:rgb(255 255 255 / 16%);color:#fff;text-align:center}
@@ -50,22 +50,22 @@
 .bannerDate strong{font-size:30px;font-weight:800;line-height:1.1}
 .bannerDate span{font-size:11px;opacity:.9}
 /* jadwal-v2 */
-.jadwal{position:relative;gap:7px;padding:18px 20px;border:1px solid #c1cbaa;border-left:5px solid #667253;border-radius:14px;background:linear-gradient(90deg,#dce3ce,#ffffff 60%);transition:transform 180ms ease,box-shadow 180ms ease}
+.jadwal{position:relative;gap:7px;padding:18px 20px;border:1px solid #c1cbaa;border-left:5px solid #6d7958;border-radius:14px;background:linear-gradient(90deg,#dce3ce,#ffffff 60%);transition:transform 180ms ease,box-shadow 180ms ease}
 .jadwal:hover{transform:translateY(-3px);box-shadow:0 14px 28px rgb(102 114 83 / 15%)}
-.jadwal:nth-child(3n+2){border-left-color:#667253;background:linear-gradient(90deg,#eaf4ff,#ffffff 60%)}
-.jadwal:nth-child(3n){border-left-color:#899477;background:linear-gradient(90deg,#e6fafd,#ffffff 60%)}
+.jadwal:nth-child(3n+2){border-left-color:#6d7958;background:linear-gradient(90deg,#f0f2e6,#ffffff 60%)}
+.jadwal:nth-child(3n){border-left-color:#899477;background:linear-gradient(90deg,#f0f2e6,#ffffff 60%)}
 .jadwal strong{font-size:16px;font-weight:700}
-.jam{padding:4px 11px;border-radius:999px;background:linear-gradient(90deg,#667253,#667253);color:#fff;font-size:11px;font-weight:700;letter-spacing:.02em}
+.jam{padding:4px 11px;border-radius:999px;background:linear-gradient(90deg,#6d7958,#6d7958);color:#fff;font-size:11px;font-weight:700;letter-spacing:.02em}
 .live{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;font-weight:700}
 .live::before{content:"";width:7px;height:7px;border-radius:50%;background:#16a34a;animation:jadwalPulse 1.4s ease-in-out infinite}
 @keyframes jadwalPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
 @media(prefers-reduced-motion:reduce){.live::before{animation:none}.jadwal{transition:none}}
 /* warna-kartu-v1 */
 .stat.stat:nth-child(4n+1){background:linear-gradient(160deg,#dce3ce,#fff 62%)}
-.stat.stat:nth-child(4n+2){background:linear-gradient(160deg,#e6f7fb,#fff 62%)}
-.stat.stat:nth-child(4n+3){background:linear-gradient(160deg,#e8f8f1,#fff 62%)}
-.stat.stat:nth-child(4n+4){background:linear-gradient(160deg,#fff2e8,#fff 62%)}
-.stat:nth-child(4n+1) .statIcon{background:linear-gradient(135deg,#667253,#667253);color:#fff}
+.stat.stat:nth-child(4n+2){background:linear-gradient(160deg,#f0f2e6,#fff 62%)}
+.stat.stat:nth-child(4n+3){background:linear-gradient(160deg,#f0f2e6,#fff 62%)}
+.stat.stat:nth-child(4n+4){background:linear-gradient(160deg,#f0f2e6,#fff 62%)}
+.stat:nth-child(4n+1) .statIcon{background:linear-gradient(135deg,#6d7958,#6d7958);color:#fff}
 .stat:nth-child(4n+2) .statIcon{background:linear-gradient(135deg,#899477,#a9b69a);color:#fff}
 .stat:nth-child(4n+3) .statIcon{background:linear-gradient(135deg,#899477,#a9b69a);color:#fff}
 .stat:nth-child(4n+4) .statIcon{background:linear-gradient(135deg,#899477,#c1cbaa);color:#fff}
@@ -77,7 +77,7 @@
 .stat.stat:nth-child(6n+5){border-left:4px solid #a9b69a;border-top:1px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .stat.stat:nth-child(6n+6){border-left:4px solid #a9b69a;border-top:1px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 /* tepi-warna-v2 */
-.stat.stat:nth-child(8n+1){border-left:4px solid #667253;background:linear-gradient(135deg,color-mix(in srgb,#667253 11%,#fff),#fff 62%)}
+.stat.stat:nth-child(8n+1){border-left:4px solid #6d7958;background:linear-gradient(135deg,color-mix(in srgb,#6d7958 11%,#fff),#fff 62%)}
 .stat.stat:nth-child(8n+2){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .stat.stat:nth-child(8n+3){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .stat.stat:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
@@ -85,7 +85,7 @@
 .stat.stat:nth-child(8n+6){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .stat.stat:nth-child(8n+7){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .stat.stat:nth-child(8n+8){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
-.jadwal.jadwal:nth-child(8n+1){border-left:5px solid #667253;background:linear-gradient(135deg,color-mix(in srgb,#667253 11%,#fff),#fff 62%)}
+.jadwal.jadwal:nth-child(8n+1){border-left:5px solid #6d7958;background:linear-gradient(135deg,color-mix(in srgb,#6d7958 11%,#fff),#fff 62%)}
 .jadwal.jadwal:nth-child(8n+2){border-left:5px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .jadwal.jadwal:nth-child(8n+3){border-left:5px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .jadwal.jadwal:nth-child(8n+4){border-left:5px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
@@ -98,7 +98,7 @@
 .stat.stat.stat:nth-child(8n+2){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .stat.stat.stat:nth-child(8n+3){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .stat.stat.stat:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
-.stat.stat.stat:nth-child(8n+5){border-left:4px solid #667253;background:linear-gradient(135deg,color-mix(in srgb,#667253 7%,#fff),#fff 62%)}
+.stat.stat.stat:nth-child(8n+5){border-left:4px solid #6d7958;background:linear-gradient(135deg,color-mix(in srgb,#6d7958 7%,#fff),#fff 62%)}
 .stat.stat.stat:nth-child(8n+6){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .stat.stat.stat:nth-child(8n+7){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .stat.stat.stat:nth-child(8n+8){border-left:4px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#c1cbaa 7%,#fff),#fff 62%)}
@@ -106,7 +106,7 @@
 .jadwal.jadwal.jadwal:nth-child(8n+2){border-left:5px solid #899477 !important;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .jadwal.jadwal.jadwal:nth-child(8n+3){border-left:5px solid #a9b69a !important;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .jadwal.jadwal.jadwal:nth-child(8n+4){border-left:5px solid #a9b69a !important;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
-.jadwal.jadwal.jadwal:nth-child(8n+5){border-left:5px solid #667253 !important;background:linear-gradient(135deg,color-mix(in srgb,#667253 7%,#fff),#fff 62%)}
+.jadwal.jadwal.jadwal:nth-child(8n+5){border-left:5px solid #6d7958 !important;background:linear-gradient(135deg,color-mix(in srgb,#6d7958 7%,#fff),#fff 62%)}
 .jadwal.jadwal.jadwal:nth-child(8n+6){border-left:5px solid #a9b69a !important;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .jadwal.jadwal.jadwal:nth-child(8n+7){border-left:5px solid #899477 !important;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .jadwal.jadwal.jadwal:nth-child(8n+8){border-left:5px solid #c1cbaa !important;background:linear-gradient(135deg,color-mix(in srgb,#c1cbaa 7%,#fff),#fff 62%)}
@@ -116,7 +116,7 @@
   background:
     radial-gradient(circle at 15% 20%, rgba(102, 114, 83, 0.45), transparent 45%),
     radial-gradient(circle at 85% 75%, rgba(102, 114, 83, 0.5), transparent 45%),
-    linear-gradient(135deg, #0b1d5c 0%, #667253 100%) !important;
+    linear-gradient(135deg, #899477 0%, #6d7958 100%) !important;
 }
 
 /* samakan-dengan-admin-v1 */
@@ -126,7 +126,7 @@
 .stats.stats{display:grid !important;grid-template-columns:repeat(5,minmax(0,1fr)) !important;gap:18px !important;margin-bottom:0 !important}
 .stats .stat.stat.stat.stat:nth-child(n){display:flex !important;align-items:center !important;gap:14px !important;padding:16px 18px !important;background:#fff !important;border:1px solid #c1cbaa !important;border-left:1px solid #c1cbaa !important;border-radius:14px !important;box-shadow:none !important;transform:none !important;transition:box-shadow 180ms ease !important}
 .stats .stat.stat.stat.stat:nth-child(n):hover{box-shadow:0 8px 20px rgb(15 23 42 / 7%) !important;transform:none !important}
-.stats .stat.stat.stat.stat:nth-child(n) .statIcon{display:grid !important;place-items:center !important;flex:0 0 42px !important;width:42px !important;height:42px !important;border-radius:11px !important;background:#dce3ce !important;color:#667253 !important}
+.stats .stat.stat.stat.stat:nth-child(n) .statIcon{display:grid !important;place-items:center !important;flex:0 0 42px !important;width:42px !important;height:42px !important;border-radius:11px !important;background:#dce3ce !important;color:#6d7958 !important}
 .stat .statIcon svg{width:28px;height:28px}
 .stat .statValue{display:block;font-size:26px;font-weight:800;line-height:1.1;color:#414838}
 .stat .statLabel{display:block;margin-top:2px;font-size:13px;font-weight:600;color:#68715b}
@@ -134,13 +134,13 @@
 /* judul bagian */
 .sectionHead{margin-bottom:12px !important}
 .sectionHead h2{margin:0;font-size:16px;font-weight:700;color:#414838}
-.sectionHead a{font-size:13px;font-weight:700;color:#667253;text-decoration:none}
+.sectionHead a{font-size:13px;font-weight:700;color:#6d7958;text-decoration:none}
 .sectionHead a:hover{text-decoration:underline}
 
 /* kartu jadwal: tenang, tanpa warna per kartu */
 .jadwalGrid .jadwal.jadwal.jadwal.jadwal:nth-child(n){background:#fff !important;border:1px solid #c1cbaa !important;border-left:1px solid #c1cbaa !important;border-radius:14px !important;box-shadow:none !important;transform:none !important;padding:16px 18px !important;transition:box-shadow 180ms ease !important}
 .jadwalGrid .jadwal.jadwal.jadwal.jadwal:nth-child(n):hover{box-shadow:0 8px 20px rgb(15 23 42 / 7%) !important;transform:none !important}
-.jadwal .jam{background:#dce3ce !important;color:#667253 !important}
+.jadwal .jam{background:#dce3ce !important;color:#6d7958 !important}
 
 /* aktivitas */
 .activity{border-radius:16px;box-shadow:none}
@@ -150,12 +150,12 @@
 @media(max-width:480px){.stats.stats{grid-template-columns:1fr !important}}
 /* garis-biru-v1 */
 .sectionHead h2{display:flex;align-items:center;gap:10px}
-.sectionHead h2::before{content:"";flex:0 0 4px;height:20px;border-radius:4px;background:linear-gradient(180deg,#667253,#667253)}
+.sectionHead h2::before{content:"";flex:0 0 4px;height:20px;border-radius:4px;background:linear-gradient(180deg,#6d7958,#6d7958)}
 /* guru-split-v1 */
 .splitRow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:stretch;margin-top:20px}
 .splitRow>.box{min-width:0;padding:16px 18px;border:1px solid #c1cbaa;border-radius:14px;background:#fff}
 .box .sectionHead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.box .sectionHead a{padding:6px 12px;border:1px solid #dce3ce;border-radius:8px;background:#eff6ff;color:#667253;font-size:12px;font-weight:650;white-space:nowrap;text-decoration:none}
+.box .sectionHead a{padding:6px 12px;border:1px solid #dce3ce;border-radius:8px;background:#edf0e3;color:#6d7958;font-size:12px;font-weight:650;white-space:nowrap;text-decoration:none}
 .box .sectionHead a:hover{background:#dce3ce;text-decoration:none}
 .box .jadwalGrid{grid-template-columns:1fr}
 .box .activity{border:0;box-shadow:none;background:transparent;padding:0}
@@ -168,4 +168,4 @@
 .nilaiText{display:grid;gap:4px;min-width:0}
 .nilaiText strong{overflow:hidden;color:#414838;font-size:13px;font-weight:650;text-overflow:ellipsis;white-space:nowrap}
 .nilaiText small{color:#68715b;font-size:12px}
-.nilaiJumlah{flex:0 0 auto;padding:4px 10px;border-radius:999px;background:#eff6ff;color:#667253;font-size:12px;font-weight:700;white-space:nowrap}
+.nilaiJumlah{flex:0 0 auto;padding:4px 10px;border-radius:999px;background:#edf0e3;color:#6d7958;font-size:12px;font-weight:700;white-space:nowrap}
