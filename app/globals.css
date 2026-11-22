@@ -24,6 +24,10 @@ body {
   font-family: var(--font-sans);
 }
 
+img[src*="lo.png"] {
+  filter: hue-rotate(210deg) saturate(0.55);
+}
+
 #site-content {
   flex: 1 0 auto;
 }
@@ -37,9 +41,9 @@ body {
   padding: 18px 24px;
   border-top: 1px solid rgb(255 255 255 / 10%);
   background:
-    radial-gradient(circle at 85% 0%, rgb(10 140 255 / 30%), transparent 40%),
-    linear-gradient(180deg, #0a1a55 0%, #15348f 50%, #1d4ed8 100%);
-  color: #bfdbfe;
+    radial-gradient(circle at 85% 0%, rgb(169 182 154 / 28%), transparent 40%),
+    linear-gradient(180deg, #dce3ce 0%, #c1cbaa 100%);
+  color: #333a2b;
   font-size: 13px;
   text-align: center;
 }
@@ -78,17 +82,17 @@ body {
   border: 0;
   border-radius: 6px;
   background: transparent;
-  color: #64748b;
+  color: #68715b;
   cursor: pointer;
 }
 
 .password-input-toggle:hover:not(:disabled) {
-  background: #eef4ff;
-  color: #4147d5;
+  background: #dce3ce;
+  color: #667253;
 }
 
 .password-input-toggle:focus-visible {
-  outline: 2px solid #626be0;
+  outline: 2px solid #667253;
   outline-offset: 1px;
 }
 
@@ -118,22 +122,22 @@ body {
   min-width: 0;
   height: 36px;
   padding: 0 34px 0 10px;
-  border: 1px solid #d9deeb;
+  border: 1px solid #c1cbaa;
   border-radius: 6px;
   outline: 0;
   background: #fff;
-  color: #20283b;
+  color: #414838;
   font: inherit;
   font-size: 12px;
 }
 
 .searchable-select > input:focus {
-  border-color: #626be0;
-  box-shadow: 0 0 0 3px rgb(98 107 224 / 12%);
+  border-color: #667253;
+  box-shadow: 0 0 0 3px rgb(137 148 119 / 12%);
 }
 
 .searchable-select > input:disabled {
-  background: #f1f2f5;
+  background: #f0f2e6;
   color: #596174;
   cursor: default;
 }
@@ -166,7 +170,7 @@ body {
   max-height: 220px;
   overflow: auto;
   padding: 4px;
-  border: 1px solid #d9deeb;
+  border: 1px solid #c1cbaa;
   border-radius: 7px;
   background: #fff;
   box-shadow: 0 8px 22px rgb(15 23 42 / 14%);
@@ -175,15 +179,15 @@ body {
 .searchable-select-option {
   padding: 8px 9px;
   border-radius: 4px;
-  color: #30384b;
+  color: #414838;
   font-size: 12px;
   cursor: pointer;
 }
 
 .searchable-select-option:hover,
 .searchable-select-option[data-active="true"] {
-  background: #eef4ff;
-  color: #4147d5;
+  background: #dce3ce;
+  color: #667253;
 }
 
 .searchable-select-empty {
@@ -202,7 +206,7 @@ button[class*="printButton"] {
   padding: 0 13px;
   border: 0 !important;
   border-radius: 8px !important;
-  background: linear-gradient(90deg, #4147d5, #0a8cff) !important;
+  background: linear-gradient(90deg, #667253, #667253) !important;
   color: #fff !important;
   font: inherit;
   font-size: 12px !important;
@@ -311,17 +315,17 @@ button[class*="printButton"]:disabled {
 
 /* eclass-brand: palet sama dengan landing page dan login */
 :root {
-  --brand: #4147d5;
-  --brand-2: #0a8cff;
-  --brand-blue: #1d4ed8;
-  --brand-soft: #dbeafe;
-  --brand-border: #bfdbfe;
+  --brand: #667253;
+  --brand-2: #667253;
+  --brand-blue: #667253;
+  --brand-soft: #dce3ce;
+  --brand-border: #c1cbaa;
   --brand-navy: #08133f;
-  --brand-grad: linear-gradient(90deg, #4147d5, #0a8cff);
+  --brand-grad: linear-gradient(90deg, #667253, #667253);
 }
 header.form-modal-header {
-  border-bottom-color: #dbeafe;
-  background: linear-gradient(115deg, #eff6ff 0%, #f6faff 58%, #eaf3ff 100%);
+  border-bottom-color: #dce3ce;
+  background: linear-gradient(115deg, #eff6ff 0%, #f0f2e6 58%, #dce3ce 100%);
   color: #17365f;
 }
 
@@ -334,8 +338,8 @@ header.form-modal-header p {
 }
 
 header.form-modal-header button:hover {
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: #dce3ce;
+  color: #667253;
 }
 
 header.form-modal-header-inset {
