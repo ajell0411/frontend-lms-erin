@@ -1,17 +1,17 @@
 .base {
   opacity: 0;
   transition:
-    opacity var(--dur, 900ms) cubic-bezier(0.16, 1, 0.3, 1),
-    transform var(--dur, 900ms) cubic-bezier(0.16, 1, 0.3, 1);
+    opacity var(--dur, 900ms) cubic-bezier(0.2, 0.75, 0.25, 1),
+    transform var(--dur, 900ms) cubic-bezier(0.2, 0.75, 0.25, 1);
   will-change: opacity, transform;
   backface-visibility: hidden;
 }
 
-.left  { transform: translate3d(-70px, 0, 0); }
-.right { transform: translate3d(70px, 0, 0); }
-.up    { transform: translate3d(0, 50px, 0); }
-.down  { transform: translate3d(0, -40px, 0); }
-.zoom  { transform: scale3d(0.85, 0.85, 1); }
+.left  { transform: translate3d(-42px, 0, 0); }
+.right { transform: translate3d(42px, 0, 0); }
+.up    { transform: translate3d(0, 32px, 0); }
+.down  { transform: translate3d(0, -28px, 0); }
+.zoom  { transform: scale3d(0.94, 0.94, 1); }
 .none  { transform: none; }
 
 .visible {
