@@ -1,23 +1,23 @@
 .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 14px; }
 .tab { border: 1px solid #c1cbaa; background: #fff; color: #555d49; font: inherit; font-size: 14px; font-weight: 600; padding: 8px 18px; border-radius: 999px; cursor: pointer; transition: border-color 0.15s, color 0.15s; }
-.tab:hover { border-color: #667253; color: #667253; }
-.tabActive, .tabActive:hover { background: linear-gradient(135deg, #667253, #667253); border-color: transparent; color: #fff; }
+.tab:hover { border-color: #6d7958; color: #6d7958; }
+.tabActive, .tabActive:hover { background: linear-gradient(135deg, #6d7958, #6d7958); border-color: transparent; color: #fff; }
 
 .dateField { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #68715b; }
 .dateField input { height: 40px; border: 1px solid #c1cbaa; border-radius: 10px; padding: 0 10px; font: inherit; color: #414838; background: #fff; }
 .dateError { margin: 8px 0 0; font-size: 13px; color: #dc2626; }
 
 .badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; white-space: nowrap; }
-.badgeMateri { background: #dce3ce; color: #667253; }
+.badgeMateri { background: #dce3ce; color: #6d7958; }
 .badgeTugas { background: #fef3c7; color: #b45309; }
-.badgeUlangan { background: #ede9fe; color: #6d28d9; }
+.badgeUlangan { background: #ede9fe; color: #667253; }
 .badgeDone { background: #f1f5f9; color: #555d49; }
 
 .clickRow { cursor: pointer; }
 .clickRow:hover { background: #f0f2e6; }
-.clickRow:focus-visible { outline: 2px solid #667253; outline-offset: -2px; }
+.clickRow:focus-visible { outline: 2px solid #6d7958; outline-offset: -2px; }
 .titleCell { font-weight: 600; color: #414838; max-width: 280px; }
 
 .longText { white-space: pre-wrap; line-height: 1.55; padding: 10px 12px; border: 1px solid #c1cbaa; border-radius: 10px; background: #f0f2e6; color: #555d49; font-size: 14px; }
 .fileRow { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 12px; border: 1px solid #c1cbaa; border-radius: 10px; background: #f0f2e6; font-size: 14px; color: #555d49; }
-.fileLink { margin-left: auto; padding: 6px 14px; border-radius: 8px; background: linear-gradient(135deg, #667253, #667253); color: #fff; font-weight: 600; text-decoration: none; }
+.fileLink { margin-left: auto; padding: 6px 14px; border-radius: 8px; background: linear-gradient(135deg, #6d7958, #6d7958); color: #fff; font-weight: 600; text-decoration: none; }
