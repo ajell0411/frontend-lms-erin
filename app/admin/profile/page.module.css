@@ -1,64 +1,64 @@
-.page{display:flex;flex-direction:column;gap:16px;min-width:0;max-width:1200px;color:#172033}
+.page{display:flex;flex-direction:column;gap:16px;min-width:0;max-width:1200px;color:#414838}
 .heading{min-height:58px}
-.eyebrow{margin:0 0 4px;color:#626be0;font-size:11px;font-weight:700}
+.eyebrow{margin:0 0 4px;color:#667253;font-size:11px;font-weight:700}
 .title{margin:0;color:#111827;font-size:22px;font-weight:700}
-.subtitle{margin:5px 0 0;color:#667085;font-size:12px}
+.subtitle{margin:5px 0 0;color:#68715b;font-size:12px}
 .columns{display:grid;grid-template-columns:minmax(250px,330px) minmax(0,1fr);align-items:start;gap:18px}
-.profileCard,.dataCard{border:1px solid #e2e8f0;border-radius:12px;background:#fff;box-shadow:0 1px 3px rgb(15 23 42 / 5%)}
+.profileCard,.dataCard{border:1px solid #c1cbaa;border-radius:12px;background:#fff;box-shadow:0 1px 3px rgb(15 23 42 / 5%)}
 .profileCard{position:relative;display:flex;min-height:260px;flex-direction:column;align-items:center;overflow:hidden;padding:0 18px 20px}
-.profileCover{position:absolute;inset:0 0 auto;height:92px;background:linear-gradient(135deg,#c7d2fe,#e0e7ff 55%,#eef2ff)}
-.avatar{position:relative;display:grid;place-items:center;width:92px;height:92px;margin-top:43px;overflow:hidden;border:4px solid #fff;border-radius:50%;background:linear-gradient(135deg,#0a8cff,#4147d5);box-shadow:0 2px 10px rgb(15 23 42 / 15%);color:#fff;font-size:23px;font-weight:700}
+.profileCover{position:absolute;inset:0 0 auto;height:92px;background:linear-gradient(135deg,#c1cbaa,#dce3ce 55%,#eef2ff)}
+.avatar{position:relative;display:grid;place-items:center;width:92px;height:92px;margin-top:43px;overflow:hidden;border:4px solid #fff;border-radius:50%;background:linear-gradient(135deg,#667253,#667253);box-shadow:0 2px 10px rgb(15 23 42 / 15%);color:#fff;font-size:23px;font-weight:700}
 .avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover}
-.profileCard h2{max-width:100%;overflow:hidden;margin:12px 0 0;color:#20283b;font-size:16px;text-overflow:ellipsis;white-space:nowrap}
-.username{margin:3px 0 0;color:#64748b;font-size:12px}
+.profileCard h2{max-width:100%;overflow:hidden;margin:12px 0 0;color:#414838;font-size:16px;text-overflow:ellipsis;white-space:nowrap}
+.username{margin:3px 0 0;color:#68715b;font-size:12px}
 .profileBadges{display:flex;gap:7px;margin-top:10px}
-.roleBadge{display:inline-flex;padding:4px 10px;border-radius:999px;background:#e0e7ff;color:#4147d5;font-size:10px;font-weight:700}
+.roleBadge{display:inline-flex;padding:4px 10px;border-radius:999px;background:#dce3ce;color:#667253;font-size:10px;font-weight:700}
 .details{display:grid;gap:14px}
 .dataCard{padding:18px}
-.dataCard h2{display:flex;align-items:center;gap:8px;margin:0 0 14px;padding-bottom:11px;border-bottom:1px solid #edf0f5;color:#20283b;font-size:14px}
-.dataCard h2 span{color:#4147d5}
+.dataCard h2{display:flex;align-items:center;gap:8px;margin:0 0 14px;padding-bottom:11px;border-bottom:1px solid #edf0f5;color:#414838;font-size:14px}
+.dataCard h2 span{color:#667253}
 .fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
 .fields label{display:grid;min-width:0;gap:5px}
-.fields label>span{color:#64748b;font-size:10px}
-.fields input{box-sizing:border-box;width:100%;height:33px;padding:0 9px;overflow:hidden;border:1px solid #edf0f5;border-radius:6px;background:#f8f9ff;color:#334155;font:inherit;font-size:11px;text-overflow:ellipsis}
+.fields label>span{color:#68715b;font-size:10px}
+.fields input{box-sizing:border-box;width:100%;height:33px;padding:0 9px;overflow:hidden;border:1px solid #edf0f5;border-radius:6px;background:#f0f2e6;color:#555d49;font:inherit;font-size:11px;text-overflow:ellipsis}
 .full{grid-column:1/-1}
 .success,.error{margin:0;padding:10px 12px;border:1px solid #bfe7d0;border-radius:6px;background:#f0fbf4;color:#237448;font-size:12px}
 .error{border-color:#f2c8cc;background:#fff5f5;color:#a63843}
 .formCard{display:flex;flex-direction:column;gap:16px;width:min(100%,720px);padding:22px;border:1px solid #e1e5f0;border-radius:13px;background:#fff;box-shadow:0 8px 24px rgb(33 43 77 / 7%)}
-.formCard h2{margin:0;color:#20283b;font-size:15px}
+.formCard h2{margin:0;color:#414838;font-size:15px}
 .formGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .formGrid label{display:flex;flex-direction:column;gap:6px;color:#596176;font-size:10px;font-weight:650}
-.formGrid input{width:100%;height:36px;padding:0 10px;border:1px solid #d9deeb;border-radius:5px;background:#fff;color:#20283b;font:inherit;font-size:11px}
-.formGrid input:focus{outline:2px solid rgb(98 107 224 / 22%);border-color:#626be0}
+.formGrid input{width:100%;height:36px;padding:0 10px;border:1px solid #c1cbaa;border-radius:5px;background:#fff;color:#414838;font:inherit;font-size:11px}
+.formGrid input:focus{outline:2px solid rgb(137 148 119 / 22%);border-color:#667253}
 .formGrid .full{grid-column:1/-1}
-.formCard>button{align-self:flex-start;min-height:36px;padding:0 15px;border:1px solid #4147d5;border-radius:5px;background:#4147d5;color:#fff;font:inherit;font-size:11px;font-weight:650;cursor:pointer}
-.formCard>button:hover{background:#3339c2}
+.formCard>button{align-self:flex-start;min-height:36px;padding:0 15px;border:1px solid #667253;border-radius:5px;background:#667253;color:#fff;font:inherit;font-size:11px;font-weight:650;cursor:pointer}
+.formCard>button:hover{background:#596349}
 .formCard>button:disabled{opacity:.6;cursor:wait}
 @media(max-width:800px){.columns{grid-template-columns:1fr}.profileCard{min-height:240px}}
 @media(max-width:560px){.fields{grid-template-columns:1fr}.formCard{padding:16px}.formGrid{grid-template-columns:1fr}.formGrid .full{grid-column:auto}}
 /* profil-v2 */
 .profileCard{transition:transform 180ms ease,box-shadow 180ms ease}
-.profileCard:hover{transform:translateY(-3px);box-shadow:0 16px 30px rgb(65 71 213 / 15%)}
-.profileCover{height:110px;background:radial-gradient(circle at 85% 15%,rgb(255 255 255 / 30%),transparent 45%),linear-gradient(135deg,#4147d5,#0a8cff)}
-.avatar{box-shadow:0 0 0 3px rgb(65 71 213 / 20%),0 8px 20px rgb(65 71 213 / 25%)}
+.profileCard:hover{transform:translateY(-3px);box-shadow:0 16px 30px rgb(102 114 83 / 15%)}
+.profileCover{height:110px;background:radial-gradient(circle at 85% 15%,rgb(255 255 255 / 30%),transparent 45%),linear-gradient(135deg,#667253,#667253)}
+.avatar{box-shadow:0 0 0 3px rgb(102 114 83 / 20%),0 8px 20px rgb(102 114 83 / 25%)}
 .profileCard h2{font-size:17px;font-weight:700}
-.roleBadge{background:linear-gradient(90deg,#4147d5,#0a8cff);color:#fff;padding:5px 12px;letter-spacing:.02em;box-shadow:0 4px 10px rgb(65 71 213 / 22%)}
+.roleBadge{background:linear-gradient(90deg,#667253,#667253);color:#fff;padding:5px 12px;letter-spacing:.02em;box-shadow:0 4px 10px rgb(102 114 83 / 22%)}
 .dataCard{position:relative;overflow:hidden;transition:transform 180ms ease,box-shadow 180ms ease}
-.dataCard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,#4147d5,#0a8cff)}
-.dataCard:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgb(65 71 213 / 12%)}
-.details>.dataCard:nth-child(2)::before{background:linear-gradient(180deg,#10b981,#06b6d4)}
-.details>.dataCard:nth-child(3)::before{background:linear-gradient(180deg,#f59e0b,#f97316)}
-.details>.dataCard:nth-child(4)::before{background:linear-gradient(180deg,#ec4899,#f43f5e)}
+.dataCard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,#667253,#667253)}
+.dataCard:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgb(102 114 83 / 12%)}
+.details>.dataCard:nth-child(2)::before{background:linear-gradient(180deg,#899477,#899477)}
+.details>.dataCard:nth-child(3)::before{background:linear-gradient(180deg,#c1cbaa,#a9b69a)}
+.details>.dataCard:nth-child(4)::before{background:linear-gradient(180deg,#a9b69a,#f43f5e)}
 .dataCard h2{padding-left:6px}
-.dataCard h2 span{display:grid;place-items:center;width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,#4147d5,#0a8cff);color:#fff;font-size:13px}
-.details>.dataCard:nth-child(2) h2 span{background:linear-gradient(135deg,#10b981,#06b6d4)}
-.details>.dataCard:nth-child(3) h2 span{background:linear-gradient(135deg,#f59e0b,#f97316)}
-.details>.dataCard:nth-child(4) h2 span{background:linear-gradient(135deg,#ec4899,#f43f5e)}
+.dataCard h2 span{display:grid;place-items:center;width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,#667253,#667253);color:#fff;font-size:13px}
+.details>.dataCard:nth-child(2) h2 span{background:linear-gradient(135deg,#899477,#899477)}
+.details>.dataCard:nth-child(3) h2 span{background:linear-gradient(135deg,#c1cbaa,#a9b69a)}
+.details>.dataCard:nth-child(4) h2 span{background:linear-gradient(135deg,#a9b69a,#f43f5e)}
 .fields label>span{font-size:11px;font-weight:600;letter-spacing:.02em}
 .fields input{height:37px;border-radius:9px;transition:border-color 150ms ease,background 150ms ease}
-.fields input:hover{border-color:#bfdbfe;background:#eef4ff}
-.formCard>button,.save{background:linear-gradient(90deg,#4147d5,#0a8cff);border-color:transparent;border-radius:10px;min-height:38px;box-shadow:0 6px 16px rgb(65 71 213 / 26%);transition:transform 150ms ease,filter 150ms ease}
-.formCard>button:hover:not(:disabled),.save:hover:not(:disabled){background:linear-gradient(90deg,#4147d5,#0a8cff);filter:brightness(1.06);transform:translateY(-1px)}
+.fields input:hover{border-color:#c1cbaa;background:#dce3ce}
+.formCard>button,.save{background:linear-gradient(90deg,#667253,#667253);border-color:transparent;border-radius:10px;min-height:38px;box-shadow:0 6px 16px rgb(102 114 83 / 26%);transition:transform 150ms ease,filter 150ms ease}
+.formCard>button:hover:not(:disabled),.save:hover:not(:disabled){background:linear-gradient(90deg,#667253,#667253);filter:brightness(1.06);transform:translateY(-1px)}
 .formCard{border-radius:16px}
 /* profil-layout-v1 */
 @media(min-width:801px){
@@ -76,5 +76,5 @@
 .details.details{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:stretch}
 .formCard.formCard{width:auto;max-width:none}
 }
-.formCard>button,.save{background:#4147d5;border-color:#4147d5;box-shadow:none}
-.formCard>button:hover:not(:disabled),.save:hover:not(:disabled){background:#3339c2;transform:translateY(-1px)}
+.formCard>button,.save{background:#667253;border-color:#667253;box-shadow:none}
+.formCard>button:hover:not(:disabled),.save:hover:not(:disabled){background:#596349;transform:translateY(-1px)}
