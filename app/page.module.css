@@ -983,14 +983,13 @@
 
 .heroImageWrap::before {
   z-index: 0;
-  width: 112%;
+  width: 90%;
   background: radial-gradient(circle, rgba(193, 203, 170, 0.68) 0%, transparent 68%);
 }
 
 .heroImageWrap::after {
   z-index: 0;
-  width: 112%;
-  border-width: 2px;
+  width: 90%;
   border-color: rgba(137, 148, 119, 0.75);
   animation-duration: 30s;
 }
