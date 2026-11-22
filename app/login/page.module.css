@@ -1,10 +1,10 @@
 .page {
   /* Palet biru (sama dengan landing page) */
-  --primary: #1d4ed8;
-  --primary-light: #0a8cff;
-  --accent: #93c5fd;
+  --primary: #667253;
+  --primary-light: #667253;
+  --accent: #c1cbaa;
   --primary-rgb: 29, 78, 216;
-  --grad: linear-gradient(90deg, #4147d5, #0a8cff);
+  --grad: linear-gradient(90deg, #667253, #667253);
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 
   position: relative;
@@ -23,9 +23,9 @@
   z-index: 0;
   overflow: hidden;
   background:
-    radial-gradient(circle at 15% 20%, rgba(10, 140, 255, 0.45), transparent 45%),
-    radial-gradient(circle at 85% 75%, rgba(65, 71, 213, 0.5), transparent 45%),
-    linear-gradient(135deg, #0b1d5c 0%, #1d4ed8 100%);
+    radial-gradient(circle at 15% 20%, rgba(102, 114, 83, 0.45), transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(102, 114, 83, 0.5), transparent 45%),
+    linear-gradient(135deg, #0b1d5c 0%, #667253 100%);
 }
 
 .bgWrap img {
@@ -59,7 +59,7 @@
   height: 340px;
   top: -100px;
   right: 18%;
-  background: rgba(10, 140, 255, 0.35);
+  background: rgba(102, 114, 83, 0.35);
   animation: orbFloat 9s ease-in-out infinite;
 }
 
@@ -68,7 +68,7 @@
   height: 300px;
   bottom: -100px;
   left: 30%;
-  background: rgba(65, 71, 213, 0.4);
+  background: rgba(102, 114, 83, 0.4);
   animation: orbFloat 11s ease-in-out infinite reverse;
 }
 
@@ -148,7 +148,7 @@
 }
 
 .infoTitle span {
-  background: linear-gradient(90deg, #93c5fd, #67e8f9);
+  background: linear-gradient(90deg, #c1cbaa, #a9b69a);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -238,7 +238,7 @@
   left: 0;
   right: 0;
   height: 5px;
-  background: linear-gradient(90deg, #4147d5, #0a8cff, #67e8f9, #0a8cff, #4147d5);
+  background: linear-gradient(90deg, #667253, #667253, #a9b69a, #667253, #667253);
   background-size: 200% 100%;
   animation: barMove 4s linear infinite;
 }
@@ -281,7 +281,7 @@
 .logoSub {
   margin: 2px 0 0;
   font-size: 11px;
-  color: #64748b;
+  color: #68715b;
 }
 
 .title {
@@ -290,14 +290,14 @@
   font-size: 23px;
   font-weight: 800;
   letter-spacing: -0.01em;
-  color: #0f172a;
+  color: #414838;
 }
 
 .subtitle {
   margin: 6px 0 0;
   text-align: center;
   font-size: 14px;
-  color: #64748b;
+  color: #68715b;
 }
 
 /* ===== Form ===== */
@@ -317,7 +317,7 @@
 .label {
   font-size: 13px;
   font-weight: 600;
-  color: #334155;
+  color: #555d49;
 }
 
 .inputWrap {
@@ -343,9 +343,9 @@
   width: 100%;
   padding: 12px 14px 12px 42px;
   border-radius: 12px;
-  border: 1px solid #cbd5e1;
-  background: #f8fafc;
-  color: #0f172a;
+  border: 1px solid #c1cbaa;
+  background: #f0f2e6;
+  color: #414838;
   font-size: 14px;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
@@ -360,9 +360,9 @@
 }
 
 .input:focus {
-  border-color: #0a8cff;
+  border-color: #667253;
   background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(10, 140, 255, 0.15);
+  box-shadow: 0 0 0 4px rgba(102, 114, 83, 0.15);
 }
 
 .togglePassword {
@@ -378,12 +378,12 @@
   border: none;
   border-radius: 6px;
   background: transparent;
-  color: #64748b;
+  color: #68715b;
   cursor: pointer;
 }
 
 .togglePassword:hover {
-  background: #eef4ff;
+  background: #dce3ce;
   color: var(--primary);
 }
 
@@ -428,7 +428,7 @@
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  color: #475569;
+  color: #555d49;
   cursor: pointer;
 }
 
@@ -467,7 +467,7 @@
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 10px 24px rgba(65, 71, 213, 0.35);
+  box-shadow: 0 10px 24px rgba(102, 114, 83, 0.35);
   transition: box-shadow 0.35s var(--ease), transform 0.35s var(--ease), filter 0.35s var(--ease);
 }
 
@@ -486,7 +486,7 @@
 .submitBtn:hover:not(:disabled) {
   filter: brightness(1.08);
   transform: translateY(-2px);
-  box-shadow: 0 16px 32px rgba(65, 71, 213, 0.5);
+  box-shadow: 0 16px 32px rgba(102, 114, 83, 0.5);
 }
 
 .submitBtn:hover:not(:disabled)::after {
@@ -519,7 +519,7 @@
   margin: 22px 0 0;
   text-align: center;
   font-size: 13px;
-  color: #64748b;
+  color: #68715b;
 }
 
 .registerLink {
