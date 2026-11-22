@@ -989,7 +989,7 @@
 
 .heroImageWrap::after {
   z-index: 0;
-  width: 90%;
+  width: 82%;
   border-color: rgba(137, 148, 119, 0.75);
   animation-duration: 30s;
 }
