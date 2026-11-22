@@ -13,13 +13,13 @@
   padding: 26px 30px;
   border: 1px solid #e6edf5;
   border-radius: 18px;
-  background: linear-gradient(120deg, #fff 20%, #f2f7ff 100%);
+  background: linear-gradient(120deg, #fff 20%, #f0f2e6 100%);
   box-shadow: 0 8px 24px rgba(27, 55, 90, 0.05);
 }
 
 .header h1 {
   margin: 6px 0;
-  color: #173c70;
+  color: #414838;
   font-size: 26px;
 }
 
@@ -30,7 +30,7 @@
 }
 
 .eyebrow {
-  color: #2874c6;
+  color: #667253;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -44,7 +44,7 @@
 }
 
 .count strong {
-  color: #1762ac;
+  color: #667253;
   font-size: 25px;
 }
 
@@ -94,7 +94,7 @@
   border-radius: 9px;
   outline: none;
   background: #fff;
-  color: #263d59;
+  color: #414838;
   font: inherit;
   font-size: 13px;
 }
@@ -109,7 +109,7 @@
 
 .search input:focus,
 .selectLabel select:focus {
-  border-color: #3b82c4;
+  border-color: #667253;
   box-shadow: 0 0 0 3px rgba(59, 130, 196, 0.12);
 }
 
@@ -142,13 +142,13 @@
 }
 
 .tableWrap tbody tr:hover {
-  background: #fbfdff;
+  background: #f0f2e6;
 }
 
 .studentName,
 .assessmentTitle {
   display: block;
-  color: #263f5e;
+  color: #414838;
   font-weight: 700;
 }
 
@@ -165,8 +165,8 @@
   min-height: 25px;
   padding: 0 9px;
   border-radius: 20px;
-  background: #edf5ff;
-  color: #2766a6;
+  background: #f0f2e6;
+  color: #667253;
   font-size: 11px;
   font-weight: 700;
 }
