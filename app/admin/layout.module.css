@@ -1,11 +1,11 @@
 .wrapper {
-  --primary: #4147d5;
-  --primary-2: #0a8cff;
-  --primary-soft: #e4ecff;
-  --text: #0f172a;
-  --muted: #64748b;
-  --border: #e2e8f0;
-  --bg: #f4f8fe;
+  --primary: #667253;
+  --primary-2: #667253;
+  --primary-soft: #dce3ce;
+  --text: #414838;
+  --muted: #68715b;
+  --border: #c1cbaa;
+  --bg: #f0f2e6;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -81,8 +81,8 @@
 .accountMenu{position:absolute;z-index:30;top:calc(100% + 11px);right:0;width:232px;padding:7px;border:1px solid #e4e6ed;border-radius:11px;background:#fff;box-shadow:0 12px 30px rgb(20 28 52 / 18%);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-6px) scale(.98);transform-origin:top right;transition:opacity 160ms ease,transform 160ms ease,visibility 0s linear 160ms}
 .accountMenu[data-open="true"]{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0) scale(1);transition-delay:0s}
 .accountMenuArrow{position:absolute;top:-6px;right:17px;width:11px;height:11px;transform:rotate(45deg);border-top:1px solid #e4e6ed;border-left:1px solid #e4e6ed;background:#fff}
-.accountMenu a,.accountMenu button{position:relative;display:flex;width:100%;min-height:42px;align-items:center;gap:11px;padding:0 11px;border:0;border-radius:7px;background:transparent;color:#394154;font:inherit;font-size:12px;text-align:left;text-decoration:none;cursor:pointer;transition:background 140ms ease,color 140ms ease}
-.accountMenu a:hover,.accountMenu button:hover{background:#eef4ff;color:#4147d5}
+.accountMenu a,.accountMenu button{position:relative;display:flex;width:100%;min-height:42px;align-items:center;gap:11px;padding:0 11px;border:0;border-radius:7px;background:transparent;color:#4c5740;font:inherit;font-size:12px;text-align:left;text-decoration:none;cursor:pointer;transition:background 140ms ease,color 140ms ease}
+.accountMenu a:hover,.accountMenu button:hover{background:#dce3ce;color:#667253}
 .accountMenu svg{flex:0 0 17px;width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 @media(prefers-reduced-motion:reduce){.accountMenu{transition:none}}
 .topProfileText {
@@ -95,7 +95,7 @@
 .topProfileText strong {
   max-width: 180px;
   overflow: hidden;
-  color: #20283b;
+  color: #414838;
   font-size: 13px;
   font-weight: 700;
   text-overflow: ellipsis;
@@ -208,13 +208,13 @@
 }
 .navActive,
 .navActive:hover {
-  background: #4147d5;
+  background: #667253;
   color: #ffffff;
   font-weight: 600;
 }
 .navParentActive,
 .navParentActive:hover {
-  background: #4147d5;
+  background: #667253;
   color: #ffffff;
   font-weight: 600;
 }
@@ -256,15 +256,15 @@
 }
 .subActive,
 .subActive:hover {
-  background: #e4ecff;
-  color: #4147d5;
+  background: #dce3ce;
+  color: #667253;
   font-weight: 600;
 }
 .navItem:focus-visible,
 .subItem:focus-visible,
 .bellBtn:focus-visible,
 .logout:focus-visible {
-  outline: 1px solid #4147d5;
+  outline: 1px solid #667253;
   outline-offset: 1px;
 }
 .logout {
@@ -318,7 +318,7 @@
 }
 
 .topProfile{padding:5px 8px;border:1px solid #e1e6f3;border-radius:12px;background:#fff;box-shadow:0 2px 8px rgb(33 43 77 / 6%);cursor:pointer;transition:background 150ms ease,border-color 150ms ease,box-shadow 150ms ease}
-.topProfile:hover{border-color:#bfdbfe;background:#f6f9ff;box-shadow:0 4px 12px rgb(33 43 77 / 10%)}
+.topProfile:hover{border-color:#c1cbaa;background:#f0f2e6;box-shadow:0 4px 12px rgb(33 43 77 / 10%)}
 .topProfile:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 .bellWrap {
   position: relative;
@@ -735,9 +735,9 @@
   cursor: pointer;
 }
 .btnBatal {
-  border: 1px solid #334155;
+  border: 1px solid #555d49;
   background: #ffffff;
-  color: #0f172a;
+  color: #414838;
 }
 .btnBatal:hover {
   background: #f1f5f9;
@@ -835,16 +835,16 @@
   border: 1px solid var(--border); border-radius: 12px; background: #fff;
   box-shadow: 0 14px 36px rgb(15 23 42 / 16%); animation: notificationIn 160ms ease-out;
 }
-.notificationPopover h2 { margin: 0 0 10px; color: #20283b; font-size: 13px; }
+.notificationPopover h2 { margin: 0 0 10px; color: #414838; font-size: 13px; }
 .notificationArrow { position: absolute; top: -6px; right: 24px; width: 11px; height: 11px; border-top: 1px solid var(--border); border-left: 1px solid var(--border); background: #fff; transform: rotate(45deg); }
 .notificationList { max-height: min(55vh, 390px); overflow-y: auto; }
 .notificationItem { display: flex; flex-direction: column; gap: 4px; padding: 10px 2px; border-top: 1px solid #edf0f6; color: #596176; text-decoration: none; }
-.notificationItem strong { overflow: hidden; color: #20283b; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
-.notificationItem span { display: -webkit-box; overflow: hidden; color: #667085; font-size: 10px; line-height: 1.45; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.notificationItem strong { overflow: hidden; color: #414838; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.notificationItem span { display: -webkit-box; overflow: hidden; color: #68715b; font-size: 10px; line-height: 1.45; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .notificationItem small { color: #8a91a1; font-size: 9px; }
-.notificationItem:hover { background: #f8f9ff; }
+.notificationItem:hover { background: #f0f2e6; }
 .notificationEmpty { margin: 18px 0; color: #768095; font-size: 11px; text-align: center; }
-.notificationAll { display: block; padding-top: 11px; border-top: 1px solid #edf0f6; color: #4147d5; font-size: 10px; font-weight: 650; text-align: center; text-decoration: none; }
+.notificationAll { display: block; padding-top: 11px; border-top: 1px solid #edf0f6; color: #667253; font-size: 10px; font-weight: 650; text-align: center; text-decoration: none; }
 @keyframes notificationIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 @media (max-width: 520px) {
   .headerRight { gap: 6px; padding: 0 10px; }
@@ -855,25 +855,25 @@
 /* profil-sync-v1 */
 .sideToggle{margin:12px 0 -54px 0}
 .sidebar>.profileCard{transition:border-color 150ms ease,box-shadow 150ms ease}
-.sidebar>.profileCard:hover{border-color:#bfdbfe;box-shadow:0 6px 16px rgb(65 71 213 / 12%)}
+.sidebar>.profileCard:hover{border-color:#c1cbaa;box-shadow:0 6px 16px rgb(102 114 83 / 12%)}
 
 /* eclass-navy-v1: header + latar saja (sidebar tetap putih) */
 .wrapper {
-  --primary: #4147d5;
-  --primary-2: #0a8cff;
-  --primary-soft: #dbeafe;
-  --bg: #f1f5fb;
-  --border: #e2e8f5;
+  --primary: #667253;
+  --primary-2: #667253;
+  --primary-soft: #dce3ce;
+  --bg: #f0f2e6;
+  --border: #c1cbaa;
   background:
-    radial-gradient(circle at 92% 0%, rgba(10, 140, 255, 0.08), transparent 40%),
-    radial-gradient(circle at 4% 100%, rgba(65, 71, 213, 0.07), transparent 40%),
-    #f1f5fb;
+    radial-gradient(circle at 92% 0%, rgba(102, 114, 83, 0.08), transparent 40%),
+    radial-gradient(circle at 4% 100%, rgba(102, 114, 83, 0.07), transparent 40%),
+    #f0f2e6;
 }
 .header {
   background: #ffffff;
-  border-bottom: 1px solid #e2e8f5;
+  border-bottom: 1px solid #c1cbaa;
   box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05);
 }
 /* garis-biru-semua: judul halaman + subjudul di /admin dan /pemantau */
 .content :is(header, div):has(> h1 + p){position:relative;padding-left:14px}
-.content :is(header, div):has(> h1 + p)::before{content:"";position:absolute;left:0;top:3px;bottom:3px;width:4px;border-radius:4px;background:linear-gradient(180deg,#1d4ed8,#0a8cff)}
+.content :is(header, div):has(> h1 + p)::before{content:"";position:absolute;left:0;top:3px;bottom:3px;width:4px;border-radius:4px;background:linear-gradient(180deg,#667253,#667253)}
