@@ -1,17 +1,17 @@
 :root {
-  --siswa-primary: #4147d5;
-  --siswa-primary-dark: #3338b8;
-  --siswa-primary-soft: #e4ecff;
-  --siswa-primary-2: #0a8cff;
-  --siswa-bg: #f4f8fe;
+  --siswa-primary: #667253;
+  --siswa-primary-dark: #596349;
+  --siswa-primary-soft: #dce3ce;
+  --siswa-primary-2: #667253;
+  --siswa-bg: #f0f2e6;
   --siswa-surface: #ffffff;
-  --siswa-text: #0f172a;
-  --siswa-muted: #64748b;
-  --siswa-border: #e2e8f0;
+  --siswa-text: #414838;
+  --siswa-muted: #68715b;
+  --siswa-border: #c1cbaa;
   --siswa-success: #16a34a;
   --siswa-danger: #dc2626;
   --siswa-warning: #d97706;
-  --siswa-info: #2563eb;
+  --siswa-info: #667253;
   --siswa-radius: 12px;
   --siswa-shadow: 0 1px 3px rgb(15 23 42 / 7%);
   --siswa-font: Arial, Helvetica, sans-serif;
