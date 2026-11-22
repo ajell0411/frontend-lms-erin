@@ -59,6 +59,7 @@ export default function LoginPage() {
           alt="Ilustrasi siswa SMA belajar bersama menggunakan laptop"
           fill
           priority
+          unoptimized
           style={{ objectFit: "cover" }}
         />
         <div className={styles.bgOverlay} />
