@@ -100,7 +100,7 @@
 .materiActions{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:6px}
 .fileIcon{display:grid;place-items:center;width:40px;height:40px;border-radius:10px;font-size:10px;font-weight:800}
 .tonePDF{background:#fee2e2;color:#dc2626}
-.toneDOC{background:#dce3ce;color:#667253}
+.toneDOC{background:#dce3ce;color:#6d7958}
 .tonePPT{background:#ffedd5;color:#899477}
 .toneXLS{background:#dcfce7;color:#16a34a}
 .toneFILE{background:#c1cbaa;color:#555d49}
@@ -141,32 +141,32 @@
 .btn{min-height:40px;border-radius:12px;font-weight:700;letter-spacing:.01em;transition:transform 150ms ease,box-shadow 150ms ease,filter 150ms ease,background 150ms ease,color 150ms ease}
 .btn:hover:not(:disabled){transform:translateY(-1px)}
 .btnSm{min-height:34px;padding:0 14px;border-radius:10px}
-.btnPrimary{background:linear-gradient(90deg,#667253 0%,#667253 100%);box-shadow:0 6px 16px rgb(102 114 83 / 26%)}
+.btnPrimary{background:linear-gradient(90deg,#6d7958 0%,#6d7958 100%);box-shadow:0 6px 16px rgb(102 114 83 / 26%)}
 .btnPrimary:hover:not(:disabled){filter:brightness(1.06);box-shadow:0 9px 22px rgb(102 114 83 / 34%)}
-.btnOutline{border:1.5px solid #667253;color:#667253;background:#fff}
-.btnOutline:hover:not(:disabled){border-color:transparent;background:linear-gradient(90deg,#667253,#667253);color:#fff}
-.btnGhost{border-color:#d6dcf0}
+.btnOutline{border:1.5px solid #6d7958;color:#6d7958;background:#fff}
+.btnOutline:hover:not(:disabled){border-color:transparent;background:linear-gradient(90deg,#6d7958,#6d7958);color:#fff}
+.btnGhost{border-color:#c1cbaa}
 .btnExport{border:1.5px solid #16a34a;background:#fff;color:#15803d}
 .btnExport:hover:not(:disabled){border-color:#15803d;background:#f0fdf4;color:#15803d}
-.tabActive,.tabActive:hover{border-color:transparent;background:linear-gradient(90deg,#667253,#667253);color:#fff;box-shadow:0 4px 12px rgb(102 114 83 / 24%)}
-.back{display:inline-flex;align-items:center;gap:8px;margin-bottom:16px;padding:9px 18px 9px 12px;border:1.5px solid #c1cbaa;border-radius:999px;background:#fff;color:#667253;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 2px 8px rgb(102 114 83 / 10%);transition:transform 150ms ease,box-shadow 150ms ease,background 150ms ease,color 150ms ease}
+.tabActive,.tabActive:hover{border-color:transparent;background:linear-gradient(90deg,#6d7958,#6d7958);color:#fff;box-shadow:0 4px 12px rgb(102 114 83 / 24%)}
+.back{display:inline-flex;align-items:center;gap:8px;margin-bottom:16px;padding:9px 18px 9px 12px;border:1.5px solid #c1cbaa;border-radius:999px;background:#fff;color:#6d7958;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 2px 8px rgb(102 114 83 / 10%);transition:transform 150ms ease,box-shadow 150ms ease,background 150ms ease,color 150ms ease}
 .back svg{width:16px;height:16px;transition:transform 150ms ease}
-.back:hover{border-color:transparent;background:linear-gradient(90deg,#667253,#667253);color:#fff;box-shadow:0 8px 20px rgb(102 114 83 / 30%)}
+.back:hover{border-color:transparent;background:linear-gradient(90deg,#6d7958,#6d7958);color:#fff;box-shadow:0 8px 20px rgb(102 114 83 / 30%)}
 .back:hover svg{transform:translateX(-3px)}
 .pageHead>div:first-child{position:relative;padding-left:16px}
-.pageHead>div:first-child::before{content:"";position:absolute;left:0;top:3px;bottom:3px;width:5px;border-radius:5px;background:linear-gradient(180deg,#667253,#667253)}
+.pageHead>div:first-child::before{content:"";position:absolute;left:0;top:3px;bottom:3px;width:5px;border-radius:5px;background:linear-gradient(180deg,#6d7958,#6d7958)}
 .toolbar{border-radius:14px;box-shadow:var(--siswa-shadow)}
 .classCard,.materiCard,.hariCard,.card,.detailHead,.soalCard{transition:transform 180ms ease,box-shadow 180ms ease,border-color 180ms ease}
 .classCard:hover,.materiCard:hover{transform:translateY(-3px);box-shadow:0 16px 30px rgb(102 114 83 / 15%)}
 .hariCard:hover{box-shadow:0 10px 24px rgb(102 114 83 / 10%)}
-.materiCard{border-top:3px solid #667253}
-.materiCard:nth-child(3n+2),.classCard:nth-child(3n+2){border-top-color:#667253}
+.materiCard{border-top:3px solid #6d7958}
+.materiCard:nth-child(3n+2),.classCard:nth-child(3n+2){border-top-color:#6d7958}
 .materiCard:nth-child(3n),.classCard:nth-child(3n){border-top-color:#899477}
-.detailHead{border-left:5px solid #667253;background:linear-gradient(135deg,#ffffff 0%,#dce3ce 100%)}
-.table th{background:linear-gradient(90deg,#dce3ce,#dce3ce);color:#3b4370}
+.detailHead{border-left:5px solid #6d7958;background:linear-gradient(135deg,#ffffff 0%,#dce3ce 100%)}
+.table th{background:linear-gradient(90deg,#dce3ce,#dce3ce);color:#414838}
 .table tbody tr:hover td{background:#dce3ce}
-.jadwalItem{border-left-color:#667253;background:linear-gradient(90deg,#dce3ce,#ffffff)}
-.feedIcon{background:linear-gradient(135deg,#667253,#667253);color:#fff}
+.jadwalItem{border-left-color:#6d7958;background:linear-gradient(90deg,#dce3ce,#ffffff)}
+.feedIcon{background:linear-gradient(135deg,#6d7958,#6d7958);color:#fff}
 .empty{background:linear-gradient(180deg,#ffffff,#dce3ce)}
 .modal{border-radius:18px}
 .modalHead{background:linear-gradient(90deg,#dce3ce,#dce3ce)}
@@ -175,13 +175,13 @@
 .classCard,.materiCard,.classCard:nth-child(3n+2),.materiCard:nth-child(3n+2),.classCard:nth-child(3n),.materiCard:nth-child(3n){border-top:1px solid #c1cbaa}
 /* warna-kartu-v1 */
 .classCard.classCard:nth-child(4n+1){background:linear-gradient(160deg,#dce3ce,#fff 62%)}
-.classCard.classCard:nth-child(4n+2){background:linear-gradient(160deg,#e6f7fb,#fff 62%)}
-.classCard.classCard:nth-child(4n+3){background:linear-gradient(160deg,#e8f8f1,#fff 62%)}
-.classCard.classCard:nth-child(4n+4){background:linear-gradient(160deg,#fff2e8,#fff 62%)}
+.classCard.classCard:nth-child(4n+2){background:linear-gradient(160deg,#f0f2e6,#fff 62%)}
+.classCard.classCard:nth-child(4n+3){background:linear-gradient(160deg,#f0f2e6,#fff 62%)}
+.classCard.classCard:nth-child(4n+4){background:linear-gradient(160deg,#f0f2e6,#fff 62%)}
 .materiCard.materiCard:nth-child(4n+1){background:linear-gradient(160deg,#dce3ce,#fff 62%)}
-.materiCard.materiCard:nth-child(4n+2){background:linear-gradient(160deg,#e6f7fb,#fff 62%)}
-.materiCard.materiCard:nth-child(4n+3){background:linear-gradient(160deg,#e8f8f1,#fff 62%)}
-.materiCard.materiCard:nth-child(4n+4){background:linear-gradient(160deg,#fff2e8,#fff 62%)}
+.materiCard.materiCard:nth-child(4n+2){background:linear-gradient(160deg,#f0f2e6,#fff 62%)}
+.materiCard.materiCard:nth-child(4n+3){background:linear-gradient(160deg,#f0f2e6,#fff 62%)}
+.materiCard.materiCard:nth-child(4n+4){background:linear-gradient(160deg,#f0f2e6,#fff 62%)}
 /* tepi-warna-v1 */
 .classCard.classCard:nth-child(6n+1){border-left:4px solid #899477;border-top:1px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .classCard.classCard:nth-child(6n+2){border-left:4px solid #899477;border-top:1px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
@@ -196,7 +196,7 @@
 .materiCard.materiCard:nth-child(6n+5){border-left:4px solid #a9b69a;border-top:1px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .materiCard.materiCard:nth-child(6n+6){border-left:4px solid #a9b69a;border-top:1px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 /* tepi-warna-v2 */
-.classCard.classCard:nth-child(8n+1){border-left:4px solid #667253;background:linear-gradient(135deg,color-mix(in srgb,#667253 11%,#fff),#fff 62%)}
+.classCard.classCard:nth-child(8n+1){border-left:4px solid #6d7958;background:linear-gradient(135deg,color-mix(in srgb,#6d7958 11%,#fff),#fff 62%)}
 .classCard.classCard:nth-child(8n+2){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .classCard.classCard:nth-child(8n+3){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .classCard.classCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
@@ -204,7 +204,7 @@
 .classCard.classCard:nth-child(8n+6){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .classCard.classCard:nth-child(8n+7){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .classCard.classCard:nth-child(8n+8){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
-.materiCard.materiCard:nth-child(8n+1){border-left:4px solid #667253;background:linear-gradient(135deg,color-mix(in srgb,#667253 11%,#fff),#fff 62%)}
+.materiCard.materiCard:nth-child(8n+1){border-left:4px solid #6d7958;background:linear-gradient(135deg,color-mix(in srgb,#6d7958 11%,#fff),#fff 62%)}
 .materiCard.materiCard:nth-child(8n+2){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .materiCard.materiCard:nth-child(8n+3){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .materiCard.materiCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
@@ -212,7 +212,7 @@
 .materiCard.materiCard:nth-child(8n+6){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .materiCard.materiCard:nth-child(8n+7){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .materiCard.materiCard:nth-child(8n+8){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
-.jadwalItem.jadwalItem:nth-child(8n+1){border-left:4px solid #667253;background:linear-gradient(135deg,color-mix(in srgb,#667253 11%,#fff),#fff 62%)}
+.jadwalItem.jadwalItem:nth-child(8n+1){border-left:4px solid #6d7958;background:linear-gradient(135deg,color-mix(in srgb,#6d7958 11%,#fff),#fff 62%)}
 .jadwalItem.jadwalItem:nth-child(8n+2){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .jadwalItem.jadwalItem:nth-child(8n+3){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .jadwalItem.jadwalItem:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
@@ -225,7 +225,7 @@
 .classCard.classCard.classCard:nth-child(8n+2){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .classCard.classCard.classCard:nth-child(8n+3){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .classCard.classCard.classCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
-.classCard.classCard.classCard:nth-child(8n+5){border-left:4px solid #667253;background:linear-gradient(135deg,color-mix(in srgb,#667253 7%,#fff),#fff 62%)}
+.classCard.classCard.classCard:nth-child(8n+5){border-left:4px solid #6d7958;background:linear-gradient(135deg,color-mix(in srgb,#6d7958 7%,#fff),#fff 62%)}
 .classCard.classCard.classCard:nth-child(8n+6){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .classCard.classCard.classCard:nth-child(8n+7){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .classCard.classCard.classCard:nth-child(8n+8){border-left:4px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#c1cbaa 7%,#fff),#fff 62%)}
@@ -233,7 +233,7 @@
 .materiCard.materiCard.materiCard:nth-child(8n+2){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .materiCard.materiCard.materiCard:nth-child(8n+3){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .materiCard.materiCard.materiCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
-.materiCard.materiCard.materiCard:nth-child(8n+5){border-left:4px solid #667253;background:linear-gradient(135deg,color-mix(in srgb,#667253 7%,#fff),#fff 62%)}
+.materiCard.materiCard.materiCard:nth-child(8n+5){border-left:4px solid #6d7958;background:linear-gradient(135deg,color-mix(in srgb,#6d7958 7%,#fff),#fff 62%)}
 .materiCard.materiCard.materiCard:nth-child(8n+6){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .materiCard.materiCard.materiCard:nth-child(8n+7){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .materiCard.materiCard.materiCard:nth-child(8n+8){border-left:4px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#c1cbaa 7%,#fff),#fff 62%)}
@@ -241,7 +241,7 @@
 .jadwalItem.jadwalItem.jadwalItem:nth-child(8n+2){border-left:4px solid #899477 !important;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .jadwalItem.jadwalItem.jadwalItem:nth-child(8n+3){border-left:4px solid #a9b69a !important;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .jadwalItem.jadwalItem.jadwalItem:nth-child(8n+4){border-left:4px solid #a9b69a !important;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
-.jadwalItem.jadwalItem.jadwalItem:nth-child(8n+5){border-left:4px solid #667253 !important;background:linear-gradient(135deg,color-mix(in srgb,#667253 7%,#fff),#fff 62%)}
+.jadwalItem.jadwalItem.jadwalItem:nth-child(8n+5){border-left:4px solid #6d7958 !important;background:linear-gradient(135deg,color-mix(in srgb,#6d7958 7%,#fff),#fff 62%)}
 .jadwalItem.jadwalItem.jadwalItem:nth-child(8n+6){border-left:4px solid #a9b69a !important;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .jadwalItem.jadwalItem.jadwalItem:nth-child(8n+7){border-left:4px solid #899477 !important;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .jadwalItem.jadwalItem.jadwalItem:nth-child(8n+8){border-left:4px solid #c1cbaa !important;background:linear-gradient(135deg,color-mix(in srgb,#c1cbaa 7%,#fff),#fff 62%)}
@@ -249,7 +249,7 @@
 .feedItem.feedItem.feedItem:nth-child(8n+2){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .feedItem.feedItem.feedItem:nth-child(8n+3){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .feedItem.feedItem.feedItem:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
-.feedItem.feedItem.feedItem:nth-child(8n+5){border-left:4px solid #667253;background:linear-gradient(135deg,color-mix(in srgb,#667253 7%,#fff),#fff 62%)}
+.feedItem.feedItem.feedItem:nth-child(8n+5){border-left:4px solid #6d7958;background:linear-gradient(135deg,color-mix(in srgb,#6d7958 7%,#fff),#fff 62%)}
 .feedItem.feedItem.feedItem:nth-child(8n+6){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .feedItem.feedItem.feedItem:nth-child(8n+7){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .feedItem.feedItem.feedItem:nth-child(8n+8){border-left:4px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#c1cbaa 7%,#fff),#fff 62%)}
