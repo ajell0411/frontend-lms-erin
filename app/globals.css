@@ -88,11 +88,11 @@ img[src*="lo.png"] {
 
 .password-input-toggle:hover:not(:disabled) {
   background: #dce3ce;
-  color: #667253;
+  color: #6d7958;
 }
 
 .password-input-toggle:focus-visible {
-  outline: 2px solid #667253;
+  outline: 2px solid #6d7958;
   outline-offset: 1px;
 }
 
@@ -132,7 +132,7 @@ img[src*="lo.png"] {
 }
 
 .searchable-select > input:focus {
-  border-color: #667253;
+  border-color: #6d7958;
   box-shadow: 0 0 0 3px rgb(137 148 119 / 12%);
 }
 
@@ -187,7 +187,7 @@ img[src*="lo.png"] {
 .searchable-select-option:hover,
 .searchable-select-option[data-active="true"] {
   background: #dce3ce;
-  color: #667253;
+  color: #6d7958;
 }
 
 .searchable-select-empty {
@@ -206,7 +206,7 @@ button[class*="printButton"] {
   padding: 0 13px;
   border: 0 !important;
   border-radius: 8px !important;
-  background: linear-gradient(90deg, #667253, #667253) !important;
+  background: linear-gradient(90deg, #6d7958, #6d7958) !important;
   color: #fff !important;
   font: inherit;
   font-size: 12px !important;
@@ -315,31 +315,31 @@ button[class*="printButton"]:disabled {
 
 /* eclass-brand: palet sama dengan landing page dan login */
 :root {
-  --brand: #667253;
-  --brand-2: #667253;
-  --brand-blue: #667253;
+  --brand: #6d7958;
+  --brand-2: #6d7958;
+  --brand-blue: #6d7958;
   --brand-soft: #dce3ce;
   --brand-border: #c1cbaa;
-  --brand-navy: #08133f;
-  --brand-grad: linear-gradient(90deg, #667253, #667253);
+  --brand-navy: #414838;
+  --brand-grad: linear-gradient(90deg, #6d7958, #6d7958);
 }
 header.form-modal-header {
   border-bottom-color: #dce3ce;
-  background: linear-gradient(115deg, #eff6ff 0%, #f0f2e6 58%, #dce3ce 100%);
-  color: #17365f;
+  background: linear-gradient(115deg, #edf0e3 0%, #f0f2e6 58%, #dce3ce 100%);
+  color: #414838;
 }
 
 header.form-modal-header h2 {
-  color: #17365f;
+  color: #414838;
 }
 
 header.form-modal-header p {
-  color: #5e718b;
+  color: #555d49;
 }
 
 header.form-modal-header button:hover {
   background: #dce3ce;
-  color: #667253;
+  color: #6d7958;
 }
 
 header.form-modal-header-inset {
