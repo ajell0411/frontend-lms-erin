@@ -1,10 +1,10 @@
 .page {
   /* Palet biru (sama dengan landing page) */
-  --primary: #667253;
-  --primary-light: #667253;
+  --primary: #6d7958;
+  --primary-light: #6d7958;
   --accent: #c1cbaa;
   --primary-rgb: 29, 78, 216;
-  --grad: linear-gradient(90deg, #667253, #667253);
+  --grad: linear-gradient(90deg, #6d7958, #6d7958);
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 
   position: relative;
@@ -12,7 +12,7 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: #08133f;
+  background: #414838;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -25,7 +25,7 @@
   background:
     radial-gradient(circle at 15% 20%, rgba(102, 114, 83, 0.45), transparent 45%),
     radial-gradient(circle at 85% 75%, rgba(102, 114, 83, 0.5), transparent 45%),
-    linear-gradient(135deg, #0b1d5c 0%, #667253 100%);
+    linear-gradient(135deg, #899477 0%, #6d7958 100%);
 }
 
 .bgWrap img {
@@ -42,7 +42,7 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(6, 16, 60, 0.6) 0%, rgba(10, 40, 130, 0.2) 50%, rgba(6, 16, 60, 0.65) 100%),
+    linear-gradient(180deg, rgba(37, 41, 31, 0.1) 0%, rgba(10, 40, 130, 0.2) 50%, rgba(6, 16, 60, 0.65) 100%),
     linear-gradient(100deg, rgba(8, 19, 63, 0.82) 0%, rgba(29, 78, 216, 0.5) 60%, rgba(10, 60, 170, 0.45) 100%);
 }
 
@@ -238,7 +238,7 @@
   left: 0;
   right: 0;
   height: 5px;
-  background: linear-gradient(90deg, #667253, #667253, #a9b69a, #667253, #667253);
+  background: linear-gradient(90deg, #6d7958, #6d7958, #a9b69a, #6d7958, #6d7958);
   background-size: 200% 100%;
   animation: barMove 4s linear infinite;
 }
@@ -360,7 +360,7 @@
 }
 
 .input:focus {
-  border-color: #667253;
+  border-color: #6d7958;
   background: #ffffff;
   box-shadow: 0 0 0 4px rgba(102, 114, 83, 0.15);
 }
@@ -551,7 +551,7 @@
 
   .bgOverlay {
     background:
-      linear-gradient(180deg, rgba(6, 16, 60, 0.6) 0%, rgba(10, 40, 130, 0.3) 50%, rgba(6, 16, 60, 0.65) 100%);
+      linear-gradient(180deg, rgba(37, 41, 31, 0.1) 0%, rgba(10, 40, 130, 0.3) 50%, rgba(6, 16, 60, 0.65) 100%);
   }
 }
 
