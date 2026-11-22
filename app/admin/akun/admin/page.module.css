@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 18px;
   min-width: 0;
-  color: #172033;
+  color: #414838;
 }
 
 .pageHeader {
@@ -21,7 +21,7 @@
 .eyebrow,
 .dialogEyebrow {
   margin: 0 0 4px;
-  color: #626be0;
+  color: #667253;
   font-size: 11px;
   font-weight: 700;
 }
@@ -36,7 +36,7 @@
 
 .subtitle {
   margin: 5px 0 0;
-  color: #667085;
+  color: #68715b;
   font-size: 13px;
 }
 
@@ -49,9 +49,9 @@
   gap: 8px;
   min-height: 38px;
   padding: 0 15px;
-  border: 1px solid #4147d5;
+  border: 1px solid #667253;
   border-radius: 6px;
-  background: #4147d5;
+  background: #667253;
   color: #ffffff;
   font: inherit;
   font-size: 12px;
@@ -64,8 +64,8 @@
 .addButton:hover,
 .submitButton:hover,
 .dangerButton:hover {
-  background: #3339c2;
-  box-shadow: 0 2px 7px rgb(65 71 213 / 20%);
+  background: #596349;
+  box-shadow: 0 2px 7px rgb(102 114 83 / 20%);
 }
 
 .addButton span {
@@ -77,7 +77,7 @@
 .panel {
   overflow: hidden;
   background: #ffffff;
-  border: 1px solid #dfe3f0;
+  border: 1px solid #c1cbaa;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgb(33 43 77 / 4%);
 }
@@ -105,8 +105,8 @@
 }
 
 .searchBox:focus-within {
-  border-color: #626be0;
-  box-shadow: 0 0 0 3px rgb(98 107 224 / 12%);
+  border-color: #667253;
+  box-shadow: 0 0 0 3px rgb(137 148 119 / 12%);
 }
 
 .searchIcon {
@@ -126,7 +126,7 @@
   border: 0;
   outline: 0;
   background: transparent;
-  color: #172033;
+  color: #414838;
   font: inherit;
   font-size: 12px;
 }
@@ -158,7 +158,7 @@
 .table th {
   height: 38px;
   padding: 0 16px;
-  background: #f1f3fb;
+  background: #f0f2e6;
   color: #586078;
   font-size: 10px;
   font-weight: 700;
@@ -173,7 +173,7 @@
 }
 
 .table tbody tr:hover:not(:has(.stateCell, .emptyCell)) {
-  background: #fbfcff;
+  background: #f0f2e6;
 }
 
 .actionsHeading {
@@ -197,8 +197,8 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #e7ebff;
-  color: #4b55c8;
+  background: #dce3ce;
+  color: #667253;
   font-size: 10px;
   font-weight: 700;
 }
@@ -230,7 +230,7 @@
 
 .adminName {
   overflow: hidden;
-  color: #20283b;
+  color: #414838;
   font-size: 12px;
   font-weight: 650;
   text-overflow: ellipsis;
@@ -320,7 +320,7 @@
   height: 14px;
   margin-right: 8px;
   border: 2px solid #dce0f4;
-  border-top-color: #5159d2;
+  border-top-color: #667253;
   border-radius: 50%;
   vertical-align: -3px;
   animation: spin 700ms linear infinite;
@@ -443,11 +443,11 @@
   width: 100%;
   height: 36px;
   padding: 0 10px;
-  border: 1px solid #d9deeb;
+  border: 1px solid #c1cbaa;
   border-radius: 5px;
   outline: 0;
   background: #ffffff;
-  color: #20283b;
+  color: #414838;
   font: inherit;
   font-size: 12px;
   font-weight: 400;
@@ -458,15 +458,15 @@
 }
 
 .field input:focus {
-  border-color: #626be0;
-  box-shadow: 0 0 0 3px rgb(98 107 224 / 12%);
+  border-color: #667253;
+  box-shadow: 0 0 0 3px rgb(137 148 119 / 12%);
 }
 
 .field input:read-only,
 .phoneWrap input:read-only,
 .emailWrap input:read-only,
 .selectWrap select:disabled {
-  background: #f1f2f5;
+  background: #f0f2e6;
   color: #596174;
   cursor: default;
 }
@@ -495,7 +495,7 @@
 .cancelButton {
   min-height: 36px;
   padding: 0 14px;
-  border: 1px solid #d9deeb;
+  border: 1px solid #c1cbaa;
   border-radius: 5px;
   background: #ffffff;
   color: #555e72;
@@ -575,7 +575,7 @@
 }
 
 .page button:focus-visible {
-  outline: 2px solid #626be0;
+  outline: 2px solid #667253;
   outline-offset: 2px;
 }
 
@@ -609,7 +609,7 @@
 
 .printButton:hover {
   border-color: #aab0c4;
-  background: #f6f9ff;
+  background: #f0f2e6;
 }
 
 .printButton svg {
@@ -639,7 +639,7 @@
 .actionTrigger:hover,
 .actionTrigger[aria-expanded="true"] {
   background: #f0f2fa;
-  color: #424ac2;
+  color: #667253;
 }
 
 .actionTrigger svg {
@@ -671,7 +671,7 @@
   border: 0;
   border-radius: 4px;
   background: transparent;
-  color: #394154;
+  color: #4c5740;
   font: inherit;
   font-size: 11px;
   text-align: left;
@@ -719,11 +719,11 @@
   height: 100%;
   padding: 0 30px 0 10px;
   appearance: none;
-  border: 1px solid #d9deeb;
+  border: 1px solid #c1cbaa;
   border-radius: 5px;
   outline: 0;
   background: #ffffff;
-  color: #30384b;
+  color: #414838;
   font: inherit;
   font-size: 11px;
   cursor: pointer;
@@ -731,8 +731,8 @@
 
 .roleFilter select:focus,
 .selectWrap select:focus {
-  border-color: #626be0;
-  box-shadow: 0 0 0 3px rgb(98 107 224 / 12%);
+  border-color: #667253;
+  box-shadow: 0 0 0 3px rgb(137 148 119 / 12%);
 }
 
 .roleFilter select:disabled,
@@ -764,8 +764,8 @@
   min-height: 21px;
   padding: 0 7px;
   border-radius: 3px;
-  background: #eef0ff;
-  color: #4c53c5;
+  background: #dce3ce;
+  color: #667253;
   font-size: 10px;
   font-weight: 650;
   white-space: nowrap;
@@ -796,8 +796,8 @@
   width: 34px;
   height: 34px;
   border-radius: 6px;
-  background: #eff0ff;
-  color: #4b51d0;
+  background: #dce3ce;
+  color: #667253;
 }
 
 .headerIcon svg {
@@ -956,7 +956,7 @@
   overflow: hidden;
   border: 1px dashed #c4c9dd;
   border-radius: 50%;
-  background: #f7f8fc;
+  background: #f0f2e6;
   color: #9299ad;
 }
 
@@ -991,7 +991,7 @@
 }
 
 .fileLink {
-  color: #4147d5;
+  color: #667253;
   font-size: 9px;
   font-weight: 650;
   cursor: pointer;
@@ -1018,14 +1018,14 @@
 .emailWrap {
   height: 33px;
   overflow: hidden;
-  border: 1px solid #d9deeb;
+  border: 1px solid #c1cbaa;
   background: #ffffff;
 }
 
 .phoneWrap:focus-within,
 .emailWrap:focus-within {
-  border-color: #626be0;
-  box-shadow: 0 0 0 3px rgb(98 107 224 / 12%);
+  border-color: #667253;
+  box-shadow: 0 0 0 3px rgb(137 148 119 / 12%);
 }
 
 .phoneWrap > span {
@@ -1033,7 +1033,7 @@
   align-items: center;
   align-self: stretch;
   padding: 0 9px;
-  border-right: 1px solid #d9deeb;
+  border-right: 1px solid #c1cbaa;
   background: #f5f6fa;
   color: #677084;
   font-size: 9px;
@@ -1091,8 +1091,8 @@
 }
 
 .submitButton {
-  border-color: #4147d5;
-  background: #4147d5;
+  border-color: #667253;
+  background: #667253;
 }
 
 .submitButton::before {
@@ -1102,7 +1102,7 @@
 
 .page button:focus-visible,
 .fileLink:focus-within {
-  outline: 2px solid #626be0;
+  outline: 2px solid #667253;
   outline-offset: 2px;
 }
 
@@ -1258,86 +1258,86 @@
 .printButton svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .printButton:hover{border-color:#15803d;background:#f0fdf4;color:#15803d}
 .dangerButton:hover{border-color:#b91c1c;background:#b91c1c;box-shadow:0 2px 7px rgb(185 28 28 / 20%)}
-.cancelButton:hover{border-color:#cbd5e1;background:#f8fafc}
-.submitButton:hover{border-color:#3339c2;background:#3339c2}
+.cancelButton:hover{border-color:#c1cbaa;background:#f0f2e6}
+.submitButton:hover{border-color:#596349;background:#596349}
 .dialogActions{gap:10px}
 @media(max-width:640px){.confirmDialog{align-self:center}}
 .avatar{overflow:hidden}
 /* sinkron-v2 */
-.addButton,.submitButton{background:linear-gradient(90deg,#4147d5,#0a8cff);border-color:transparent;color:#fff;border-radius:12px;font-weight:700;box-shadow:0 6px 16px rgb(65 71 213 / 26%);transition:transform 150ms ease,box-shadow 150ms ease,filter 150ms ease}
-.addButton:hover:not(:disabled),.submitButton:hover:not(:disabled){background:linear-gradient(90deg,#4147d5,#0a8cff);filter:brightness(1.06);transform:translateY(-1px);box-shadow:0 9px 22px rgb(65 71 213 / 34%)}
+.addButton,.submitButton{background:linear-gradient(90deg,#667253,#667253);border-color:transparent;color:#fff;border-radius:12px;font-weight:700;box-shadow:0 6px 16px rgb(102 114 83 / 26%);transition:transform 150ms ease,box-shadow 150ms ease,filter 150ms ease}
+.addButton:hover:not(:disabled),.submitButton:hover:not(:disabled){background:linear-gradient(90deg,#667253,#667253);filter:brightness(1.06);transform:translateY(-1px);box-shadow:0 9px 22px rgb(102 114 83 / 34%)}
 .cancelButton,.editButton{border-radius:12px;transition:transform 150ms ease,border-color 150ms ease,color 150ms ease}
-.editButton:hover:not(:disabled),.cancelButton:hover:not(:disabled){border-color:#4147d5;color:#4147d5}
+.editButton:hover:not(:disabled),.cancelButton:hover:not(:disabled){border-color:#667253;color:#667253}
 .printButton{border:1.5px solid #16a34a;background:#fff;color:#15803d;border-radius:12px;font-weight:700;transition:transform 150ms ease,background 150ms ease}
 .printButton:hover:not(:disabled){border-color:#15803d;background:#f0fdf4;color:#15803d;transform:translateY(-1px)}
 .toolbar{border-radius:14px}
-.table th{background:linear-gradient(90deg,#eef0ff,#e8f3ff);color:#3b4370}
-.table tbody tr:hover td{background:#f6f7ff}
-.dialogHeader{background:linear-gradient(90deg,#eef4ff,#e8f3ff)}
-.roleBadge{background:linear-gradient(90deg,#4147d5,#0a8cff);color:#fff;letter-spacing:.02em}
+.table th{background:linear-gradient(90deg,#dce3ce,#dce3ce);color:#3b4370}
+.table tbody tr:hover td{background:#dce3ce}
+.dialogHeader{background:linear-gradient(90deg,#dce3ce,#dce3ce)}
+.roleBadge{background:linear-gradient(90deg,#667253,#667253);color:#fff;letter-spacing:.02em}
 /* tanpa-garis-v1 */
-.assessmentCard,.taskCard,.materialCard,.feedCard,.assessmentCard:nth-child(3n+2),.taskCard:nth-child(3n+2),.materialCard:nth-child(3n+2),.assessmentCard:nth-child(3n),.taskCard:nth-child(3n),.materialCard:nth-child(3n){border-top:1px solid #e2e8f0}
+.assessmentCard,.taskCard,.materialCard,.feedCard,.assessmentCard:nth-child(3n+2),.taskCard:nth-child(3n+2),.materialCard:nth-child(3n+2),.assessmentCard:nth-child(3n),.taskCard:nth-child(3n),.materialCard:nth-child(3n){border-top:1px solid #c1cbaa}
 /* warna-kartu-v1 */
-.assessmentCard.assessmentCard,.taskCard.taskCard{background:linear-gradient(135deg,color-mix(in srgb,var(--siswa-subject-color,#6366f1) 11%,#fff),#fff 62%)}
-.materialCard.materialCard:nth-child(4n+1){background:linear-gradient(160deg,#eef0ff,#fff 62%)}
+.assessmentCard.assessmentCard,.taskCard.taskCard{background:linear-gradient(135deg,color-mix(in srgb,var(--siswa-subject-color,#899477) 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(4n+1){background:linear-gradient(160deg,#dce3ce,#fff 62%)}
 .materialCard.materialCard:nth-child(4n+2){background:linear-gradient(160deg,#e6f7fb,#fff 62%)}
 .materialCard.materialCard:nth-child(4n+3){background:linear-gradient(160deg,#e8f8f1,#fff 62%)}
 .materialCard.materialCard:nth-child(4n+4){background:linear-gradient(160deg,#fff2e8,#fff 62%)}
-.feedCard.feedCard:nth-child(4n+1){background:linear-gradient(160deg,#eef0ff,#fff 62%)}
+.feedCard.feedCard:nth-child(4n+1){background:linear-gradient(160deg,#dce3ce,#fff 62%)}
 .feedCard.feedCard:nth-child(4n+2){background:linear-gradient(160deg,#e6f7fb,#fff 62%)}
 .feedCard.feedCard:nth-child(4n+3){background:linear-gradient(160deg,#e8f8f1,#fff 62%)}
 .feedCard.feedCard:nth-child(4n+4){background:linear-gradient(160deg,#fff2e8,#fff 62%)}
 /* tepi-warna-v1 */
-.materialCard.materialCard:nth-child(6n+1){border-left:4px solid #6366f1;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#6366f1 11%,#fff),#fff 62%)}
-.materialCard.materialCard:nth-child(6n+2){border-left:4px solid #0ea5e9;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#0ea5e9 11%,#fff),#fff 62%)}
-.materialCard.materialCard:nth-child(6n+3){border-left:4px solid #10b981;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#10b981 11%,#fff),#fff 62%)}
-.materialCard.materialCard:nth-child(6n+4){border-left:4px solid #f59e0b;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#f59e0b 11%,#fff),#fff 62%)}
-.materialCard.materialCard:nth-child(6n+5){border-left:4px solid #ec4899;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#ec4899 11%,#fff),#fff 62%)}
-.materialCard.materialCard:nth-child(6n+6){border-left:4px solid #8b5cf6;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#8b5cf6 11%,#fff),#fff 62%)}
-.feedCard.feedCard:nth-child(6n+1){border-left:4px solid #6366f1;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#6366f1 11%,#fff),#fff 62%)}
-.feedCard.feedCard:nth-child(6n+2){border-left:4px solid #0ea5e9;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#0ea5e9 11%,#fff),#fff 62%)}
-.feedCard.feedCard:nth-child(6n+3){border-left:4px solid #10b981;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#10b981 11%,#fff),#fff 62%)}
-.feedCard.feedCard:nth-child(6n+4){border-left:4px solid #f59e0b;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#f59e0b 11%,#fff),#fff 62%)}
-.feedCard.feedCard:nth-child(6n+5){border-left:4px solid #ec4899;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#ec4899 11%,#fff),#fff 62%)}
-.feedCard.feedCard:nth-child(6n+6){border-left:4px solid #8b5cf6;border-top:1px solid #e2e8f0;background:linear-gradient(135deg,color-mix(in srgb,#8b5cf6 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(6n+1){border-left:4px solid #899477;border-top:1px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(6n+2){border-left:4px solid #899477;border-top:1px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(6n+3){border-left:4px solid #899477;border-top:1px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(6n+4){border-left:4px solid #c1cbaa;border-top:1px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#c1cbaa 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(6n+5){border-left:4px solid #a9b69a;border-top:1px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(6n+6){border-left:4px solid #a9b69a;border-top:1px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(6n+1){border-left:4px solid #899477;border-top:1px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(6n+2){border-left:4px solid #899477;border-top:1px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(6n+3){border-left:4px solid #899477;border-top:1px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(6n+4){border-left:4px solid #c1cbaa;border-top:1px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#c1cbaa 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(6n+5){border-left:4px solid #a9b69a;border-top:1px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(6n+6){border-left:4px solid #a9b69a;border-top:1px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 /* tepi-warna-v2 */
-.materialCard.materialCard:nth-child(8n+1){border-left:4px solid #3b82f6;background:linear-gradient(135deg,color-mix(in srgb,#3b82f6 11%,#fff),#fff 62%)}
-.materialCard.materialCard:nth-child(8n+2){border-left:4px solid #f97316;background:linear-gradient(135deg,color-mix(in srgb,#f97316 11%,#fff),#fff 62%)}
-.materialCard.materialCard:nth-child(8n+3){border-left:4px solid #22c55e;background:linear-gradient(135deg,color-mix(in srgb,#22c55e 11%,#fff),#fff 62%)}
-.materialCard.materialCard:nth-child(8n+4){border-left:4px solid #a855f7;background:linear-gradient(135deg,color-mix(in srgb,#a855f7 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(8n+1){border-left:4px solid #667253;background:linear-gradient(135deg,color-mix(in srgb,#667253 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(8n+2){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(8n+3){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .materialCard.materialCard:nth-child(8n+5){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 11%,#fff),#fff 62%)}
-.materialCard.materialCard:nth-child(8n+6){border-left:4px solid #14b8a6;background:linear-gradient(135deg,color-mix(in srgb,#14b8a6 11%,#fff),#fff 62%)}
-.materialCard.materialCard:nth-child(8n+7){border-left:4px solid #eab308;background:linear-gradient(135deg,color-mix(in srgb,#eab308 11%,#fff),#fff 62%)}
-.materialCard.materialCard:nth-child(8n+8){border-left:4px solid #ec4899;background:linear-gradient(135deg,color-mix(in srgb,#ec4899 11%,#fff),#fff 62%)}
-.feedCard.feedCard:nth-child(8n+1){border-left:4px solid #3b82f6;background:linear-gradient(135deg,color-mix(in srgb,#3b82f6 11%,#fff),#fff 62%)}
-.feedCard.feedCard:nth-child(8n+2){border-left:4px solid #f97316;background:linear-gradient(135deg,color-mix(in srgb,#f97316 11%,#fff),#fff 62%)}
-.feedCard.feedCard:nth-child(8n+3){border-left:4px solid #22c55e;background:linear-gradient(135deg,color-mix(in srgb,#22c55e 11%,#fff),#fff 62%)}
-.feedCard.feedCard:nth-child(8n+4){border-left:4px solid #a855f7;background:linear-gradient(135deg,color-mix(in srgb,#a855f7 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(8n+6){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(8n+7){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(8n+8){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(8n+1){border-left:4px solid #667253;background:linear-gradient(135deg,color-mix(in srgb,#667253 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(8n+2){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(8n+3){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .feedCard.feedCard:nth-child(8n+5){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 11%,#fff),#fff 62%)}
-.feedCard.feedCard:nth-child(8n+6){border-left:4px solid #14b8a6;background:linear-gradient(135deg,color-mix(in srgb,#14b8a6 11%,#fff),#fff 62%)}
-.feedCard.feedCard:nth-child(8n+7){border-left:4px solid #eab308;background:linear-gradient(135deg,color-mix(in srgb,#eab308 11%,#fff),#fff 62%)}
-.feedCard.feedCard:nth-child(8n+8){border-left:4px solid #ec4899;background:linear-gradient(135deg,color-mix(in srgb,#ec4899 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(8n+6){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(8n+7){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(8n+8){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 /* tepi-warna-v3 */
 .materialCard.materialCard.materialCard:nth-child(8n+1){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 7%,#fff),#fff 62%)}
-.materialCard.materialCard.materialCard:nth-child(8n+2){border-left:4px solid #14b8a6;background:linear-gradient(135deg,color-mix(in srgb,#14b8a6 7%,#fff),#fff 62%)}
-.materialCard.materialCard.materialCard:nth-child(8n+3){border-left:4px solid #a855f7;background:linear-gradient(135deg,color-mix(in srgb,#a855f7 7%,#fff),#fff 62%)}
-.materialCard.materialCard.materialCard:nth-child(8n+4){border-left:4px solid #f97316;background:linear-gradient(135deg,color-mix(in srgb,#f97316 7%,#fff),#fff 62%)}
-.materialCard.materialCard.materialCard:nth-child(8n+5){border-left:4px solid #3b82f6;background:linear-gradient(135deg,color-mix(in srgb,#3b82f6 7%,#fff),#fff 62%)}
-.materialCard.materialCard.materialCard:nth-child(8n+6){border-left:4px solid #ec4899;background:linear-gradient(135deg,color-mix(in srgb,#ec4899 7%,#fff),#fff 62%)}
-.materialCard.materialCard.materialCard:nth-child(8n+7){border-left:4px solid #22c55e;background:linear-gradient(135deg,color-mix(in srgb,#22c55e 7%,#fff),#fff 62%)}
-.materialCard.materialCard.materialCard:nth-child(8n+8){border-left:4px solid #f59e0b;background:linear-gradient(135deg,color-mix(in srgb,#f59e0b 7%,#fff),#fff 62%)}
+.materialCard.materialCard.materialCard:nth-child(8n+2){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
+.materialCard.materialCard.materialCard:nth-child(8n+3){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
+.materialCard.materialCard.materialCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
+.materialCard.materialCard.materialCard:nth-child(8n+5){border-left:4px solid #667253;background:linear-gradient(135deg,color-mix(in srgb,#667253 7%,#fff),#fff 62%)}
+.materialCard.materialCard.materialCard:nth-child(8n+6){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
+.materialCard.materialCard.materialCard:nth-child(8n+7){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
+.materialCard.materialCard.materialCard:nth-child(8n+8){border-left:4px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#c1cbaa 7%,#fff),#fff 62%)}
 .feedCard.feedCard.feedCard:nth-child(8n+1){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 7%,#fff),#fff 62%)}
-.feedCard.feedCard.feedCard:nth-child(8n+2){border-left:4px solid #14b8a6;background:linear-gradient(135deg,color-mix(in srgb,#14b8a6 7%,#fff),#fff 62%)}
-.feedCard.feedCard.feedCard:nth-child(8n+3){border-left:4px solid #a855f7;background:linear-gradient(135deg,color-mix(in srgb,#a855f7 7%,#fff),#fff 62%)}
-.feedCard.feedCard.feedCard:nth-child(8n+4){border-left:4px solid #f97316;background:linear-gradient(135deg,color-mix(in srgb,#f97316 7%,#fff),#fff 62%)}
-.feedCard.feedCard.feedCard:nth-child(8n+5){border-left:4px solid #3b82f6;background:linear-gradient(135deg,color-mix(in srgb,#3b82f6 7%,#fff),#fff 62%)}
-.feedCard.feedCard.feedCard:nth-child(8n+6){border-left:4px solid #ec4899;background:linear-gradient(135deg,color-mix(in srgb,#ec4899 7%,#fff),#fff 62%)}
-.feedCard.feedCard.feedCard:nth-child(8n+7){border-left:4px solid #22c55e;background:linear-gradient(135deg,color-mix(in srgb,#22c55e 7%,#fff),#fff 62%)}
-.feedCard.feedCard.feedCard:nth-child(8n+8){border-left:4px solid #f59e0b;background:linear-gradient(135deg,color-mix(in srgb,#f59e0b 7%,#fff),#fff 62%)}
+.feedCard.feedCard.feedCard:nth-child(8n+2){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
+.feedCard.feedCard.feedCard:nth-child(8n+3){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
+.feedCard.feedCard.feedCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
+.feedCard.feedCard.feedCard:nth-child(8n+5){border-left:4px solid #667253;background:linear-gradient(135deg,color-mix(in srgb,#667253 7%,#fff),#fff 62%)}
+.feedCard.feedCard.feedCard:nth-child(8n+6){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
+.feedCard.feedCard.feedCard:nth-child(8n+7){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
+.feedCard.feedCard.feedCard:nth-child(8n+8){border-left:4px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#c1cbaa 7%,#fff),#fff 62%)}
 
 /* garis-biru-admin */
 .titleBlock.titleBlock{position:relative;padding-left:14px}
-.titleBlock.titleBlock::before{content:"";position:absolute;left:0;top:2px;bottom:2px;width:4px;border-radius:4px;background:linear-gradient(180deg,#1d4ed8,#0a8cff)}
+.titleBlock.titleBlock::before{content:"";position:absolute;left:0;top:2px;bottom:2px;width:4px;border-radius:4px;background:linear-gradient(180deg,#667253,#667253)}
 .eyebrow{display:none}
-.printButton{border:1px solid transparent;background:linear-gradient(90deg,#4147d5,#0a8cff);color:#fff;border-radius:12px;font-weight:700;transition:transform 150ms ease,filter 150ms ease}
-.printButton:hover:not(:disabled){border-color:transparent;background:linear-gradient(90deg,#4147d5,#0a8cff);color:#fff;filter:brightness(1.06);transform:translateY(-1px)}
+.printButton{border:1px solid transparent;background:linear-gradient(90deg,#667253,#667253);color:#fff;border-radius:12px;font-weight:700;transition:transform 150ms ease,filter 150ms ease}
+.printButton:hover:not(:disabled){border-color:transparent;background:linear-gradient(90deg,#667253,#667253);color:#fff;filter:brightness(1.06);transform:translateY(-1px)}
