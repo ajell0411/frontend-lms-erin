@@ -24,20 +24,20 @@
 @media(max-width:760px){.statRow,.hasilTop{grid-template-columns:1fr}}
 /* tema-v2 */
 .stat{position:relative;overflow:hidden;padding-left:22px;transition:transform 180ms ease,box-shadow 180ms ease}
-.stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,#667253,#667253)}
+.stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,#6d7958,#6d7958)}
 .stat:nth-child(2)::before{background:linear-gradient(180deg,#c1cbaa,#a9b69a)}
 .stat:nth-child(3)::before{background:linear-gradient(180deg,#899477,#899477)}
 .stat:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgb(102 114 83 / 12%)}
-.soalCard{border-left:4px solid #667253}
+.soalCard{border-left:4px solid #6d7958}
 .soalCard:hover{box-shadow:0 10px 24px rgb(102 114 83 / 10%)}
 .opsiBenar{background:#ecfdf5}
 /* tanpa-garis-v1 */
 .stat::before{display:none}.stat{padding-left:16px}.stat:nth-child(2) strong{color:#899477}.stat:nth-child(3) strong{color:#16a34a}
 /* warna-kartu-v1 */
 .stat.stat:nth-child(4n+1){background:linear-gradient(160deg,#dce3ce,#fff 62%)}
-.stat.stat:nth-child(4n+2){background:linear-gradient(160deg,#e6f7fb,#fff 62%)}
-.stat.stat:nth-child(4n+3){background:linear-gradient(160deg,#e8f8f1,#fff 62%)}
-.stat.stat:nth-child(4n+4){background:linear-gradient(160deg,#fff2e8,#fff 62%)}
+.stat.stat:nth-child(4n+2){background:linear-gradient(160deg,#f0f2e6,#fff 62%)}
+.stat.stat:nth-child(4n+3){background:linear-gradient(160deg,#f0f2e6,#fff 62%)}
+.stat.stat:nth-child(4n+4){background:linear-gradient(160deg,#f0f2e6,#fff 62%)}
 /* tepi-warna-v1 */
 .stat.stat:nth-child(6n+1){border-left:4px solid #899477;border-top:1px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .stat.stat:nth-child(6n+2){border-left:4px solid #899477;border-top:1px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
@@ -54,7 +54,7 @@
 .stat::before{display:none}
 .stat{padding-left:18px}
 /* tepi-warna-v2 */
-.stat.stat:nth-child(8n+1){border-left:4px solid #667253;background:linear-gradient(135deg,color-mix(in srgb,#667253 11%,#fff),#fff 62%)}
+.stat.stat:nth-child(8n+1){border-left:4px solid #6d7958;background:linear-gradient(135deg,color-mix(in srgb,#6d7958 11%,#fff),#fff 62%)}
 .stat.stat:nth-child(8n+2){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .stat.stat:nth-child(8n+3){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .stat.stat:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
@@ -62,7 +62,7 @@
 .stat.stat:nth-child(8n+6){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .stat.stat:nth-child(8n+7){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .stat.stat:nth-child(8n+8){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
-.soalCard.soalCard:nth-child(8n+1){border-left:4px solid #667253;background:linear-gradient(135deg,color-mix(in srgb,#667253 11%,#fff),#fff 62%)}
+.soalCard.soalCard:nth-child(8n+1){border-left:4px solid #6d7958;background:linear-gradient(135deg,color-mix(in srgb,#6d7958 11%,#fff),#fff 62%)}
 .soalCard.soalCard:nth-child(8n+2){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .soalCard.soalCard:nth-child(8n+3){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .soalCard.soalCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
@@ -75,7 +75,7 @@
 .stat.stat.stat:nth-child(8n+2){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .stat.stat.stat:nth-child(8n+3){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .stat.stat.stat:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
-.stat.stat.stat:nth-child(8n+5){border-left:4px solid #667253;background:linear-gradient(135deg,color-mix(in srgb,#667253 7%,#fff),#fff 62%)}
+.stat.stat.stat:nth-child(8n+5){border-left:4px solid #6d7958;background:linear-gradient(135deg,color-mix(in srgb,#6d7958 7%,#fff),#fff 62%)}
 .stat.stat.stat:nth-child(8n+6){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .stat.stat.stat:nth-child(8n+7){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .stat.stat.stat:nth-child(8n+8){border-left:4px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#c1cbaa 7%,#fff),#fff 62%)}
@@ -83,7 +83,7 @@
 .soalCard.soalCard.soalCard:nth-child(8n+2){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .soalCard.soalCard.soalCard:nth-child(8n+3){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .soalCard.soalCard.soalCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
-.soalCard.soalCard.soalCard:nth-child(8n+5){border-left:4px solid #667253;background:linear-gradient(135deg,color-mix(in srgb,#667253 7%,#fff),#fff 62%)}
+.soalCard.soalCard.soalCard:nth-child(8n+5){border-left:4px solid #6d7958;background:linear-gradient(135deg,color-mix(in srgb,#6d7958 7%,#fff),#fff 62%)}
 .soalCard.soalCard.soalCard:nth-child(8n+6){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .soalCard.soalCard.soalCard:nth-child(8n+7){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .soalCard.soalCard.soalCard:nth-child(8n+8){border-left:4px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#c1cbaa 7%,#fff),#fff 62%)}
