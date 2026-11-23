@@ -1,9 +1,8 @@
 .page {
-  /* Palet biru (sama dengan landing page) */
   --primary: #6d7958;
   --primary-light: #6d7958;
   --accent: #c1cbaa;
-  --primary-rgb: 29, 78, 216;
+  --primary-rgb: 109, 121, 88;
   --grad: linear-gradient(90deg, #6d7958, #6d7958);
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -37,13 +36,13 @@
   to   { transform: scale(1.08); }
 }
 
-/* Satu gradasi navy yang menyatu (tanpa blok warna bertingkat) */
+/* Sage overlay tints the photo while preserving its original details. */
 .bgOverlay {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(37, 41, 31, 0.1) 0%, rgba(10, 40, 130, 0.2) 50%, rgba(6, 16, 60, 0.65) 100%),
-    linear-gradient(100deg, rgba(8, 19, 63, 0.82) 0%, rgba(29, 78, 216, 0.5) 60%, rgba(10, 60, 170, 0.45) 100%);
+    linear-gradient(180deg, rgba(37, 41, 31, 0.08) 0%, rgba(89, 99, 73, 0.16) 50%, rgba(37, 41, 31, 0.58) 100%),
+    linear-gradient(100deg, rgba(65, 72, 56, 0.76) 0%, rgba(137, 148, 119, 0.34) 60%, rgba(102, 114, 83, 0.38) 100%);
 }
 
 /* Lingkaran cahaya melayang */
@@ -551,7 +550,7 @@
 
   .bgOverlay {
     background:
-      linear-gradient(180deg, rgba(37, 41, 31, 0.1) 0%, rgba(10, 40, 130, 0.3) 50%, rgba(6, 16, 60, 0.65) 100%);
+      linear-gradient(180deg, rgba(37, 41, 31, 0.08) 0%, rgba(89, 99, 73, 0.2) 50%, rgba(37, 41, 31, 0.58) 100%);
   }
 }
 
