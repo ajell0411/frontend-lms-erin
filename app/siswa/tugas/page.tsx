@@ -11,7 +11,7 @@ function subject(value: TugasSiswa["pelajaran"]) {
 }
 
 function colorAt(index: number) {
-  const palette = ["#ef4444", "#14b8a6", "#a855f7", "#f97316", "#3b82f6", "#ec4899", "#22c55e", "#f59e0b"];
+  const palette = ["#899477", "#14b8a6", "#a855f7", "#f97316", "#3b82f6", "#ec4899", "#22c55e", "#f59e0b"];
   return palette[index % palette.length];
 }
 
