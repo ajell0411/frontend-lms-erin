@@ -12,7 +12,7 @@ import type { StatIcon } from "./StatCard";
 import { ROUTES } from "./aksi";
 import styles from "./page.module.css";
 
-const WARNA = ["#0057d9", "#06b6d4", "#8b5cf6", "#f59e0b", "#10b981", "#ef4444"];
+const WARNA = ["#0057d9", "#06b6d4", "#8b5cf6", "#f59e0b", "#10b981", "#899477"];
 
 const AKSI: { label: string; desc: string; href: string; icon: StatIcon }[] = [
   { label: "Tambah Admin", desc: "Buat akun admin baru", href: ROUTES.admin, icon: "admin" },
