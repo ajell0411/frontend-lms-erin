@@ -1,6 +1,6 @@
 .pageHeader{margin:0 0 22px}.pageHeader h1{margin:0;color:var(--siswa-text);font-size:26px;line-height:1.2;font-weight:750}.pageHeader p{margin:6px 0 0;color:var(--siswa-muted);font-size:13px;line-height:1.5}
 .card{min-width:0;padding:18px;border:1px solid var(--siswa-border);border-radius:var(--siswa-radius);background:var(--siswa-surface);box-shadow:var(--siswa-shadow)}
-.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:999px;background:var(--siswa-primary-soft);color:var(--siswa-primary);font-size:11px;font-weight:650;line-height:1.4}.badge_success{background:#dcfce7;color:#166534}.badge_danger{background:#fee2e2;color:#b91c1c}.badge_warning{background:#fef3c7;color:#92400e}.badge_info{background:#dce3ce;color:#6d7958}
+.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:999px;background:var(--siswa-primary-soft);color:var(--siswa-primary);font-size:11px;font-weight:650;line-height:1.4}.badge_success{background:#dcfce7;color:#166534}.badge_danger{background:#dce3ce;color:#596349}.badge_warning{background:#fef3c7;color:#92400e}.badge_info{background:#dce3ce;color:#6d7958}
 .dropdown{position:relative;min-width:150px}.dropdownButton{display:flex;align-items:center;justify-content:space-between;gap:18px;width:100%;min-height:40px;padding:0 12px;border:1px solid var(--siswa-border);border-radius:8px;background:#fff;color:var(--siswa-text);font:inherit;font-size:13px;cursor:pointer}.dropdownButton:focus-visible,.search:focus-within{outline:2px solid #c1cbaa;outline-offset:1px}.dropdownMenu{position:absolute;z-index:40;top:calc(100% + 5px);left:0;right:0;max-height:260px;overflow:auto;padding:5px;border:1px solid var(--siswa-border);border-radius:9px;background:#fff;box-shadow:0 10px 28px rgb(15 23 42 / 13%)}.dropdownMenu button{display:block;width:100%;padding:9px 10px;border:0;border-radius:6px;background:#fff;color:var(--siswa-text);font:inherit;font-size:13px;text-align:left;cursor:pointer}.dropdownMenu button:hover,.dropdownMenu button[aria-selected=true]{background:var(--siswa-primary-soft);color:var(--siswa-primary)}
 .search{display:flex;align-items:center;gap:9px;min-height:40px;min-width:160px;padding:0 12px;border:1px solid var(--siswa-border);border-radius:8px;background:#fff}.search svg{width:17px;height:17px;flex:0 0 auto;fill:none;stroke:var(--siswa-muted);stroke-width:1.7;stroke-linecap:round}.search input{min-width:0;width:100%;border:0;outline:0;background:transparent;color:var(--siswa-text);font:inherit;font-size:13px}
 .state{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:170px;padding:24px;text-align:center;color:var(--siswa-muted)}.state strong{color:var(--siswa-text);font-size:14px}.state p{margin:7px 0 0;font-size:13px}.stateIcon{margin-bottom:10px;color:var(--siswa-primary);font-size:24px}.error button{margin-top:12px;padding:8px 14px;border:0;border-radius:7px;background:var(--siswa-primary);color:#fff;font:inherit;cursor:pointer}
@@ -17,7 +17,7 @@
 .bellButton{position:relative;display:grid;place-items:center;width:38px;height:38px;padding:0;border:0;border-radius:50%;background:transparent;color:#68715b;cursor:pointer}
 .bellButton:hover,.bellButton[aria-expanded=true]{background:var(--siswa-primary-soft);color:var(--siswa-primary)}
 .bellButton svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.bellDot{position:absolute;top:7px;right:8px;width:9px;height:9px;border:2px solid #fff;border-radius:50%;background:#ef4444}
+.bellDot{position:absolute;top:7px;right:8px;width:9px;height:9px;border:2px solid #fff;border-radius:50%;background:#899477}
 /* sinkron-v2 */
 .card{transition:transform 180ms ease,box-shadow 180ms ease}
 .modal{border-radius:18px}
@@ -52,7 +52,7 @@
 .materialCard.materialCard:nth-child(8n+2){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .materialCard.materialCard:nth-child(8n+3){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .materialCard.materialCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
-.materialCard.materialCard:nth-child(8n+5){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(8n+5){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .materialCard.materialCard:nth-child(8n+6){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .materialCard.materialCard:nth-child(8n+7){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .materialCard.materialCard:nth-child(8n+8){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
@@ -60,12 +60,12 @@
 .feedCard.feedCard:nth-child(8n+2){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .feedCard.feedCard:nth-child(8n+3){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .feedCard.feedCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
-.feedCard.feedCard:nth-child(8n+5){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(8n+5){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .feedCard.feedCard:nth-child(8n+6){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .feedCard.feedCard:nth-child(8n+7){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .feedCard.feedCard:nth-child(8n+8){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 /* tepi-warna-v3 */
-.materialCard.materialCard.materialCard:nth-child(8n+1){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 7%,#fff),#fff 62%)}
+.materialCard.materialCard.materialCard:nth-child(8n+1){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .materialCard.materialCard.materialCard:nth-child(8n+2){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .materialCard.materialCard.materialCard:nth-child(8n+3){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .materialCard.materialCard.materialCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
@@ -73,7 +73,7 @@
 .materialCard.materialCard.materialCard:nth-child(8n+6){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .materialCard.materialCard.materialCard:nth-child(8n+7){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .materialCard.materialCard.materialCard:nth-child(8n+8){border-left:4px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#c1cbaa 7%,#fff),#fff 62%)}
-.feedCard.feedCard.feedCard:nth-child(8n+1){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 7%,#fff),#fff 62%)}
+.feedCard.feedCard.feedCard:nth-child(8n+1){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .feedCard.feedCard.feedCard:nth-child(8n+2){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .feedCard.feedCard.feedCard:nth-child(8n+3){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .feedCard.feedCard.feedCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
