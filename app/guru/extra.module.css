@@ -12,7 +12,7 @@
 .opsi{display:flex;gap:10px;padding:8px 12px;border:1px solid var(--siswa-border);border-radius:8px;font-size:13px;color:#4c5740}
 .opsi b{flex:0 0 auto}
 .opsiBenar{border-color:#86efac;background:#f0fdf4}
-.opsiSalah{border-color:#fca5a5;background:#fef2f2}
+.opsiSalah{border-color:#fca5a5;background:#f0f2e6}
 .pembahasan{margin:10px 0 0;padding:10px 12px;border-radius:8px;background:#f0f2e6;font-size:12px;line-height:1.55;color:#555d49}
 .opsiRow{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .opsiRow input[type=radio]{flex:0 0 auto;width:16px;height:16px;accent-color:var(--siswa-primary)}
@@ -58,7 +58,7 @@
 .stat.stat:nth-child(8n+2){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .stat.stat:nth-child(8n+3){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .stat.stat:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
-.stat.stat:nth-child(8n+5){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 11%,#fff),#fff 62%)}
+.stat.stat:nth-child(8n+5){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .stat.stat:nth-child(8n+6){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .stat.stat:nth-child(8n+7){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .stat.stat:nth-child(8n+8){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
@@ -66,12 +66,12 @@
 .soalCard.soalCard:nth-child(8n+2){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .soalCard.soalCard:nth-child(8n+3){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .soalCard.soalCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
-.soalCard.soalCard:nth-child(8n+5){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 11%,#fff),#fff 62%)}
+.soalCard.soalCard:nth-child(8n+5){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .soalCard.soalCard:nth-child(8n+6){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .soalCard.soalCard:nth-child(8n+7){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .soalCard.soalCard:nth-child(8n+8){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 /* tepi-warna-v3 */
-.stat.stat.stat:nth-child(8n+1){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 7%,#fff),#fff 62%)}
+.stat.stat.stat:nth-child(8n+1){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .stat.stat.stat:nth-child(8n+2){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .stat.stat.stat:nth-child(8n+3){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .stat.stat.stat:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
@@ -79,7 +79,7 @@
 .stat.stat.stat:nth-child(8n+6){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .stat.stat.stat:nth-child(8n+7){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .stat.stat.stat:nth-child(8n+8){border-left:4px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#c1cbaa 7%,#fff),#fff 62%)}
-.soalCard.soalCard.soalCard:nth-child(8n+1){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 7%,#fff),#fff 62%)}
+.soalCard.soalCard.soalCard:nth-child(8n+1){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .soalCard.soalCard.soalCard:nth-child(8n+2){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .soalCard.soalCard.soalCard:nth-child(8n+3){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .soalCard.soalCard.soalCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
