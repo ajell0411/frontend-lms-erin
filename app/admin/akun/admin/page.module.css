@@ -268,12 +268,12 @@
 }
 
 .deleteButton {
-  border-color: #f1d5d8;
+  border-color: #dce3ce;
   color: #c34450;
 }
 
 .deleteButton:hover {
-  background: #fff5f5;
+  background: #f0f2e6;
 }
 
 .stateCell,
@@ -352,15 +352,15 @@
 }
 
 .errorMessage {
-  border-color: #f2c8cc;
-  background: #fff5f5;
-  color: #a63843;
+  border-color: #c1cbaa;
+  background: #f0f2e6;
+  color: #596349;
 }
 
 .retryButton {
   flex-shrink: 0;
-  border-color: #e7afb5;
-  color: #a63843;
+  border-color: #c1cbaa;
+  color: #596349;
 }
 
 .overlay {
@@ -516,21 +516,21 @@
 }
 
 .dangerButton {
-  border-color: #d94b56;
-  background: #d94b56;
+  border-color: #6d7958;
+  background: #6d7958;
 }
 
 .dangerButton:hover {
-  background: #bf3844;
+  background: #596349;
 }
 
 .formError {
   margin: 0;
   padding: 9px 10px;
-  border: 1px solid #f2c8cc;
+  border: 1px solid #c1cbaa;
   border-radius: 5px;
-  background: #fff5f5;
-  color: #a63843;
+  background: #f0f2e6;
+  color: #596349;
   font-size: 11px;
 }
 
@@ -547,8 +547,8 @@
   height: 36px;
   margin-bottom: 14px;
   border-radius: 50%;
-  background: #fff0f0;
-  color: #d94b56;
+  background: #dce3ce;
+  color: #6d7958;
   font-size: 18px;
   font-weight: 700;
 }
@@ -695,11 +695,11 @@
 
 .actionMenu .menuDelete,
 .actionMenu .menuDelete:hover {
-  color: #e0444f;
+  color: #899477;
 }
 
 .actionMenu .menuDelete:hover {
-  background: #fff2f2;
+  background: #f0f2e6;
 }
 
 .toolbar {
@@ -867,7 +867,7 @@
 }
 
 .field > span:first-child b {
-  color: #e44f5d;
+  color: #899477;
   font-weight: 700;
 }
 
@@ -1067,14 +1067,14 @@
 }
 
 .fieldError {
-  color: #d33e4c !important;
+  color: #6d7958 !important;
   font-size: 9px !important;
   font-weight: 500 !important;
 }
 
 .field input[aria-invalid="true"],
 .selectWrap select[aria-invalid="true"] {
-  border-color: #dc5964;
+  border-color: #6d7958;
 }
 
 .dialogActions {
@@ -1257,7 +1257,7 @@
 .printButton{width:auto;padding:0 15px;font-size:12px;border-color:#16a34a;background:#fff;color:#15803d}
 .printButton svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .printButton:hover{border-color:#15803d;background:#f0fdf4;color:#15803d}
-.dangerButton:hover{border-color:#b91c1c;background:#b91c1c;box-shadow:0 2px 7px rgb(185 28 28 / 20%)}
+.dangerButton:hover{border-color:#596349;background:#596349;box-shadow:0 2px 7px rgb(185 28 28 / 20%)}
 .cancelButton:hover{border-color:#c1cbaa;background:#f0f2e6}
 .submitButton:hover{border-color:#596349;background:#596349}
 .dialogActions{gap:10px}
@@ -1305,7 +1305,7 @@
 .materialCard.materialCard:nth-child(8n+2){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .materialCard.materialCard:nth-child(8n+3){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .materialCard.materialCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
-.materialCard.materialCard:nth-child(8n+5){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 11%,#fff),#fff 62%)}
+.materialCard.materialCard:nth-child(8n+5){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .materialCard.materialCard:nth-child(8n+6){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .materialCard.materialCard:nth-child(8n+7){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .materialCard.materialCard:nth-child(8n+8){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
@@ -1313,12 +1313,12 @@
 .feedCard.feedCard:nth-child(8n+2){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .feedCard.feedCard:nth-child(8n+3){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .feedCard.feedCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
-.feedCard.feedCard:nth-child(8n+5){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 11%,#fff),#fff 62%)}
+.feedCard.feedCard:nth-child(8n+5){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .feedCard.feedCard:nth-child(8n+6){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .feedCard.feedCard:nth-child(8n+7){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .feedCard.feedCard:nth-child(8n+8){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 /* tepi-warna-v3 */
-.materialCard.materialCard.materialCard:nth-child(8n+1){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 7%,#fff),#fff 62%)}
+.materialCard.materialCard.materialCard:nth-child(8n+1){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .materialCard.materialCard.materialCard:nth-child(8n+2){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .materialCard.materialCard.materialCard:nth-child(8n+3){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .materialCard.materialCard.materialCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
@@ -1326,7 +1326,7 @@
 .materialCard.materialCard.materialCard:nth-child(8n+6){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .materialCard.materialCard.materialCard:nth-child(8n+7){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .materialCard.materialCard.materialCard:nth-child(8n+8){border-left:4px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#c1cbaa 7%,#fff),#fff 62%)}
-.feedCard.feedCard.feedCard:nth-child(8n+1){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 7%,#fff),#fff 62%)}
+.feedCard.feedCard.feedCard:nth-child(8n+1){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .feedCard.feedCard.feedCard:nth-child(8n+2){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .feedCard.feedCard.feedCard:nth-child(8n+3){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .feedCard.feedCard.feedCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
