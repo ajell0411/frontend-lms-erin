@@ -4,7 +4,7 @@ import type { PemantauStatistik } from "@/lib/pemantau";
 import { SectionTitle } from "./StatCard";
 import styles from "./page.module.css";
 
-const WARNA = ["#0057d9", "#06b6d4", "#8b5cf6", "#f59e0b", "#10b981", "#ef4444"];
+const WARNA = ["#0057d9", "#06b6d4", "#8b5cf6", "#f59e0b", "#10b981", "#899477"];
 
 type DataJur = { key: string; nama: string; siswa: number; kelas: number | null; color: string };
 
