@@ -81,7 +81,7 @@
 .stat.stat:nth-child(8n+2){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .stat.stat:nth-child(8n+3){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .stat.stat:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
-.stat.stat:nth-child(8n+5){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 11%,#fff),#fff 62%)}
+.stat.stat:nth-child(8n+5){border-left:4px solid  #4e614a;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .stat.stat:nth-child(8n+6){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .stat.stat:nth-child(8n+7){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .stat.stat:nth-child(8n+8){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
@@ -89,12 +89,12 @@
 .jadwal.jadwal:nth-child(8n+2){border-left:5px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .jadwal.jadwal:nth-child(8n+3){border-left:5px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .jadwal.jadwal:nth-child(8n+4){border-left:5px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
-.jadwal.jadwal:nth-child(8n+5){border-left:5px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 11%,#fff),#fff 62%)}
+.jadwal.jadwal:nth-child(8n+5){border-left:5px solid #4e614a;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .jadwal.jadwal:nth-child(8n+6){border-left:5px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .jadwal.jadwal:nth-child(8n+7){border-left:5px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .jadwal.jadwal:nth-child(8n+8){border-left:5px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 /* tepi-warna-v3 */
-.stat.stat.stat:nth-child(8n+1){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 7%,#fff),#fff 62%)}
+.stat.stat.stat:nth-child(8n+1){border-left:4px solid #4e614a;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .stat.stat.stat:nth-child(8n+2){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .stat.stat.stat:nth-child(8n+3){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .stat.stat.stat:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
@@ -102,7 +102,7 @@
 .stat.stat.stat:nth-child(8n+6){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .stat.stat.stat:nth-child(8n+7){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .stat.stat.stat:nth-child(8n+8){border-left:4px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#c1cbaa 7%,#fff),#fff 62%)}
-.jadwal.jadwal.jadwal:nth-child(8n+1){border-left:5px solid #ef4444 !important;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 7%,#fff),#fff 62%)}
+.jadwal.jadwal.jadwal:nth-child(8n+1){border-left:5px solid #4e614a !important;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .jadwal.jadwal.jadwal:nth-child(8n+2){border-left:5px solid #899477 !important;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .jadwal.jadwal.jadwal:nth-child(8n+3){border-left:5px solid #a9b69a !important;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .jadwal.jadwal.jadwal:nth-child(8n+4){border-left:5px solid #a9b69a !important;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
@@ -123,7 +123,7 @@
 .page{gap:22px}
 
 /* kotak statistik: sama dengan kotak Total admin */
-.stats.stats{display:grid !important;grid-template-columns:repeat(5,minmax(0,1fr)) !important;gap:18px !important;margin-bottom:0 !important}
+.stats.stats{display:grid !important;grid-template-columns:repeat(4,minmax(0,1fr)) !important;gap:18px !important;margin-bottom:0 !important}
 .stats .stat.stat.stat.stat:nth-child(n){display:flex !important;align-items:center !important;gap:14px !important;padding:16px 18px !important;background:#fff !important;border:1px solid #c1cbaa !important;border-left:1px solid #c1cbaa !important;border-radius:14px !important;box-shadow:none !important;transform:none !important;transition:box-shadow 180ms ease !important}
 .stats .stat.stat.stat.stat:nth-child(n):hover{box-shadow:0 8px 20px rgb(15 23 42 / 7%) !important;transform:none !important}
 .stats .stat.stat.stat.stat:nth-child(n) .statIcon{display:grid !important;place-items:center !important;flex:0 0 42px !important;width:42px !important;height:42px !important;border-radius:11px !important;background:#dce3ce !important;color:#6d7958 !important}
@@ -145,8 +145,8 @@
 /* aktivitas */
 .activity{border-radius:16px;box-shadow:none}
 
-@media(max-width:1100px){.stats.stats{grid-template-columns:repeat(3,minmax(0,1fr)) !important}}
-@media(max-width:700px){.stats.stats{grid-template-columns:repeat(2,minmax(0,1fr)) !important}}
+@media(max-width:900px){.stats.stats{grid-template-columns:repeat(2,minmax(0,1fr)) !important}}
+
 @media(max-width:480px){.stats.stats{grid-template-columns:1fr !important}}
 /* garis-biru-v1 */
 .sectionHead h2{display:flex;align-items:center;gap:10px}
