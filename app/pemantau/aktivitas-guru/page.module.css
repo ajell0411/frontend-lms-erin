@@ -5,7 +5,7 @@
 
 .dateField { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #68715b; }
 .dateField input { height: 40px; border: 1px solid #c1cbaa; border-radius: 10px; padding: 0 10px; font: inherit; color: #414838; background: #fff; }
-.dateError { margin: 8px 0 0; font-size: 13px; color: #dc2626; }
+.dateError { margin: 8px 0 0; font-size: 13px; color: #6d7958; }
 
 .badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; white-space: nowrap; }
 .badgeMateri { background: #dce3ce; color: #6d7958; }
