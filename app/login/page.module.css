@@ -400,9 +400,9 @@
   margin: 0;
   padding: 10px 12px;
   border-radius: 10px;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #b91c1c;
+  background: #f0f2e6;
+  border: 1px solid #c1cbaa;
+  color: #596349;
   font-size: 13px;
   animation: shake 0.4s ease;
 }
