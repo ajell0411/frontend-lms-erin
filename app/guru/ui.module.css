@@ -15,20 +15,20 @@
 .btnGhost:hover:not(:disabled){background:var(--siswa-primary-soft);color:var(--siswa-primary)}
 .btnOutline{border-color:var(--siswa-primary);background:#fff;color:var(--siswa-primary)}
 .btnOutline:hover:not(:disabled){background:var(--siswa-primary-soft)}
-.btnDanger{border-color:#fecaca;background:#fff;color:#dc2626}
-.btnDanger:hover:not(:disabled){background:#fef2f2}
-.btnDangerSolid{background:#dc2626;color:#fff}
-.btnDangerSolid:hover:not(:disabled){background:#b91c1c}
+.btnDanger{border-color:#c1cbaa;background:#fff;color:#6d7958}
+.btnDanger:hover:not(:disabled){background:#f0f2e6}
+.btnDangerSolid{background:#6d7958;color:#fff}
+.btnDangerSolid:hover:not(:disabled){background:#596349}
 .btnSm{min-height:32px;padding:0 12px;font-size:12px}
 .btnBlock{width:100%}
 .iconBtn{display:grid;place-items:center;width:30px;height:30px;padding:0;border:0;border-radius:8px;background:transparent;color:#68715b;cursor:pointer}
 .iconBtn svg{width:16px;height:16px}
 .iconBtn:hover{background:var(--siswa-primary-soft);color:var(--siswa-primary)}
-.iconDanger{color:#dc2626}
-.iconDanger:hover{background:#fee2e2;color:#dc2626}
+.iconDanger{color:#6d7958}
+.iconDanger:hover{background:#dce3ce;color:#6d7958}
 .badge{display:inline-block;padding:3px 9px;border-radius:6px;background:var(--siswa-primary-soft);color:var(--siswa-primary);font-size:11px;font-weight:700}
 .badgeGreen{background:#dcfce7;color:#15803d}
-.badgeRed{background:#fee2e2;color:#dc2626}
+.badgeRed{background:#dce3ce;color:#6d7958}
 .badgeYellow{background:#fef3c7;color:#b45309}
 .badgeGray{background:#c1cbaa;color:#555d49}
 .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
@@ -63,7 +63,7 @@
 .chip{display:inline-block;min-width:34px;padding:3px 9px;border-radius:7px;background:#c1cbaa;color:#555d49;font-size:12px;font-weight:700;text-align:center}
 .chipGreen{background:#dcfce7;color:#15803d}
 .chipYellow{background:#fef3c7;color:#b45309}
-.chipRed{background:#fee2e2;color:#dc2626}
+.chipRed{background:#dce3ce;color:#6d7958}
 .chipBlue{background:#dce3ce;color:#596349}
 .overlay{position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:16px;background:rgb(15 23 42 / 50%)}
 .modal{display:flex;flex-direction:column;width:min(480px,100%);max-height:92vh;overflow:hidden;border-radius:16px;background:#fff;box-shadow:0 24px 60px rgb(15 23 42 / 30%)}
@@ -89,7 +89,7 @@
 .dropActive{border-color:var(--siswa-primary);background:var(--siswa-primary-soft)}
 .fileNow{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding:10px 12px;border:1px solid var(--siswa-border);border-radius:10px;background:#f0f2e6;font-size:12px;color:#4c5740}
 .toast{position:fixed;z-index:400;right:20px;bottom:20px;max-width:min(380px,calc(100vw - 40px));padding:12px 16px;border-radius:10px;background:#414838;color:#fff;font-size:13px;box-shadow:0 12px 30px rgb(15 23 42 / 30%)}
-.toastError{background:#b91c1c}
+.toastError{background:#596349}
 .materiGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .materiCard{display:flex;flex-direction:column;gap:10px;padding:18px;border:1px solid var(--siswa-border);border-radius:var(--siswa-radius);background:#fff;box-shadow:var(--siswa-shadow)}
 .materiTop{display:flex;align-items:center;justify-content:space-between;gap:8px}
@@ -99,9 +99,9 @@
 .materiFile{font-size:11px;color:#68715b;word-break:break-all}
 .materiActions{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:6px}
 .fileIcon{display:grid;place-items:center;width:40px;height:40px;border-radius:10px;font-size:10px;font-weight:800}
-.tonePDF{background:#fee2e2;color:#dc2626}
+.tonePDF{background:#dce3ce;color:#6d7958}
 .toneDOC{background:#dce3ce;color:#6d7958}
-.tonePPT{background:#ffedd5;color:#899477}
+.tonePPT{background:#dce3ce;color:#899477}
 .toneXLS{background:#dcfce7;color:#16a34a}
 .toneFILE{background:#c1cbaa;color:#555d49}
 .previewBody{flex:1;min-height:0;overflow:auto;background:#f0f2e6}
@@ -200,7 +200,7 @@
 .classCard.classCard:nth-child(8n+2){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .classCard.classCard:nth-child(8n+3){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .classCard.classCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
-.classCard.classCard:nth-child(8n+5){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 11%,#fff),#fff 62%)}
+.classCard.classCard:nth-child(8n+5){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .classCard.classCard:nth-child(8n+6){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .classCard.classCard:nth-child(8n+7){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .classCard.classCard:nth-child(8n+8){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
@@ -208,7 +208,7 @@
 .materiCard.materiCard:nth-child(8n+2){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .materiCard.materiCard:nth-child(8n+3){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .materiCard.materiCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
-.materiCard.materiCard:nth-child(8n+5){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 11%,#fff),#fff 62%)}
+.materiCard.materiCard:nth-child(8n+5){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .materiCard.materiCard:nth-child(8n+6){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .materiCard.materiCard:nth-child(8n+7){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .materiCard.materiCard:nth-child(8n+8){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
@@ -216,12 +216,12 @@
 .jadwalItem.jadwalItem:nth-child(8n+2){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .jadwalItem.jadwalItem:nth-child(8n+3){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .jadwalItem.jadwalItem:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
-.jadwalItem.jadwalItem:nth-child(8n+5){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 11%,#fff),#fff 62%)}
+.jadwalItem.jadwalItem:nth-child(8n+5){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .jadwalItem.jadwalItem:nth-child(8n+6){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 11%,#fff),#fff 62%)}
 .jadwalItem.jadwalItem:nth-child(8n+7){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 .jadwalItem.jadwalItem:nth-child(8n+8){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 11%,#fff),#fff 62%)}
 /* tepi-warna-v3 */
-.classCard.classCard.classCard:nth-child(8n+1){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 7%,#fff),#fff 62%)}
+.classCard.classCard.classCard:nth-child(8n+1){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .classCard.classCard.classCard:nth-child(8n+2){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .classCard.classCard.classCard:nth-child(8n+3){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .classCard.classCard.classCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
@@ -229,7 +229,7 @@
 .classCard.classCard.classCard:nth-child(8n+6){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .classCard.classCard.classCard:nth-child(8n+7){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .classCard.classCard.classCard:nth-child(8n+8){border-left:4px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#c1cbaa 7%,#fff),#fff 62%)}
-.materiCard.materiCard.materiCard:nth-child(8n+1){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 7%,#fff),#fff 62%)}
+.materiCard.materiCard.materiCard:nth-child(8n+1){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .materiCard.materiCard.materiCard:nth-child(8n+2){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .materiCard.materiCard.materiCard:nth-child(8n+3){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .materiCard.materiCard.materiCard:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
@@ -237,7 +237,7 @@
 .materiCard.materiCard.materiCard:nth-child(8n+6){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .materiCard.materiCard.materiCard:nth-child(8n+7){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .materiCard.materiCard.materiCard:nth-child(8n+8){border-left:4px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#c1cbaa 7%,#fff),#fff 62%)}
-.jadwalItem.jadwalItem.jadwalItem:nth-child(8n+1){border-left:4px solid #ef4444 !important;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 7%,#fff),#fff 62%)}
+.jadwalItem.jadwalItem.jadwalItem:nth-child(8n+1){border-left:4px solid #899477 !important;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .jadwalItem.jadwalItem.jadwalItem:nth-child(8n+2){border-left:4px solid #899477 !important;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .jadwalItem.jadwalItem.jadwalItem:nth-child(8n+3){border-left:4px solid #a9b69a !important;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .jadwalItem.jadwalItem.jadwalItem:nth-child(8n+4){border-left:4px solid #a9b69a !important;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
@@ -245,7 +245,7 @@
 .jadwalItem.jadwalItem.jadwalItem:nth-child(8n+6){border-left:4px solid #a9b69a !important;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .jadwalItem.jadwalItem.jadwalItem:nth-child(8n+7){border-left:4px solid #899477 !important;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .jadwalItem.jadwalItem.jadwalItem:nth-child(8n+8){border-left:4px solid #c1cbaa !important;background:linear-gradient(135deg,color-mix(in srgb,#c1cbaa 7%,#fff),#fff 62%)}
-.feedItem.feedItem.feedItem:nth-child(8n+1){border-left:4px solid #ef4444;background:linear-gradient(135deg,color-mix(in srgb,#ef4444 7%,#fff),#fff 62%)}
+.feedItem.feedItem.feedItem:nth-child(8n+1){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .feedItem.feedItem.feedItem:nth-child(8n+2){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .feedItem.feedItem.feedItem:nth-child(8n+3){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .feedItem.feedItem.feedItem:nth-child(8n+4){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
