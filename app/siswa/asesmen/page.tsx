@@ -15,7 +15,7 @@ function dateTime(value?: string) {
   return Number.isNaN(date.getTime()) ? "Jadwal belum ditentukan" : new Intl.DateTimeFormat("id-ID", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }).format(date);
 }
 function colorAt(index: number) {
-  const palette = ["#ef4444", "#14b8a6", "#a855f7", "#f97316", "#3b82f6", "#ec4899", "#22c55e", "#f59e0b"];
+  const palette = ["#899477", "#14b8a6", "#a855f7", "#f97316", "#3b82f6", "#ec4899", "#22c55e", "#f59e0b"];
   return palette[index % palette.length];
 }
 
