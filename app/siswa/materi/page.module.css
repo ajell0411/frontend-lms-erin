@@ -70,3 +70,4 @@
 .feedCard.feedCard.feedCard:nth-child(8n+6){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .feedCard.feedCard.feedCard:nth-child(8n+7){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .feedCard.feedCard.feedCard:nth-child(8n+8){border-left:4px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#c1cbaa 7%,#fff),#fff 62%)}
+.cardTitle{width:100%;align-items:center}.cardTitle strong{flex:1;min-width:0}.subjectBadge{flex:0 0 auto;margin-left:auto}
