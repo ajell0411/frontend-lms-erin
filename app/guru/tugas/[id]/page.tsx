@@ -26,7 +26,6 @@ export default function DetailTugasPage() {
   const [bukaId, setBukaId] = useState<number | null>(null);
   const [nilaiModal, setNilaiModal] = useState<GuruPengumpulan | null>(null);
   const [nilai, setNilai] = useState("");
-  const [feedback, setFeedback] = useState("");
   const [preview, setPreview] = useState<{ judul: string; blob: Blob; filename: string } | null>(null);
   const [busy, setBusy] = useState(false);
   const { show, node } = useNotice();
@@ -55,7 +54,6 @@ export default function DetailTugasPage() {
       const p = await getGuruPengumpulan(s.pengumpulan_id);
       setNilaiModal(p);
       setNilai(p.nilai === null ? "" : String(p.nilai));
-      setFeedback(p.feedback || "");
     } catch (reason) {
       show(pesanError(reason, "Pengumpulan gagal dibuka."), true);
     } finally {
@@ -63,24 +61,24 @@ export default function DetailTugasPage() {
     }
   }
 
-  async function ambilFile(): Promise<{ blob: Blob; filename: string } | null> {
+  async function ambilFile(index = 0): Promise<{ blob: Blob; filename: string } | null> {
     if (!nilaiModal) return null;
     try {
-      const hasil = await fetchGuruFile(guruPengumpulanFilePath(nilaiModal.id));
-      return { blob: hasil.blob, filename: hasil.filename || nilaiModal.nama_file || "jawaban" };
+      const hasil = await fetchGuruFile(guruPengumpulanFilePath(nilaiModal.id, index));
+      return { blob: hasil.blob, filename: hasil.filename || nilaiModal.files?.[index]?.nama || nilaiModal.nama_file || "jawaban" };
     } catch (reason) {
       show(pesanError(reason, "File jawaban gagal dibuka."), true);
       return null;
     }
   }
 
-  async function lihatFile() {
-    const hasil = await ambilFile();
+  async function lihatFile(index = 0) {
+    const hasil = await ambilFile(index);
     if (hasil && nilaiModal) setPreview({ judul: `Jawaban ${nilaiModal.siswa_nama}`, ...hasil });
   }
 
-  async function unduhFile() {
-    const hasil = await ambilFile();
+  async function unduhFile(index = 0) {
+    const hasil = await ambilFile(index);
     if (hasil) saveBlob(hasil.blob, hasil.filename);
   }
 
@@ -93,7 +91,7 @@ export default function DetailTugasPage() {
     }
     setBusy(true);
     try {
-      await nilaiGuruPengumpulan(nilaiModal.id, { nilai: n, feedback: feedback.trim() });
+      await nilaiGuruPengumpulan(nilaiModal.id, { nilai: n });
       show("Nilai disimpan.");
       setNilaiModal(null);
       await muat();
@@ -245,18 +243,13 @@ export default function DetailTugasPage() {
               <>
                 <div className={ui.fileNow}>
                   <Icon name="file" />
-                  <span>{nilaiModal.nama_file}</span>
+                  <span>{nilaiModal.files?.map((file) => file.nama).join(", ") || nilaiModal.nama_file}</span>
                 </div>
-                <div className={x.rowActions} style={{ justifyContent: "flex-start" }}>
-                  <button type="button" className={`${ui.btn} ${ui.btnPrimary} ${ui.btnSm}`} onClick={() => void lihatFile()}>
-                    <Icon name="eye" />
-                    Lihat Jawaban
-                  </button>
-                  <button type="button" className={`${ui.btn} ${ui.btnGhost} ${ui.btnSm}`} onClick={() => void unduhFile()}>
-                    <Icon name="download" />
-                    Unduh
-                  </button>
-                </div>
+                {(nilaiModal.files?.length ? nilaiModal.files : [{ nama: nilaiModal.nama_file, url: "" }]).map((file, index) => <div className={x.rowActions} style={{ justifyContent: "flex-start" }} key={`${file.nama}-${index}`}>
+                  <span className={ui.muted}>{file.nama}</span>
+                  <button type="button" className={`${ui.btn} ${ui.btnPrimary} ${ui.btnSm}`} onClick={() => void lihatFile(index)}><Icon name="eye" />Lihat</button>
+                  <button type="button" className={`${ui.btn} ${ui.btnGhost} ${ui.btnSm}`} onClick={() => void unduhFile(index)}><Icon name="download" />Unduh</button>
+                </div>)}
               </>
             ) : (
               <span className={ui.hint}>Siswa tidak melampirkan file atau file tidak tersedia di server.</span>
@@ -265,10 +258,6 @@ export default function DetailTugasPage() {
           <div className={ui.field}>
             <label htmlFor="n-nilai">Nilai (0-100)</label>
             <input id="n-nilai" type="number" min={0} max={100} className={ui.input} value={nilai} onChange={(e) => setNilai(e.target.value)} />
-          </div>
-          <div className={ui.field}>
-            <label htmlFor="n-fb">Feedback (Opsional)</label>
-            <textarea id="n-fb" className={ui.textarea} value={feedback} onChange={(e) => setFeedback(e.target.value)} />
           </div>
         </Modal>
       )}
