@@ -7,7 +7,9 @@ export type PelajaranSiswa = { id: number; nama: string; kode?: string };
 export type MateriSiswa = {
   id: number;
   judul: string;
+  guru?: string;
   nama_file: string;
+  files?: { nama: string; url: string }[];
   ekstensi?: string;
   ukuran?: number;
   created_at: string;
@@ -23,7 +25,7 @@ export type TugasSiswa = {
   status: "belum" | "dikumpulkan" | "dinilai" | "terlambat" | "proses" | "selesai";
   progres?: number;
   nilai?: number;
-  pengumpulan?: { nilai?: number; dikumpulkan_at?: string; nama_file?: string; catatan?: string; komentar?: string };
+  pengumpulan?: { nilai?: number; dikumpulkan_at?: string; nama_file?: string; files?: string[]; catatan?: string; komentar?: string };
   deskripsi?: string;
   instruksi?: string;
   kriteria?: string[];
@@ -31,11 +33,13 @@ export type TugasSiswa = {
   kelas?: string | { nama?: string };
   bobot?: number;
   lampiran?: { nama?: string; url?: string } | null;
+  lampiran_files?: { nama?: string; url?: string }[];
 };
 
 export type AsesmenSiswa = {
   id: number;
   judul: string;
+  guru?: string;
   deskripsi?: string;
   tipe: "ujian_harian" | "kuis";
   pelajaran: PelajaranSiswa | string;
@@ -110,7 +114,7 @@ export type DetailTugasSiswa = TugasSiswa & {
   bobot?: number;
   kriteria?: string[];
   instruksi?: string;
-  pengumpulan?: { nama_file?: string; catatan?: string; dikumpulkan_at?: string; nilai?: number; komentar?: string } | null;
+  pengumpulan?: { nama_file?: string; files?: string[]; catatan?: string; dikumpulkan_at?: string; nilai?: number; komentar?: string } | null;
 };
 
 type Envelope<T> = { success?: boolean; message?: string; data?: T };
@@ -147,7 +151,7 @@ export async function listPengumumanSiswa(filters: { jenis?: JenisPengumuman | "
 }
 
 export async function getDashboardSiswa(): Promise<DashboardSiswa> {
-  const response = await apiFetch<DashboardSiswa | Envelope<DashboardSiswa>>("/siswa/dashboard");
+  const response = await apiFetch<DashboardSiswa | Envelope<DashboardSiswa>>("/siswa/dashboard", { cache: "no-store" });
   const dashboard = unwrap(response);
   if (!dashboard || !Array.isArray(dashboard.asesmen) || !Array.isArray(dashboard.tugas) || !Array.isArray(dashboard.materi)) {
     throw new Error("Format dashboard siswa tidak sesuai.");
@@ -165,15 +169,16 @@ export async function listPelajaranSiswa(): Promise<PelajaranSiswa[]> {
 export async function listMateriSiswa(filters: { search?: string; pelajaran_id?: number } = {}): Promise<MateriSiswa[]> {
   const response = await apiFetch<MateriSiswa[] | Envelope<MateriSiswa[]>>(
     "/siswa/materi" + queryString({ search: filters.search, pelajaran_id: filters.pelajaran_id }),
+    { cache: "no-store" },
   );
   const materials = unwrap(response);
   if (!Array.isArray(materials)) throw new Error("Format daftar materi siswa tidak sesuai.");
   return materials;
 }
 
-export async function downloadMateriSiswa(id: number, fallbackName?: string): Promise<{ blob: Blob; filename: string }> {
+export async function downloadMateriSiswa(id: number, fallbackName?: string, index = 0): Promise<{ blob: Blob; filename: string }> {
   const token = getToken();
-  const response = await fetch("/api/siswa/materi/" + encodeURIComponent(String(id)) + "/unduh", {
+  const response = await fetch("/api/siswa/materi/" + encodeURIComponent(String(id)) + "/unduh?index=" + index, {
     headers: token ? { Authorization: "Bearer " + token } : {},
   });
   if (response.status === 401) {
@@ -202,6 +207,7 @@ export async function downloadMateriSiswa(id: number, fallbackName?: string): Pr
 export async function listAsesmenSiswa(filters: { search?: string; pelajaran_id?: number; tipe?: AsesmenSiswa["tipe"] } = {}): Promise<AsesmenSiswa[]> {
   const response = await apiFetch<AsesmenSiswa[] | Envelope<AsesmenSiswa[]>>(
     "/siswa/asesmen" + queryString({ search: filters.search, pelajaran_id: filters.pelajaran_id, tipe: filters.tipe }),
+    { cache: "no-store" },
   );
   const assessments = unwrap(response);
   if (!Array.isArray(assessments)) throw new Error("Format daftar asesmen siswa tidak sesuai.");
@@ -243,6 +249,7 @@ export async function kirimAsesmenSiswa(id: number, jawaban: Record<string, stri
 export async function listTugasSiswa(filters: { search?: string; pelajaran_id?: number } = {}): Promise<TugasSiswa[]> {
   const response = await apiFetch<TugasSiswa[] | Envelope<TugasSiswa[]>>(
     "/siswa/tugas" + queryString({ search: filters.search, pelajaran_id: filters.pelajaran_id }),
+    { cache: "no-store" },
   );
   const tasks = unwrap(response);
   if (!Array.isArray(tasks)) throw new Error("Format daftar tugas siswa tidak sesuai.");
@@ -254,9 +261,9 @@ export async function getDetailTugasSiswa(id: number): Promise<DetailTugasSiswa>
   return unwrap(response);
 }
 
-export async function downloadTugasLampiranSiswa(id: number, fileUrl: string, fallbackName?: string): Promise<{ blob: Blob; filename: string }> {
+export async function downloadTugasLampiranSiswa(id: number, fileUrl: string, fallbackName?: string, index = 0): Promise<{ blob: Blob; filename: string }> {
   const token = getToken();
-  const url = fileUrl.startsWith("http") ? fileUrl : fileUrl.startsWith("/api/") ? fileUrl : "/api/siswa/tugas/" + encodeURIComponent(String(id)) + "/lampiran";
+  const url = fileUrl.startsWith("http") ? fileUrl : fileUrl.startsWith("/api/") ? fileUrl : "/api/siswa/tugas/" + encodeURIComponent(String(id)) + "/lampiran?index=" + index;
   const response = await fetch(url, { headers: token ? { Authorization: "Bearer " + token } : {} });
   if (response.status === 401) {
     clearSession();
@@ -275,7 +282,7 @@ export async function downloadTugasLampiranSiswa(id: number, fileUrl: string, fa
   return { blob: await response.blob(), filename };
 }
 
-export function kumpulkanTugasSiswa(id: number, file: File, catatan: string, onProgress: (progress: number) => void): Promise<DetailTugasSiswa> {
+export function kumpulkanTugasSiswa(id: number, files: File[], onProgress: (progress: number) => void): Promise<DetailTugasSiswa> {
   return new Promise((resolve, reject) => {
     const request = new XMLHttpRequest();
     request.open("POST", "/api/siswa/tugas/" + encodeURIComponent(String(id)) + "/kumpul");
@@ -308,8 +315,7 @@ export function kumpulkanTugasSiswa(id: number, file: File, catatan: string, onP
     request.addEventListener("error", () => reject(new Error("Jaringan bermasalah. Tugas gagal dikumpulkan.")));
     request.addEventListener("abort", () => reject(new Error("Pengumpulan tugas dibatalkan.")));
     const form = new FormData();
-    form.append("file", file);
-    form.append("catatan", catatan);
+    files.forEach((file) => form.append("files", file));
     request.send(form);
   });
 }
