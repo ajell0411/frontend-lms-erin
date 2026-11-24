@@ -1,8 +1,8 @@
 .page{max-width:1280px;margin:0 auto}
-.toolbar{display:grid;grid-template-columns:minmax(220px,1fr) 230px;gap:12px;margin-bottom:18px}
+.toolbar{display:grid;grid-template-columns:minmax(220px,1fr) 230px 220px;gap:12px;margin-bottom:18px}
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .taskCard{position:relative;display:flex;min-height:225px;flex-direction:column;gap:12px;padding:16px 16px 15px 18px;border-left:4px solid var(--siswa-subject-color,#899477)}
-.meta{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.meta{display:flex;align-items:center;justify-content:flex-start;gap:7px}
 .taskCard h2{display:-webkit-box;overflow:hidden;margin:1px 0 0;color:#414838;font-size:15px;font-weight:700;line-height:1.4;-webkit-box-orient:vertical;-webkit-line-clamp:2}
 .description{display:-webkit-box;overflow:hidden;min-height:36px;margin:0;color:#68715b;font-size:12px;line-height:1.5;-webkit-box-orient:vertical;-webkit-line-clamp:2}
 .duration,.overdue{display:flex;align-items:center;gap:6px;margin-top:auto;color:#68715b;font-size:11px}
@@ -12,11 +12,13 @@
 .startButton{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:35px;border:0;border-radius:7px;background:#6d7958;color:#fff;font:inherit;font-size:12px;font-weight:650;text-decoration:none;cursor:pointer}
 .startButton:hover{background:#596349}
 .startButton span{font-size:17px}
+.overdueButton,.overdueButton:hover{background:#b94a48;border-color:#b94a48;color:#fff;box-shadow:0 6px 16px rgb(185 74 72 / 22%);cursor:not-allowed;opacity:1}
 .skeletonCard{display:grid;align-content:start;gap:18px;min-height:180px}
 .skeletonCard>span{height:17px}
 .skeletonCard>span:last-child{height:35px;margin-top:auto}
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:640px){.toolbar{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
+@media(max-width:900px){.toolbar{grid-template-columns:minmax(220px,1fr) 220px}.toolbar>*:first-child{grid-column:1/-1}}
+@media(max-width:640px){.toolbar{grid-template-columns:1fr}.toolbar>*:first-child{grid-column:auto}.grid{grid-template-columns:1fr}}
 /* sinkron-v2 */
 .startButton,.downloadButton,.moreButton,.viewerBtn{background:linear-gradient(90deg,#6d7958,#6d7958);border-color:transparent;color:#fff;border-radius:12px;font-weight:700;box-shadow:0 6px 16px rgb(102 114 83 / 26%);transition:transform 150ms ease,box-shadow 150ms ease,filter 150ms ease}
 .startButton:hover:not(:disabled),.downloadButton:hover:not(:disabled),.moreButton:hover:not(:disabled),.viewerBtn:hover:not(:disabled){background:linear-gradient(90deg,#6d7958,#6d7958);filter:brightness(1.06);transform:translateY(-1px);box-shadow:0 9px 22px rgb(102 114 83 / 34%)}
@@ -84,3 +86,4 @@
 .feedCard.feedCard.feedCard:nth-child(8n+6){border-left:4px solid #a9b69a;background:linear-gradient(135deg,color-mix(in srgb,#a9b69a 7%,#fff),#fff 62%)}
 .feedCard.feedCard.feedCard:nth-child(8n+7){border-left:4px solid #899477;background:linear-gradient(135deg,color-mix(in srgb,#899477 7%,#fff),#fff 62%)}
 .feedCard.feedCard.feedCard:nth-child(8n+8){border-left:4px solid #c1cbaa;background:linear-gradient(135deg,color-mix(in srgb,#c1cbaa 7%,#fff),#fff 62%)}
+.overdueButton,.overdueButton:hover{background:#b94a48!important;border-color:#b94a48;color:#fff;box-shadow:0 6px 16px rgb(185 74 72 / 22%);cursor:not-allowed;opacity:1;filter:none;transform:none}
