@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import PasswordInput from "@/components/PasswordInput";
-import { getProfile, updateProfilePassword, type ProfileRecord } from "@/lib/api";
+import { getProfile, type ProfileRecord } from "@/lib/api";
 import { listGuruKelas } from "@/lib/guru";
 import styles from "../../admin/profile/page.module.css";
 
@@ -44,12 +43,6 @@ export default function ProfilGuruPage() {
   const [profil, setProfil] = useState<Profil | null>(null);
   const [mapel, setMapel] = useState("");
   const [error, setError] = useState("");
-  const [passwordLama, setPasswordLama] = useState("");
-  const [passwordBaru, setPasswordBaru] = useState("");
-  const [passwordKonfirmasi, setPasswordKonfirmasi] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [passwordSuccess, setPasswordSuccess] = useState("");
-  const [passwordSaving, setPasswordSaving] = useState(false);
 
   useEffect(() => {
     let aktif = true;
@@ -69,27 +62,6 @@ export default function ProfilGuruPage() {
       aktif = false;
     };
   }, []);
-
-  async function savePassword(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setPasswordError("");
-    setPasswordSuccess("");
-    if (!passwordLama) { setPasswordError("Password saat ini wajib diisi."); return; }
-    if (!/^[A-Za-z0-9]{8,}$/.test(passwordBaru)) { setPasswordError("Password baru minimal 8 karakter dan hanya boleh berisi huruf dan angka."); return; }
-    if (passwordBaru !== passwordKonfirmasi) { setPasswordError("Konfirmasi password baru tidak sama."); return; }
-    setPasswordSaving(true);
-    try {
-      const result = await updateProfilePassword(passwordLama, passwordBaru);
-      setPasswordLama("");
-      setPasswordBaru("");
-      setPasswordKonfirmasi("");
-      setPasswordSuccess(result.message);
-    } catch (reason) {
-      setPasswordError(reason instanceof Error ? reason.message : "Password gagal diperbarui.");
-    } finally {
-      setPasswordSaving(false);
-    }
-  }
 
   const header = (
     <header className={styles.heading}>
@@ -156,17 +128,6 @@ export default function ProfilGuruPage() {
           </article>
         </div>
       </section>
-      {passwordError && <p className={styles.error} role="alert">{passwordError}</p>}
-      {passwordSuccess && <p className={styles.success} role="status">{passwordSuccess}</p>}
-      <form className={styles.formCard} onSubmit={savePassword}>
-        <h2>Ubah Kata Sandi</h2>
-        <div className={styles.formGrid}>
-          <label>Password Saat Ini<PasswordInput required autoComplete="current-password" value={passwordLama} onChange={(event) => setPasswordLama(event.target.value)} disabled={passwordSaving} /></label>
-          <label>Password Baru<PasswordInput required minLength={8} autoComplete="new-password" value={passwordBaru} onChange={(event) => setPasswordBaru(event.target.value)} disabled={passwordSaving} /></label>
-          <label>Konfirmasi Password Baru<PasswordInput required minLength={8} autoComplete="new-password" value={passwordKonfirmasi} onChange={(event) => setPasswordKonfirmasi(event.target.value)} disabled={passwordSaving} /></label>
-        </div>
-        <button type="submit" disabled={passwordSaving}>{passwordSaving ? "Menyimpan..." : "Simpan Kata Sandi"}</button>
-      </form>
     </main>
   );
 }
