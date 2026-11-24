@@ -39,8 +39,8 @@ function labelFile(nama: string) {
   return "FILE";
 }
 
-type Form = { judul: string; guruKelasId: string; deskripsi: string; file: File | null };
-const KOSONG: Form = { judul: "", guruKelasId: "", deskripsi: "", file: null };
+type Form = { judul: string; guruKelasId: string; deskripsi: string; files: File[] };
+const KOSONG: Form = { judul: "", guruKelasId: "", deskripsi: "", files: [] };
 
 export default function MateriGuruPage() {
   const [materi, setMateri] = useState<GuruMateri[]>([]);
@@ -98,22 +98,20 @@ export default function MateriGuruPage() {
 
   function bukaUbah(m: GuruMateri) {
     const cocok = kelas.find((k) => k.kelas_id === m.kelas_id && k.pelajaran_id === m.pelajaran_id);
-    setForm({ judul: m.judul, guruKelasId: cocok ? String(cocok.id) : "", deskripsi: m.deskripsi, file: null });
+    setForm({ judul: m.judul, guruKelasId: cocok ? String(cocok.id) : "", deskripsi: m.deskripsi, files: [] });
     setModal({ edit: m });
   }
 
-  function pilihFile(file: File | undefined) {
-    if (!file) return;
-    const nama = file.name.toLowerCase();
-    if (!EKSTENSI.some((e) => nama.endsWith(e))) {
-      show("Format file harus PDF, DOC, DOCX, PPT, PPTX, XLS, atau XLSX.", true);
-      return;
+  function pilihFile(files: File[]) {
+    const selected = [...form.files];
+    for (const file of files) {
+      const nama = file.name.toLowerCase();
+      if (!EKSTENSI.some((e) => nama.endsWith(e))) { show(`${file.name}: format tidak didukung.`, true); return; }
+      if (file.size > MAKS_MB * 1024 * 1024) { show(`${file.name}: ukuran maksimal ${MAKS_MB} MB.`, true); return; }
+      if (!selected.some((item) => item.name === file.name && item.size === file.size)) selected.push(file);
     }
-    if (file.size > MAKS_MB * 1024 * 1024) {
-      show(`Ukuran file maksimal ${MAKS_MB} MB.`, true);
-      return;
-    }
-    setForm((f) => ({ ...f, file }));
+    if (selected.length > 20) { show("Maksimal 20 file untuk satu materi.", true); return; }
+    setForm((f) => ({ ...f, files: selected }));
   }
 
   async function simpan() {
@@ -126,7 +124,7 @@ export default function MateriGuruPage() {
       show("Pilih kelas yang dituju.", true);
       return;
     }
-    if (!modal?.edit && !form.file) {
+    if (!modal?.edit && !form.files.length) {
       show("File materi wajib diunggah.", true);
       return;
     }
@@ -137,7 +135,7 @@ export default function MateriGuruPage() {
       fd.set("kelas_id", String(pilih.kelas_id));
       fd.set("pelajaran_id", String(pilih.pelajaran_id));
       fd.set("deskripsi", form.deskripsi.trim());
-      if (form.file) fd.set("file", form.file);
+      form.files.forEach((file) => fd.append("files", file));
       if (modal?.edit) {
         await ubahGuruMateri(modal.edit.id, fd);
         show("Materi diperbarui.");
@@ -157,8 +155,11 @@ export default function MateriGuruPage() {
   async function lihat(m: GuruMateri) {
     setBukaId(m.id);
     try {
-      const hasil = await fetchGuruFile(guruMateriFilePath(m.id));
-      setPreview({ judul: m.judul, blob: hasil.blob, filename: hasil.filename || m.nama_file });
+      const count = Math.max(1, m.files?.length || 1);
+      const index = count === 1 ? 0 : Number(window.prompt(`Pilih nomor file (1-${count})`, "1")) - 1;
+      if (!Number.isInteger(index) || index < 0 || index >= count) return;
+      const hasil = await fetchGuruFile(guruMateriFilePath(m.id, index));
+      setPreview({ judul: m.judul, blob: hasil.blob, filename: hasil.filename || m.files?.[index]?.nama || m.nama_file });
     } catch (reason) {
       show(pesanError(reason, "Materi gagal dibuka."), true);
     } finally {
@@ -169,8 +170,11 @@ export default function MateriGuruPage() {
   async function unduh(m: GuruMateri) {
     setBukaId(m.id);
     try {
-      const hasil = await fetchGuruFile(guruMateriFilePath(m.id));
-      saveBlob(hasil.blob, hasil.filename || m.nama_file);
+      const count = Math.max(1, m.files?.length || 1);
+      const index = count === 1 ? 0 : Number(window.prompt(`Pilih nomor file (1-${count})`, "1")) - 1;
+      if (!Number.isInteger(index) || index < 0 || index >= count) return;
+      const hasil = await fetchGuruFile(guruMateriFilePath(m.id, index));
+      saveBlob(hasil.blob, hasil.filename || m.files?.[index]?.nama || m.nama_file);
     } catch (reason) {
       show(pesanError(reason, "Materi gagal diunduh."), true);
     } finally {
@@ -251,7 +255,7 @@ export default function MateriGuruPage() {
                 </div>
                 <h3>{m.judul}</h3>
                 {m.deskripsi && <p className={ui.materiDesc}>{m.deskripsi}</p>}
-                <span className={ui.materiFile}>{m.ada_file ? m.nama_file : "File belum tersedia di server"}</span>
+                <span className={ui.materiFile}>{m.ada_file ? (m.files?.map((file) => file.nama).join(", ") || m.nama_file) : "File belum tersedia di server"}</span>
                 <div className={ui.materiActions}>
                   <button type="button" className={`${ui.btn} ${ui.btnPrimary} ${ui.btnSm}`} disabled={bukaId === m.id} onClick={() => void lihat(m)}>
                     <Icon name="eye" />
@@ -299,10 +303,10 @@ export default function MateriGuruPage() {
           </div>
           <div className={ui.field}>
             <label>Unggah File {modal.edit ? "(kosongkan jika tidak diganti)" : ""}</label>
-            {modal.edit && !form.file && modal.edit.nama_file && (
+            {modal.edit && !form.files.length && modal.edit.nama_file && (
               <div className={ui.fileNow}>
                 <Icon name="file" />
-                <span>{modal.edit.nama_file}</span>
+                <span>{modal.edit.files?.map((file) => file.nama).join(", ") || modal.edit.nama_file}</span>
               </div>
             )}
             <div
@@ -321,20 +325,21 @@ export default function MateriGuruPage() {
               onDrop={(e) => {
                 e.preventDefault();
                 setDrag(false);
-                pilihFile(e.dataTransfer.files?.[0]);
+                pilihFile(Array.from(e.dataTransfer.files || []));
               }}
             >
               <Icon name="upload" />
-              <strong>{form.file ? form.file.name : "Klik atau seret file ke sini"}</strong>
-              <span>PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX (maks {MAKS_MB} MB)</span>
+              <strong>{form.files.length ? `${form.files.length} file dipilih` : "Klik atau seret beberapa file ke sini"}</strong>
+              <span>PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX (maks {MAKS_MB} MB per file)</span>
             </div>
             <input
               ref={inputRef}
               type="file"
               hidden
               accept={EKSTENSI.join(",")}
+              multiple
               onChange={(e) => {
-                pilihFile(e.target.files?.[0]);
+                pilihFile(Array.from(e.target.files || []));
                 e.target.value = "";
               }}
             />
