@@ -58,7 +58,10 @@ export default function MateriSiswaPage() {
   async function download(item: MateriSiswa) {
     setDownloadId(item.id);
     try {
-      const result = await downloadMateriSiswa(item.id, item.nama_file);
+      const count = Math.max(1, item.files?.length || 1);
+      const index = count === 1 ? 0 : Number(window.prompt(`Pilih nomor file (1-${count})`, "1")) - 1;
+      if (!Number.isInteger(index) || index < 0 || index >= count) return;
+      const result = await downloadMateriSiswa(item.id, item.files?.[index]?.nama || item.nama_file, index);
       const url = URL.createObjectURL(result.blob);
       const anchor = document.createElement("a");
       anchor.href = url;
@@ -102,7 +105,10 @@ export default function MateriSiswaPage() {
   async function view(item: MateriSiswa) {
     setViewId(item.id);
     try {
-      const result = await downloadMateriSiswa(item.id, item.nama_file);
+      const count = Math.max(1, item.files?.length || 1);
+      const index = count === 1 ? 0 : Number(window.prompt(`Pilih nomor file (1-${count})`, "1")) - 1;
+      if (!Number.isInteger(index) || index < 0 || index >= count) return;
+      const result = await downloadMateriSiswa(item.id, item.files?.[index]?.nama || item.nama_file, index);
       const filename = result.filename || item.nama_file;
       const blob = result.blob;
       const type = blob.type || "";
@@ -127,9 +133,9 @@ export default function MateriSiswaPage() {
     <PageHeader title="Materi Pembelajaran" subtitle="Cari dan unduh materi pembelajaran dari guru Anda."/>
     <div className={styles.toolbar}><SearchInput value={search} onChange={setSearch} placeholder="Cari materi pembelajaran..."/><Dropdown options={options} value={lessonId} onChange={setLessonId} placeholder="Pilih Pelajaran" label="Pilih pelajaran"/></div>
     {error || lessonError ? <Card><ErrorState message={[lessonError, error].filter(Boolean).join(" ")} onRetry={() => { void loadLessons(); void loadMaterials(); }}/></Card> : loadingMaterials || loadingLessons ? <div className={styles.grid}>{[0,1,2].map((key) => <Card className={styles.skeletonCard} key={key}><Skeleton/><Skeleton/><Skeleton/></Card>)}</div> : materials.length === 0 ? <Card><EmptyState title="Materi tidak ditemukan" description="Coba ubah kata pencarian atau pilih pelajaran lain."/></Card> : <div className={styles.grid}>{materials.map((item) => <Card className={styles.materialCard} key={item.id}>
-      <div className={styles.cardTitle}><span className={styles.fileIcon} data-ext={extension(item)}>{extension(item).slice(0, 4)}</span><strong>{item.judul}</strong></div>
-      <Badge>{subject(item.pelajaran)}</Badge>
-      <p className={styles.uploaded}>▢ Diunggah: {formatDate(item.created_at)}</p>
+      <div className={styles.cardTitle}><span className={styles.fileIcon} data-ext={extension(item)}>{extension(item).slice(0, 4)}</span><strong>{item.judul}</strong><span className={styles.subjectBadge}><Badge>{subject(item.pelajaran)}</Badge></span></div>
+      {item.files?.length ? <p className={styles.uploaded}>{item.files.map((file) => file.nama).join(", ")}</p> : null}
+      <p className={styles.uploaded}>{item.guru && <>Oleh: {item.guru} · </>}Diunggah: {formatDate(item.created_at)}</p>
       <div className={styles.actions}>
         <button type="button" className={styles.view} disabled={viewId === item.id} onClick={() => void view(item)}>{viewId === item.id ? "Membuka..." : "Lihat Materi"}</button>
         <button type="button" className={styles.download} disabled={downloadId === item.id} onClick={() => void download(item)}><span aria-hidden="true">{"\u2193"}</span>{downloadId === item.id ? "Mengunduh..." : "Unduh"}</button>
