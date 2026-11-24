@@ -31,11 +31,24 @@ export default function AdminProfilePage() {
   async function saveData(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setError(""); setMessage(""); setSaving(true);
     try {
-      const saved = await updateProfile(profile);
+      const saved = await updateProfile({
+        nama: profile.nama.trim(),
+        email: profile.email.trim(),
+        username: profile.username.trim(),
+        telepon: profile.telepon.trim(),
+        alamat: profile.alamat.trim(),
+        foto_url: profile.foto_url,
+      });
       setProfile(saved);
       window.dispatchEvent(new CustomEvent("eclass-profile-updated", { detail: saved.foto_url ?? "" }));
       const existing = getUser();
-      if (existing) saveSession(getToken() ?? "", { ...existing, nama: saved.nama, email: saved.email }, Boolean(localStorage.getItem("token")));
+      if (existing) {
+        try {
+          saveSession(getToken() ?? "", { ...existing, nama: saved.nama, email: saved.email }, Boolean(localStorage.getItem("token")));
+        } catch {
+          // Data profil sudah tersimpan di server; kegagalan memperbarui cache sesi tidak membatalkan hasilnya.
+        }
+      }
       setMessage("Profil berhasil disimpan.");
     } catch (reason) { setError(errorMessage(reason)); }
     finally { setSaving(false); }
