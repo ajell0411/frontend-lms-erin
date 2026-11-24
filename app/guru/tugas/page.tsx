@@ -19,8 +19,8 @@ import x from "../extra.module.css";
 
 const MAKS_MB = 50;
 
-type Form = { judul: string; guruKelasId: string; deskripsi: string; deadline: string; file: File | null };
-const KOSONG: Form = { judul: "", guruKelasId: "", deskripsi: "", deadline: "", file: null };
+type Form = { judul: string; guruKelasId: string; deskripsi: string; deadlineTanggal: string; deadlineJam: string; files: File[] };
+const KOSONG: Form = { judul: "", guruKelasId: "", deskripsi: "", deadlineTanggal: "", deadlineJam: "", files: [] };
 
 export default function TugasGuruPage() {
   const [tugas, setTugas] = useState<GuruTugas[]>([]);
@@ -83,19 +83,21 @@ export default function TugasGuruPage() {
       judul: t.judul,
       guruKelasId: cocok ? String(cocok.id) : "",
       deskripsi: t.deskripsi,
-      deadline: toInputDateTime(t.deadline),
-      file: null,
+      deadlineTanggal: toInputDateTime(t.deadline).slice(0, 10),
+      deadlineJam: toInputDateTime(t.deadline).slice(11, 16),
+      files: [],
     });
     setModal({ edit: t });
   }
 
-  function pilihFile(file: File | undefined) {
-    if (!file) return;
-    if (file.size > MAKS_MB * 1024 * 1024) {
-      show(`Ukuran file maksimal ${MAKS_MB} MB.`, true);
-      return;
+  function pilihFile(files: File[]) {
+    const selected = [...form.files];
+    for (const file of files) {
+      if (file.size > MAKS_MB * 1024 * 1024) { show(`${file.name}: ukuran maksimal ${MAKS_MB} MB.`, true); return; }
+      if (!selected.some((item) => item.name === file.name && item.size === file.size)) selected.push(file);
     }
-    setForm((f) => ({ ...f, file }));
+    if (selected.length > 20) { show("Maksimal 20 file untuk satu tugas.", true); return; }
+    setForm((f) => ({ ...f, files: selected }));
   }
 
   async function simpan() {
@@ -108,8 +110,8 @@ export default function TugasGuruPage() {
       show("Pilih kelas yang dituju.", true);
       return;
     }
-    if (!form.deadline) {
-      show("Deadline wajib diisi.", true);
+    if (!form.deadlineTanggal || !form.deadlineJam) {
+      show("Tanggal dan jam deadline wajib diisi.", true);
       return;
     }
     setBusy(true);
@@ -119,11 +121,8 @@ export default function TugasGuruPage() {
       fd.set("kelas_id", String(pilih.kelas_id));
       fd.set("pelajaran_id", String(pilih.pelajaran_id));
       fd.set("deskripsi", form.deskripsi.trim());
-      fd.set("deadline", form.deadline);
-      if (form.file) {
-        fd.set("file", form.file);
-        fd.set("lampiran", form.file);
-      }
+      fd.set("deadline", `${form.deadlineTanggal}T${form.deadlineJam}`);
+      form.files.forEach((file) => fd.append("files", file));
       if (modal?.edit) {
         await ubahGuruTugas(modal.edit.id, fd);
         show("Tugas diperbarui.");
@@ -273,15 +272,19 @@ export default function TugasGuruPage() {
             <label htmlFor="t-judul">Judul Tugas</label>
             <input id="t-judul" className={ui.input} value={form.judul} onChange={(e) => setForm({ ...form, judul: e.target.value })} placeholder="Contoh: Latihan Struktur Data" />
           </div>
+          <div className={ui.field}>
+            <label htmlFor="t-kelas">Kelas</label>
+            <SearchableSelect value={form.guruKelasId} onChange={(guruKelasId) => setForm({ ...form, guruKelasId })} options={kelas.map((k) => ({ value: String(k.id), label: `${k.kelas_nama} - ${k.pelajaran_nama}` }))} ariaLabel="Cari kelas untuk tugas" placeholder="Cari kelas..." disabled={kelas.length === 0} />
+            {kelas.length === 0 && <span className={ui.hint}>Tambahkan kelas dulu di menu Kelas Saya.</span>}
+          </div>
           <div className={ui.fieldRow}>
             <div className={ui.field}>
-              <label htmlFor="t-kelas">Kelas</label>
-              <SearchableSelect value={form.guruKelasId} onChange={(guruKelasId) => setForm({ ...form, guruKelasId })} options={kelas.map((k) => ({ value: String(k.id), label: `${k.kelas_nama} - ${k.pelajaran_nama}` }))} ariaLabel="Cari kelas untuk tugas" placeholder="Cari kelas..." disabled={kelas.length === 0} />
-              {kelas.length === 0 && <span className={ui.hint}>Tambahkan kelas dulu di menu Kelas Saya.</span>}
+              <label htmlFor="t-deadline-date">Tanggal Deadline</label>
+              <input id="t-deadline-date" type="date" className={ui.input} value={form.deadlineTanggal} onChange={(e) => setForm({ ...form, deadlineTanggal: e.target.value })} />
             </div>
             <div className={ui.field}>
-              <label htmlFor="t-deadline">Deadline</label>
-              <input id="t-deadline" type="datetime-local" className={ui.input} value={form.deadline} onChange={(e) => setForm({ ...form, deadline: e.target.value })} />
+              <label htmlFor="t-deadline-time">Jam Deadline</label>
+              <input id="t-deadline-time" type="time" className={ui.input} value={form.deadlineJam} onChange={(e) => setForm({ ...form, deadlineJam: e.target.value })} />
             </div>
           </div>
           <div className={ui.field}>
@@ -290,10 +293,10 @@ export default function TugasGuruPage() {
           </div>
           <div className={ui.field}>
             <label>Lampiran (Opsional){modal.edit ? " - kosongkan jika tidak diganti" : ""}</label>
-            {modal.edit && !form.file && modal.edit.nama_lampiran && (
+            {modal.edit && !form.files.length && modal.edit.nama_lampiran && (
               <div className={ui.fileNow}>
                 <Icon name="file" />
-                <span>{modal.edit.nama_lampiran}</span>
+                <span>{modal.edit.files?.map((file) => file.nama).join(", ") || modal.edit.nama_lampiran}</span>
               </div>
             )}
             <div
@@ -312,19 +315,20 @@ export default function TugasGuruPage() {
               onDrop={(e) => {
                 e.preventDefault();
                 setDrag(false);
-                pilihFile(e.dataTransfer.files?.[0]);
+                pilihFile(Array.from(e.dataTransfer.files || []));
               }}
             >
               <Icon name="upload" />
-              <strong>{form.file ? form.file.name : "Klik atau seret file ke sini"}</strong>
-              <span>Maks {MAKS_MB} MB</span>
+              <strong>{form.files.length ? `${form.files.length} file dipilih` : "Klik atau seret beberapa file ke sini"}</strong>
+              <span>Maks {MAKS_MB} MB per file</span>
             </div>
             <input
               ref={inputRef}
               type="file"
               hidden
+              multiple
               onChange={(e) => {
-                pilihFile(e.target.files?.[0]);
+                pilihFile(Array.from(e.target.files || []));
                 e.target.value = "";
               }}
             />
