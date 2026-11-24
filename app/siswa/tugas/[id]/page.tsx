@@ -4,7 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { downloadTugasLampiranSiswa, getDetailTugasSiswa, kumpulkanTugasSiswa, type DetailTugasSiswa } from "@/lib/siswa";
-import { Badge, Card, EmptyState, ErrorState, FileDropzone, Skeleton, useToast } from "../../components";
+import { FilePreview } from "@/app/guru/ui";
+import { Badge, Card, EmptyState, ErrorState, MultiFileDropzone, Skeleton, useToast } from "../../components";
 import styles from "./page.module.css";
 
 function subject(value: DetailTugasSiswa["pelajaran"]) {
@@ -21,10 +22,6 @@ function formatDate(value?: string) {
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? "Belum ditentukan" : new Intl.DateTimeFormat("id-ID", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }).format(date);
 }
-function formatSize(value: number) {
-  return value < 1024 * 1024 ? (value / 1024).toFixed(0) + " KB" : (value / 1024 / 1024).toFixed(1) + " MB";
-}
-
 export default function DetailTugasSiswaPage() {
   const params = useParams<{ id: string }>();
   const id = Number(params.id);
@@ -33,12 +30,12 @@ export default function DetailTugasSiswaPage() {
   const [task, setTask] = useState<DetailTugasSiswa | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [file, setFile] = useState<File | null>(null);
-  const [note, setNote] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
   const [editing, setEditing] = useState(false);
   const [sending, setSending] = useState(false);
   const [progress, setProgress] = useState(0);
   const [now, setNow] = useState(0);
+  const [preview, setPreview] = useState<{ judul: string; blob: Blob; filename: string } | null>(null);
 
   const load = useCallback(async () => {
     if (!Number.isSafeInteger(id) || id <= 0) { setError("ID tugas tidak valid."); setLoading(false); return; }
@@ -47,7 +44,6 @@ export default function DetailTugasSiswaPage() {
     try {
       const result = await getDetailTugasSiswa(id);
       setTask(result);
-      setNote(result.pengumpulan?.catatan || "");
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Detail tugas gagal dimuat.");
     } finally { setLoading(false); }
@@ -64,16 +60,17 @@ export default function DetailTugasSiswaPage() {
 
   const dueDate = task?.tenggat ? new Date(task.tenggat).getTime() : 0;
   const hasSubmission = Boolean(task?.pengumpulan || ["dikumpulkan", "dinilai", "selesai"].includes(task?.status || ""));
-  const locked = hasSubmission && dueDate > 0 && dueDate <= now;
+  const isOverdue = !hasSubmission && Boolean(task && (task.status === "terlambat" || (dueDate > 0 && now > 0 && dueDate <= now)));
+  const locked = dueDate > 0 && now > 0 && dueDate <= now;
   const teacher = named(task?.guru);
   const classLabel = classNameOf(task?.kelas);
 
   async function submit() {
-    if (!task || !file || sending) return;
+    if (!task || isOverdue || !files.length || sending) return;
     setSending(true);
     setProgress(0);
     try {
-      await kumpulkanTugasSiswa(id, file, note, setProgress);
+      await kumpulkanTugasSiswa(id, files, setProgress);
       showToast("Tugas berhasil dikumpulkan.");
       router.push("/siswa/tugas");
     } catch (reason) {
@@ -82,10 +79,12 @@ export default function DetailTugasSiswaPage() {
     }
   }
 
-  async function downloadAttachment() {
-    if (!task?.lampiran?.url) return;
+  async function downloadAttachment(index = 0) {
+    const attachments = task?.lampiran_files?.length ? task.lampiran_files : task?.lampiran ? [task.lampiran] : [];
+    const attachment = attachments[index];
+    if (!attachment?.url) return;
     try {
-      const result = await downloadTugasLampiranSiswa(id, task.lampiran.url, task.lampiran.nama);
+      const result = await downloadTugasLampiranSiswa(id, attachment.url, attachment.nama, index);
       const url = URL.createObjectURL(result.blob);
       const anchor = document.createElement("a");
       anchor.href = url;
@@ -94,6 +93,18 @@ export default function DetailTugasSiswaPage() {
       window.setTimeout(() => URL.revokeObjectURL(url), 1000);
     } catch (reason) {
       showToast(reason instanceof Error ? reason.message : "Lampiran gagal diunduh.", "error");
+    }
+  }
+
+  async function viewAttachment(index = 0) {
+    const attachments = task?.lampiran_files?.length ? task.lampiran_files : task?.lampiran ? [task.lampiran] : [];
+    const attachment = attachments[index];
+    if (!attachment?.url) return;
+    try {
+      const result = await downloadTugasLampiranSiswa(id, attachment.url, attachment.nama, index);
+      setPreview({ judul: attachment.nama || task?.judul || "Lampiran tugas", blob: result.blob, filename: result.filename || attachment.nama || "lampiran" });
+    } catch (reason) {
+      showToast(reason instanceof Error ? reason.message : "Lampiran gagal dibuka.", "error");
     }
   }
 
@@ -113,30 +124,25 @@ export default function DetailTugasSiswaPage() {
       <h2><span aria-hidden="true">ⓘ</span>Instruksi Tugas</h2>
       <div className={styles.instructions}>{task.instruksi || task.deskripsi || "Tidak ada instruksi tambahan dari pengajar."}</div>
       {task.kriteria && task.kriteria.length > 0 && <div className={styles.criteria}><strong>Kriteria Penilaian:</strong><ul>{task.kriteria.map((criterion, index) => <li key={index}>{criterion}</li>)}</ul></div>}
-      <div className={styles.infoBox}><span aria-hidden="true">ⓘ</span><span>Kumpulkan dalam format .zip, .rar, atau .pdf. Ukuran file maksimal 10 MB.</span></div>
-      {task.lampiran?.url && <button type="button" className={styles.attachment} onClick={() => void downloadAttachment()}><span aria-hidden="true">↓</span> Unduh lampiran pengajar{task.lampiran.nama ? ": " + task.lampiran.nama : ""}</button>}
+      <div className={styles.infoBox}><span aria-hidden="true">ⓘ</span><span>Kumpulkan beberapa dokumen sekaligus. Ukuran setiap file maksimal 10 MB.</span></div>
+      {(task.lampiran_files?.length ? task.lampiran_files : task.lampiran ? [task.lampiran] : []).map((attachment, index) => <div className={styles.attachmentActions} key={`${attachment.nama}-${index}`}><span className={styles.attachmentName}>{attachment.nama || `Lampiran ${index + 1}`}</span><button type="button" className={styles.attachment} onClick={() => void viewAttachment(index)}>Lihat</button><button type="button" className={styles.attachment} onClick={() => void downloadAttachment(index)}>Unduh</button></div>)}
     </Card>
 
     <Card className={styles.submitCard}>
       <h2><span aria-hidden="true">⇧</span>Area Pengumpulan</h2>
-      {hasSubmission && !editing ? <div className={styles.submitted}>
+      {isOverdue ? <div className={styles.overdueNotice} role="status"><strong>Tenggat tugas sudah lewat.</strong><span>Pengumpulan tugas ini sudah ditutup.</span><Link href="/siswa/tugas">Kembali ke daftar tugas</Link></div> : hasSubmission && !editing ? <div className={styles.submitted}>
         <div className={styles.submittedStatus}><Badge variant="success">SUDAH DIKUMPULKAN</Badge><span>{formatDate(task.pengumpulan?.dikumpulkan_at)}</span></div>
-        <p><strong>File:</strong> {task.pengumpulan?.nama_file || "File terkumpul"}</p>
+        <p><strong>File:</strong> {(task.pengumpulan?.files?.length ? task.pengumpulan.files.join(", ") : task.pengumpulan?.nama_file) || "File terkumpul"}</p>
         {task.pengumpulan?.nilai !== undefined && <p><strong>Nilai:</strong> {task.pengumpulan.nilai}</p>}
-        {task.pengumpulan?.komentar && <p><strong>Komentar pengajar:</strong> {task.pengumpulan.komentar}</p>}
-        {task.pengumpulan?.catatan && <p><strong>Catatan Anda:</strong> {task.pengumpulan.catatan}</p>}
-        {!locked && <button type="button" className={styles.replaceButton} onClick={() => { setFile(null); setEditing(true); }}>Ganti File</button>}
+        {!locked && <button type="button" className={styles.replaceButton} onClick={() => { setFiles([]); setEditing(true); }}>Ganti File</button>}
       </div> : <>
         <label className={styles.fieldLabel}>File Tugas <span>*</span></label>
-        <FileDropzone accept=".zip,.rar,.pdf" maxSizeMB={10} onFile={setFile} file={file}/>
-        {file && <div className={styles.fileChip}><span>▧</span><span><strong>{file.name}</strong><small>{formatSize(file.size)}</small></span><button type="button" aria-label="Hapus file terpilih" onClick={() => setFile(null)}>×</button></div>}
-        <p className={styles.fileHint}>Format yang diizinkan: .zip, .rar, .pdf (Maks: 10 MB)</p>
-        <label className={styles.fieldLabel} htmlFor="teacher-note">Catatan untuk Pengajar (Opsional)</label>
-        <textarea id="teacher-note" className={styles.note} value={note} maxLength={500} onChange={(event) => setNote(event.target.value)} placeholder="Tambahkan pesan atau penjelasan mengenai tugas yang dikumpulkan..."/>
-        <div className={styles.noteCount}>{note.length}/500</div>
+        <MultiFileDropzone accept=".zip,.rar,.pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.png,.jpg,.jpeg" maxSizeMB={10} onFiles={setFiles} files={files}/>
+        <p className={styles.fileHint}>Pilih beberapa file dokumen sekaligus (maksimal 10 MB per file).</p>
         {sending && <div className={styles.progress}><span style={{ width: progress + "%" }}/><small>Mengunggah {progress}%</small></div>}
-        <div className={styles.formActions}><button type="button" className={styles.cancel} disabled={sending} onClick={() => router.push("/siswa/tugas")}>Batal</button><button type="button" className={styles.submit} disabled={!file || sending} onClick={() => void submit()}>{sending ? "Mengumpulkan…" : "Kumpulkan Tugas"}</button></div>
+        <div className={styles.formActions}><button type="button" className={styles.cancel} disabled={sending} onClick={() => router.push("/siswa/tugas")}>Batal</button><button type="button" className={styles.submit} disabled={!files.length || sending} onClick={() => void submit()}>{sending ? "Mengumpulkan…" : "Kumpulkan Tugas"}</button></div>
       </>}
     </Card>
+    {preview && <FilePreview title={preview.judul} blob={preview.blob} filename={preview.filename} onClose={() => setPreview(null)} />}
   </div>;
 }
