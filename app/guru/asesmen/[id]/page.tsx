@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
@@ -8,6 +8,7 @@ import {
   getGuruAsesmenHasil,
   getGuruAsesmenMurid,
   hapusGuruSoal,
+  imporWordGuruSoal,
   simpanNilaiEsaiGuruAsesmen,
   tambahGuruSoal,
   ubahGuruSoal,
@@ -46,6 +47,7 @@ export default function DetailAsesmenPage() {
   const [nilaiEsai, setNilaiEsai] = useState<Record<string, string>>({});
   const [bukaId, setBukaId] = useState<number | null>(null);
   const [busy, setBusy] = useState(false);
+  const importWordRef = useRef<HTMLInputElement>(null);
   const { show, node } = useNotice();
 
   const muat = useCallback(async () => {
@@ -78,6 +80,24 @@ export default function DetailAsesmenPage() {
   function bukaTambahSoal() {
     setSoalForm(SOAL_KOSONG);
     setSoalModal({ nomor: null });
+  }
+
+  async function imporWord(file?: File) {
+    if (!file || !data) return;
+    if (!file.name.toLowerCase().endsWith(".docx")) {
+      show("Pilih file Word berformat .docx.", true);
+      return;
+    }
+    setBusy(true);
+    try {
+      const daftar = await imporWordGuruSoal(data.id, file);
+      setData({ ...data, soal: daftar, jumlah_soal: daftar.length });
+      show("Soal pilihan ganda berhasil diimpor dari Word.");
+    } catch (reason) {
+      show(pesanError(reason, "Soal gagal diimpor dari Word."), true);
+    } finally {
+      setBusy(false);
+    }
   }
 
   function bukaUbahSoal(s: GuruSoalItem) {
@@ -196,11 +216,14 @@ export default function DetailAsesmenPage() {
     setBusy(true);
     try {
       const result = await simpanNilaiEsaiGuruAsesmen(id, hasil.siswa_id, scores);
-      const next = await getGuruAsesmenHasil(id, hasil.siswa_id);
-      setHasil(next);
-      const updated = await getGuruAsesmenMurid(id);
-      setMurid(updated.murid);
+      setHasil(null);
       show(result.perlu_dinilai ? "Nilai tersimpan. Masih ada esai yang belum dinilai." : "Penilaian esai berhasil disimpan.");
+      try {
+        const updated = await getGuruAsesmenMurid(id);
+        setMurid(updated.murid);
+      } catch (reason) {
+        show(`Nilai tersimpan, tetapi daftar murid gagal diperbarui: ${pesanError(reason, "terjadi kesalahan")}`, true);
+      }
     } catch (reason) {
       show(pesanError(reason, "Nilai esai gagal disimpan."), true);
     } finally {
@@ -256,10 +279,16 @@ export default function DetailAsesmenPage() {
         <div>
           <div className={ui.toolbar} style={{ justifyContent: "space-between" }}>
             <span className={ui.muted}>Buat soal pilihan ganda maupun esai.</span>
-            <button type="button" className={`${ui.btn} ${ui.btnPrimary} ${ui.btnSm}`} onClick={bukaTambahSoal}>
-              <Icon name="plus" />
-              Tambah Soal
-            </button>
+            <div className={ui.cardActions}>
+              <input ref={importWordRef} type="file" accept=".docx" hidden onChange={(event) => { void imporWord(event.target.files?.[0]); event.target.value = ""; }} />
+      <button type="button" className={`${ui.btn} ${ui.btnOutline} ${ui.btnSm}`} disabled={busy} title="Word .docx: pertanyaan langsung, opsi A-D atau A-E, Kunci: B; maksimal 100 soal" onClick={() => importWordRef.current?.click()}>
+                {busy ? "Mengimpor..." : "Impor Word"}
+              </button>
+              <button type="button" className={`${ui.btn} ${ui.btnPrimary} ${ui.btnSm}`} onClick={bukaTambahSoal}>
+                <Icon name="plus" />
+                Tambah Soal
+              </button>
+            </div>
           </div>
           {data.soal.length === 0 ? (
             <EmptyState title="Belum ada soal" text="Klik Tambah Soal untuk membuat soal pertama." />
