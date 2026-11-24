@@ -121,8 +121,8 @@ export async function fetchGuruFile(path: string): Promise<{ blob: Blob; filenam
   return { blob: await res.blob(), filename: match ? match[1] : "file" };
 }
 
-export const guruMateriFilePath = (id: number) => `/guru/materi/${id}/unduh`;
-export const guruPengumpulanFilePath = (id: number) => `/guru/pengumpulan/${id}/file`;
+export const guruMateriFilePath = (id: number, index = 0) => `/guru/materi/${id}/unduh?index=${index}`;
+export const guruPengumpulanFilePath = (id: number, index = 0) => `/guru/pengumpulan/${id}/file?index=${index}`;
 
 // ===== Materi =====
 export type GuruMateri = {
@@ -136,6 +136,7 @@ export type GuruMateri = {
   file_url: string;
   nama_file: string;
   ada_file: boolean;
+  files?: { nama: string; url: string }[];
   created_at: string;
 };
 
@@ -165,6 +166,7 @@ export type GuruTugas = {
   pelajaran_nama: string;
   lampiran_url: string;
   nama_lampiran: string;
+  files?: { nama: string; url: string }[];
   dikumpulkan: number;
   jumlah_siswa: number;
 };
@@ -196,6 +198,7 @@ export type GuruPengumpulan = {
   feedback: string;
   nama_file: string;
   ada_file: boolean;
+  files?: { nama: string; url: string }[];
 };
 
 export function listGuruTugas(filter: { kelas_id?: number; q?: string; status?: string } = {}): Promise<GuruTugas[]> {
@@ -219,7 +222,7 @@ export async function nonaktifGuruTugas(id: number): Promise<void> {
 export function getGuruPengumpulan(id: number): Promise<GuruPengumpulan> {
   return ambil<GuruPengumpulan>(`/guru/pengumpulan/${id}`);
 }
-export async function nilaiGuruPengumpulan(id: number, input: { nilai: number; feedback: string }): Promise<void> {
+export async function nilaiGuruPengumpulan(id: number, input: { nilai: number }): Promise<void> {
   await apiFetch<Wrapped<unknown>>(`/guru/pengumpulan/${id}/nilai`, { method: "PUT", body: JSON.stringify(input) });
 }
 
@@ -330,6 +333,11 @@ export async function hapusGuruAsesmen(id: number): Promise<void> {
 }
 export function tambahGuruSoal(id: number, input: GuruSoalInput): Promise<GuruSoalItem[]> {
   return ambil<GuruSoalItem[]>(`/guru/asesmen/${id}/soal`, { method: "POST", body: JSON.stringify(input) });
+}
+export function imporWordGuruSoal(id: number, file: File): Promise<GuruSoalItem[]> {
+  const form = new FormData();
+  form.append("file", file);
+  return ambil<GuruSoalItem[]>(`/guru/asesmen/${id}/impor-word`, { method: "POST", body: form });
 }
 export function ubahGuruSoal(id: number, nomor: number, input: GuruSoalInput): Promise<GuruSoalItem[]> {
   return ambil<GuruSoalItem[]>(`/guru/asesmen/${id}/soal/${nomor}`, { method: "PUT", body: JSON.stringify(input) });
