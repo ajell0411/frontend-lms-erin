@@ -134,3 +134,27 @@ export function FileDropzone({ accept, maxSizeMB, onFile, file }: { accept: stri
     {error && <p className={styles.fileError} role="alert">{error}</p>}
   </div>;
 }
+
+export function MultiFileDropzone({ accept, maxSizeMB, onFiles, files }: { accept: string; maxSizeMB: number; onFiles: (files: File[]) => void; files: File[] }) {
+  const [dragging, setDragging] = useState(false);
+  const [error, setError] = useState("");
+  const input = useRef<HTMLInputElement>(null);
+  const choose = (candidates: File[]) => {
+    setError("");
+    const allowed = accept.split(",").map((part) => part.trim().toLowerCase());
+    const next = [...files];
+    for (const candidate of candidates) {
+      if (candidate.size > maxSizeMB * 1024 * 1024) { setError(`${candidate.name}: ukuran maksimal ${maxSizeMB} MB.`); return; }
+      if (!allowed.some((part) => candidate.name.toLowerCase().endsWith(part))) { setError(`${candidate.name}: format file tidak didukung.`); return; }
+      if (!next.some((item) => item.name === candidate.name && item.size === candidate.size)) next.push(candidate);
+    }
+    if (next.length > 20) { setError("Maksimal 20 file untuk satu pengumpulan."); return; }
+    onFiles(next);
+  };
+  return <div className={`${styles.dropzone} ${dragging ? styles.dragging : ""}`} onDragOver={(event) => { event.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={(event) => { event.preventDefault(); setDragging(false); choose(Array.from(event.dataTransfer.files || [])); }}>
+    <input ref={input} type="file" accept={accept} multiple hidden onChange={(event) => { choose(Array.from(event.target.files || [])); event.target.value = ""; }} />
+    <p>Tarik beberapa file ke sini atau</p><button type="button" onClick={() => input.current?.click()}>Pilih File</button><small>Maksimal {maxSizeMB} MB per file</small>
+    {files.map((file, index) => <div className={styles.selectedFile} key={`${file.name}-${file.size}`}><strong title={file.name}>{file.name}</strong><button type="button" onClick={() => onFiles(files.filter((_, item) => item !== index))}>Hapus</button></div>)}
+    {error && <p className={styles.fileError} role="alert">{error}</p>}
+  </div>;
+}
