@@ -73,7 +73,7 @@ export default function AsesmenSiswaPage() {
       const style = { "--siswa-subject-color": colorAt(index) } as CSSProperties;
       return <Card key={item.id} className={[styles.assessmentCard, locked ? styles.locked : ""].join(" ")} style={style}>
         <div className={styles.meta}><Badge variant={item.tipe === "kuis" ? "danger" : "info"}>{item.tipe === "kuis" ? "KUIS" : "UJIAN HARIAN"}</Badge><Badge>{subjectName}</Badge></div>
-        <h2>{item.judul}</h2><p className={styles.description}>{item.deskripsi || "Evaluasi pembelajaran untuk mengukur pemahaman Anda."}</p>
+        <h2>{item.judul}</h2><p className={styles.description}>{item.deskripsi || "Evaluasi pembelajaran untuk mengukur pemahaman Anda."} Oleh: {item.guru || "Pengajar"}</p>
         <div className={styles.duration}><span aria-hidden="true">◷</span>{item.durasi_menit ? item.durasi_menit + " menit" : "Durasi belum ditentukan"}</div>
         <div className={styles.cardFooter}>
           {done ? <div className={styles.score}>{item.perlu_dinilai ? <><Badge variant="info">PERLU DINILAI</Badge><strong>Jawaban esai menunggu penilaian guru</strong></> : <><Badge variant="success">SELESAI</Badge><strong>Nilai: {item.nilai ?? "—"}/{item.nilai_maks ?? 100}</strong></>}</div> :
