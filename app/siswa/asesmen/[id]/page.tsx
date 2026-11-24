@@ -122,9 +122,10 @@ export default function KerjakanAsesmenPage() {
   const questions = assessment?.soal ?? [];
   const current = questions[index];
   const key = current ? String(current.id) : "";
-  const answeredCount = Object.keys(answers).filter((answerId) => questions.some((question) => String(question.id) === answerId)).length;
+  const answeredCount = questions.filter((question) => Boolean(answers[String(question.id)]?.trim())).length;
   const unansweredCount = Math.max(0, questions.length - answeredCount);
   const doubtfulCount = doubtful.length;
+  const isLastQuestion = index === questions.length - 1;
 
   const choose = useCallback((question: SoalSiswa, code: string) => {
     setAnswers((currentAnswers) => ({ ...currentAnswers, [String(question.id)]: code }));
@@ -160,7 +161,7 @@ export default function KerjakanAsesmenPage() {
   if (!current) return <Card><EmptyState title="Soal tidak ditemukan"/></Card>;
 
   return <div className={styles.page}>
-    <div className={styles.examHeading}><h1>{assessment.judul}</h1><Badge variant="danger"><span aria-hidden="true">◷</span>{remaining?.text ?? "--:--"}</Badge></div>
+    <div className={styles.examHeading}><div><h1>{assessment.judul}</h1><p>Oleh: {assessment.guru || "Pengajar"}</p></div><Badge variant="danger"><span aria-hidden="true">◷</span>{remaining?.text ?? "--:--"}</Badge></div>
     {error && <p className={styles.inlineError} role="alert">{error}</p>}
     <div className={styles.examGrid}>
       <Card className={styles.questionCard}>
@@ -170,7 +171,12 @@ export default function KerjakanAsesmenPage() {
           <span className={styles.optionCode}>{option.kode}.</span><span>{option.teks}</span>
         </button>)}</div>}
         <div className={styles.questionActions}><button type="button" className={styles.doubtButton} aria-pressed={doubtful.includes(current.id)} onClick={() => toggleDoubtful(current.id)}>{doubtful.includes(current.id) ? "★ Ditandai Ragu-ragu" : "☆ Tandai Ragu-ragu"}</button>
-          <div className={styles.stepActions}><button type="button" className={styles.previous} disabled={index === 0} onClick={() => setIndex((value) => Math.max(0, value - 1))}>← Soal Sebelumnya</button><button type="button" className={styles.next} onClick={() => setIndex((value) => Math.min(questions.length - 1, value + 1))}>{index === questions.length - 1 ? "Simpan" : "Simpan & Lanjut"} →</button></div>
+          <div className={styles.stepActions}>
+            <button type="button" className={styles.previous} disabled={index === 0} onClick={() => setIndex((value) => Math.max(0, value - 1))}>← Soal Sebelumnya</button>
+            <button type="button" className={isLastQuestion ? styles.confirmEnd : styles.next} onClick={() => isLastQuestion ? setConfirmOpen(true) : setIndex((value) => Math.min(questions.length - 1, value + 1))}>
+              {isLastQuestion ? "Akhiri Ujian" : "Simpan & Lanjut →"}
+            </button>
+          </div>
         </div>
       </Card>
       <button type="button" className={[styles.mobileNavToggle, navOpen ? styles.mobileNavToggleHidden : ""].join(" ")} aria-expanded={navOpen} onClick={() => setNavOpen((value) => !value)}>Navigasi Soal ({index + 1}/{questions.length})</button>
@@ -187,8 +193,8 @@ export default function KerjakanAsesmenPage() {
         <button type="button" className={styles.endButton} onClick={() => setConfirmOpen(true)}>Akhiri Ujian</button>
       </Card>
     </div>
-    <Modal open={confirmOpen} onClose={() => setConfirmOpen(false)} title="Akhiri asesmen?" footer={<><button type="button" className={styles.previous} onClick={() => setConfirmOpen(false)}>Kembali</button><button type="button" className={styles.confirmEnd} disabled={sending} onClick={() => void submit(false)}>{sending ? "Mengirim…" : "Ya, Akhiri Ujian"}</button></>}>
-      <p className={styles.confirmText}>Masih ada <strong>{unansweredCount} soal</strong> yang belum dijawab. Setelah dikirim, jawaban tidak dapat diubah.</p>
+    <Modal open={confirmOpen} onClose={() => setConfirmOpen(false)} title={unansweredCount > 0 ? "Masih ada soal kosong" : "Akhiri asesmen?"} footer={<><button type="button" className={styles.previous} onClick={() => setConfirmOpen(false)}>Kembali</button><button type="button" className={styles.confirmEnd} disabled={sending} onClick={() => void submit(false)}>{sending ? "Mengirim…" : "Ya, Akhiri Ujian"}</button></>}>
+      <p className={styles.confirmText}>{unansweredCount > 0 ? <>Masih ada <strong>{unansweredCount} soal</strong> yang belum dijawab. Yakin ingin mengirim asesmen sekarang?</> : <>Semua soal sudah dijawab. Yakin ingin mengakhiri asesmen?</>} Setelah dikirim, jawaban tidak dapat diubah.</p>
     </Modal>
   </div>;
 }
