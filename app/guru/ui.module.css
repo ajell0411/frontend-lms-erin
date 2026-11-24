@@ -107,6 +107,8 @@
 .previewBody{flex:1;min-height:0;overflow:auto;background:#f0f2e6}
 .previewBody iframe{display:block;width:100%;height:100%;border:0;background:#fff}
 .previewBody img{display:block;max-width:100%;margin:0 auto;padding:16px}
+.wordPreview{min-height:100%;padding:20px}
+.previewMessage{margin:0;padding:18px;color:var(--siswa-muted);font-size:13px;text-align:center}
 .previewEmpty{display:grid;place-items:center;height:100%;padding:24px;color:var(--siswa-muted);font-size:13px;text-align:center}
 .hariList{display:grid;gap:16px}
 .hariCard{padding:16px 18px;border:1px solid var(--siswa-border);border-radius:var(--siswa-radius);background:#fff;box-shadow:var(--siswa-shadow)}
