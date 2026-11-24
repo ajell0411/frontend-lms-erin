@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import styles from "./ui.module.css";
 
@@ -255,12 +255,18 @@ export function FilePreview({
   onClose: () => void;
 }) {
   const lower = filename.toLowerCase();
-  const kind: "pdf" | "image" | "none" = lower.endsWith(".pdf")
+  const kind: "pdf" | "image" | "docx" | "doc" | "none" = lower.endsWith(".pdf")
     ? "pdf"
     : /\.(png|jpe?g|gif|webp)$/.test(lower)
       ? "image"
-      : "none";
+      : lower.endsWith(".docx")
+        ? "docx"
+        : lower.endsWith(".doc")
+          ? "doc"
+          : "none";
   const [objectUrl, setObjectUrl] = useState<{ blob: Blob; url: string } | null>(null);
+  const [wordState, setWordState] = useState<{ blob: Blob; status: "loading" | "ready" | "error"; message?: string } | null>(null);
+  const wordContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (kind === "none") return;
@@ -278,7 +284,45 @@ export function FilePreview({
     };
   }, [blob, kind]);
 
+  useEffect(() => {
+    if (kind !== "doc" && kind !== "docx") return;
+    const container = wordContainerRef.current;
+    if (!container) return;
+    let active = true;
+    container.replaceChildren();
+
+    void (async () => {
+      try {
+        if (kind === "docx") {
+          const { renderAsync } = await import("docx-preview");
+          if (!active) return;
+          await renderAsync(blob, container, container);
+        } else {
+          const { parseMsDocToHtml, mountMsDoc } = await import("@file-viewer/doc");
+          const rendered = await parseMsDocToHtml(blob);
+          if (!active) return;
+          mountMsDoc(container, rendered);
+        }
+        if (active) setWordState({ blob, status: "ready" });
+      } catch (reason) {
+        if (active) {
+          setWordState({
+            blob,
+            status: "error",
+            message: reason instanceof Error ? reason.message : "Dokumen Word tidak dapat ditampilkan.",
+          });
+        }
+      }
+    })();
+
+    return () => {
+      active = false;
+      container.replaceChildren();
+    };
+  }, [blob, kind]);
+
   const url = objectUrl?.blob === blob ? objectUrl.url : "";
+  const currentWordState = wordState?.blob === blob ? wordState : null;
 
   return (
     <Modal
@@ -302,6 +346,12 @@ export function FilePreview({
           <iframe src={url} title={title} />
         ) : kind === "image" && url ? (
           <Image src={url} alt={title} width={900} height={700} unoptimized style={{ height: "auto" }} />
+        ) : kind === "doc" || kind === "docx" ? (
+          <>
+            {(!currentWordState || currentWordState.status === "loading") && <p className={styles.previewMessage}>Menyiapkan pratinjau Word...</p>}
+            {currentWordState?.status === "error" && <p className={styles.previewMessage} role="alert">Pratinjau gagal: {currentWordState.message} Silakan unduh file untuk membukanya.</p>}
+            <div ref={wordContainerRef} className={styles.wordPreview} aria-label={`Pratinjau ${title}`} />
+          </>
         ) : (
           <div className={styles.previewEmpty}>
             <p>Format file ini belum bisa ditampilkan di halaman. Silakan unduh untuk membukanya.</p>
