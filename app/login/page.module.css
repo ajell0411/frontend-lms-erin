@@ -531,6 +531,35 @@
   text-decoration: underline;
 }
 
+.homeLink {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 8px 14px;
+  border: 1px solid #6d7958;
+  border-radius: 8px;
+  background: #6d7958;
+  color: #fff !important;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 3px 8px rgba(71, 83, 55, 0.2);
+  transition: background 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+
+.homeLink:hover {
+  background: #566246;
+  border-color: #566246;
+  color: #fff !important;
+  text-decoration: none;
+  box-shadow: 0 5px 12px rgba(71, 83, 55, 0.28);
+  transform: translateY(-1px);
+}
+
+.homeLink:focus-visible {
+  outline: 3px solid #c1cbaa;
+  outline-offset: 3px;
+}
+
 /* ===== Responsif ===== */
 @media (max-width: 1000px) {
   .content {
