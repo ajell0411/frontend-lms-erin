@@ -281,7 +281,7 @@ export default function DetailAsesmenPage() {
             <span className={ui.muted}>Buat soal pilihan ganda maupun esai.</span>
             <div className={ui.cardActions}>
               <input ref={importWordRef} type="file" accept=".docx" hidden onChange={(event) => { void imporWord(event.target.files?.[0]); event.target.value = ""; }} />
-      <button type="button" className={`${ui.btn} ${ui.btnOutline} ${ui.btnSm}`} disabled={busy} title="Word .docx: pertanyaan langsung, opsi A-D atau A-E, Kunci: B; maksimal 100 soal" onClick={() => importWordRef.current?.click()}>
+              <button type="button" className={`${ui.btn} ${ui.btnOutline} ${ui.btnSm}`} disabled={busy} title="Word .docx: pertanyaan langsung, opsi A-D atau A-E, Kunci: B; maksimal 100 soal" onClick={() => importWordRef.current?.click()}>
                 {busy ? "Mengimpor..." : "Impor Word"}
               </button>
               <button type="button" className={`${ui.btn} ${ui.btnPrimary} ${ui.btnSm}`} onClick={bukaTambahSoal}>
