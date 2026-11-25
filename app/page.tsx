@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Reveal from "./components/Reveal";
+import LoginModal from "./components/LoginModal";
 import styles from "./page.module.css";
 
 const fitur = [
@@ -28,8 +29,10 @@ export default function LandingPage() {
   const [pressed, setPressed] = useState<string | null>(null);
   const [groupPhotoZoomed, setGroupPhotoZoomed] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
   const groupPhotoRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
+  const closeLogin = useCallback(() => setLoginOpen(false), []);
 
   // Scroll halus untuk klik menu (#tentang, #fitur, dst.)
   useEffect(() => {
@@ -120,7 +123,7 @@ export default function LandingPage() {
                   <a href="#alur">Alur</a>
                   <a href="#kontak">Kontak &amp; Bantuan</a>
                 </nav>
-                <Link href="/login" className={styles.btnPrimary}>Login</Link>
+                <button type="button" className={styles.btnPrimary} onClick={() => setLoginOpen(true)}>Login</button>
               </div>
             </Reveal>
           </div>
@@ -154,7 +157,7 @@ export default function LandingPage() {
 
               <Reveal direction="zoom" delay={440}>
                 <div className={styles.heroActions}>
-                  <Link href="/login" className={styles.btnPrimary}>Mulai Sekarang</Link>
+                  <button type="button" className={styles.btnPrimary} onClick={() => setLoginOpen(true)}>Mulai Sekarang</button>
                   <a href="#fitur" className={styles.btnOutline}>Pelajari Lebih Lanjut</a>
                 </div>
               </Reveal>
@@ -246,9 +249,9 @@ export default function LandingPage() {
                   langsung dengan teknologi pendidikan yang ramah pengguna, cepat,
                   dan aman.
                 </p>
-                <Link href="/login" className={styles.btnPrimary} style={{ marginTop: 24, display: "inline-block" }}>
+                <button type="button" className={styles.btnPrimary} style={{ marginTop: 24, display: "inline-block", border: 0, cursor: "pointer", font: "inherit" }} onClick={() => setLoginOpen(true)}>
                   Masuk ke Kelas
-                </Link>
+                </button>
               </div>
             </Reveal>
 
@@ -350,6 +353,7 @@ export default function LandingPage() {
           </div>
         </footer>
       </div>
+      {loginOpen && <LoginModal onClose={closeLogin} />}
     </div>
   );
 }
