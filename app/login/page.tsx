@@ -206,7 +206,7 @@ export default function LoginPage() {
 
           <p className={styles.registerText}>
             Belum punya akun? Hubungi admin sekolah.{" "}
-            <Link href="/" className={styles.registerLink}>
+            <Link href="/" className={`${styles.registerLink} ${styles.homeLink}`}>
               Ke beranda
             </Link>
           </p>
